@@ -1,0 +1,389 @@
+.live-stream-page-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  display: flex;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.video-container-fullscreen {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000;
+}
+
+.youtube-player-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#youtube-player {
+  width: 100%;
+  height: 100%;
+}
+
+#youtube-player iframe {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.video-controls-fullscreen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 10;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.8) 100%);
+  transition: opacity 0.3s;
+}
+
+.controls-top {
+  padding: 30px 40px;
+}
+
+.stream-info-overlay {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.live-indicator-large {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #e50914;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  width: fit-content;
+}
+
+.live-dot-large {
+  width: 10px;
+  height: 10px;
+  background-color: #fff;
+  border-radius: 50%;
+  animation: pulse-large 2s infinite;
+}
+
+@keyframes pulse-large {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+.stream-title-overlay {
+  font-size: 36px;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+}
+
+.streamer-name-overlay {
+  font-size: 20px;
+  color: #ccc;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+}
+
+.viewers-count-overlay {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  color: #fff;
+  margin-top: 5px;
+}
+
+.controls-bottom {
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.controls-left,
+.controls-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.control-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.control-btn:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  border-color: #fff;
+  transform: scale(1.1);
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.volume-slider {
+  width: 100px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  border: none;
+}
+
+.center-play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+
+.play-button-center {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: #fff;
+  font-size: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+}
+
+.play-button-center:hover {
+  transform: scale(1.1);
+  box-shadow: 0 20px 50px rgba(102, 126, 234, 0.7);
+}
+
+.play-button-center svg {
+  margin-left: 8px;
+}
+
+.stream-chat-sidebar {
+  width: 350px;
+  background-color: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid #333;
+}
+
+.chat-header {
+  padding: 20px;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-header h3 {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.live-badge-small {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #e50914;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.live-dot-small {
+  width: 8px;
+  height: 8px;
+  background-color: #fff;
+  border-radius: 50%;
+  animation: pulse-small 2s infinite;
+}
+
+@keyframes pulse-small {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: #2a2a2a;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 3px;
+}
+
+.chat-message {
+  display: flex;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.chat-username {
+  color: #667eea;
+  font-weight: 600;
+}
+
+.chat-text {
+  color: #ccc;
+}
+
+.chat-input-container {
+  padding: 20px;
+  border-top: 1px solid #333;
+}
+
+.chat-input {
+  width: 100%;
+  padding: 12px;
+  background-color: #2a2a2a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+}
+
+.chat-input::placeholder {
+  color: #666;
+}
+
+.chat-input:focus {
+  border-color: #667eea;
+}
+
+@media (max-width: 1024px) {
+  .stream-chat-sidebar {
+    width: 300px;
+  }
+
+  .stream-title-overlay {
+    font-size: 28px;
+  }
+
+  .play-button-center {
+    width: 100px;
+    height: 100px;
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .live-stream-page-fullscreen {
+    flex-direction: column;
+  }
+
+  .stream-chat-sidebar {
+    width: 100%;
+    height: 300px;
+    border-left: none;
+    border-top: 1px solid #333;
+  }
+
+  .controls-top {
+    padding: 20px;
+  }
+
+  .controls-bottom {
+    padding: 15px 20px;
+  }
+
+  .stream-title-overlay {
+    font-size: 24px;
+  }
+
+  .control-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  .play-button-center {
+    width: 80px;
+    height: 80px;
+    font-size: 32px;
+  }
+}

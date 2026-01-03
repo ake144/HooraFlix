@@ -1,0 +1,103 @@
+.content-grid-section {
+  margin-bottom: 50px;
+}
+
+.content-grid-section.compact {
+  margin-bottom: 40px;
+}
+
+.grid-header {
+  margin-bottom: 20px;
+}
+
+.grid-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+}
+
+.content-grid-section.compact .grid-title {
+  font-size: 20px;
+}
+
+.grid-container {
+  position: relative;
+}
+
+.grid-content {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  padding: 10px 0;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.grid-content::-webkit-scrollbar {
+  display: none;
+}
+
+.grid-scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  z-index: 10;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  transition: all 0.3s;
+  opacity: 0;
+}
+
+.content-grid-section:hover .grid-scroll-btn {
+  opacity: 1;
+}
+
+.grid-scroll-btn:hover {
+  background-color: rgba(0, 0, 0, 0.9);
+  border-color: #fff;
+}
+
+.grid-scroll-btn.left {
+  left: -60px;
+}
+
+.grid-scroll-btn.right {
+  right: -60px;
+}
+
+@media (max-width: 1200px) {
+  .grid-scroll-btn {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-grid-section {
+    margin-bottom: 30px;
+  }
+  
+  .grid-title {
+    font-size: 20px;
+  }
+  
+  .content-grid-section.compact .grid-title {
+    font-size: 18px;
+  }
+  
+  .grid-content {
+    gap: 10px;
+  }
+}
+

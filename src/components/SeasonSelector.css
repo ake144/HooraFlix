@@ -1,0 +1,42 @@
+.season-selector {
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #333;
+}
+
+.season-label {
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.season-tabs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.season-tab {
+  padding: 10px 20px;
+  background-color: transparent;
+  border: 1px solid #333;
+  border-radius: 6px;
+  color: #999;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.season-tab:hover {
+  border-color: #666;
+  color: #fff;
+}
+
+.season-tab.active {
+  background-color: #e50914;
+  border-color: #e50914;
+  color: #fff;
+}
+

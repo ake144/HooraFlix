@@ -1,0 +1,138 @@
+.coming-soon-section {
+  width: 100%;
+  min-height: 500px;
+  position: relative;
+  margin: 40px 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.coming-soon-background {
+  width: 100%;
+  min-height: 500px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+}
+
+.coming-soon-background::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 200px;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10h80v80h-80z' fill='none' stroke='rgba(255,255,255,0.1)' stroke-width='2'/%3E%3C/svg%3E");
+  opacity: 0.3;
+  background-size: 50px 50px;
+}
+
+.coming-soon-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.coming-soon-title {
+  font-size: 64px;
+  font-weight: 900;
+  color: #ffffff;
+  margin-bottom: 50px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.countdown-timer {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.time-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 100px;
+}
+
+.time-value {
+  font-size: 48px;
+  font-weight: 700;
+  color: #a78bfa;
+  margin-bottom: 10px;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
+  line-height: 1;
+}
+
+.time-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+@media (max-width: 768px) {
+  .coming-soon-section {
+    margin: 20px 0;
+    border-radius: 8px;
+  }
+
+  .coming-soon-background {
+    min-height: 400px;
+    padding: 40px 20px;
+  }
+
+  .coming-soon-title {
+    font-size: 36px;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+  }
+
+  .countdown-timer {
+    gap: 15px;
+  }
+
+  .time-unit {
+    min-width: 70px;
+  }
+
+  .time-value {
+    font-size: 32px;
+  }
+
+  .time-label {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .coming-soon-title {
+    font-size: 28px;
+  }
+
+  .countdown-timer {
+    gap: 10px;
+  }
+
+  .time-unit {
+    min-width: 60px;
+  }
+
+  .time-value {
+    font-size: 24px;
+  }
+
+  .time-label {
+    font-size: 9px;
+  }
+}
+
