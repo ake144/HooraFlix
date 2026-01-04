@@ -25,9 +25,9 @@ const Header = () => {
             <span className="logo-text">HOORAFLIX</span>
           </Link>
           <nav className="nav-links">
-            <Link to="/home" className={`nav-link ${location.pathname === '/home' ? 'active' : ''}`}>Home</Link>
+            <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Home</Link>
             <Link to="/live-stream" className={`nav-link ${location.pathname === '/live-stream' ? 'active' : ''}`}>Live Stream</Link>
-            <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Movies</Link>
+            <Link to="/movies" className={`nav-link ${location.pathname === '/movies' ? 'active' : ''}`}>Movies</Link>
             <Link to="/" className="nav-link">New & Popular</Link>
             <Link to="/" className="nav-link">My List</Link>
           </nav>

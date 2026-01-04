@@ -9,8 +9,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<CoverPage />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/movies" element={<CoverPage />} />
         <Route path="/episode/:showId/:seasonNumber/:episodeNumber" element={<EpisodeDetail />} />
         <Route path="/episode/:showId/:seasonNumber" element={<EpisodeDetail />} />
         <Route path="/episode/:showId" element={<EpisodeDetail />} />
@@ -21,5 +21,4 @@ function App() {
 }
 
 export default App
-
 
