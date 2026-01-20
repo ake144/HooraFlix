@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './Auth.css';
 
 const Signup = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const [formData, setFormData] = useState({
     email: '',
@@ -27,6 +28,8 @@ const Signup = () => {
     e.preventDefault();
     console.log('Signup Data:', formData);
     // Add signup logic here
+    // Redirect to Founders Page (simulated signup success)
+    navigate('/founders');
   };
 
   return (

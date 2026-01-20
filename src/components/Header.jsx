@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { FiSearch, FiBell } from 'react-icons/fi'
+import { FiSearch, FiBell, FiLogOut, FiUser } from 'react-icons/fi'
 import './Header.css'
 
 const Header = () => {
@@ -8,6 +8,7 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [showSearch, setShowSearch] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [showProfileMenu, setShowProfileMenu] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,8 +27,8 @@ const Header = () => {
           </Link>
           <nav className="nav-links">
             <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Home</Link>
-            <Link to="/" className={`nav-link ${location.pathname === '/live-stream' ? 'active' : ''}`}>Live Stream</Link>
-            <Link to="/" className={`nav-link ${location.pathname === '/movies' ? 'active' : ''}`}>Movies</Link>
+            <Link to="/live-stream" className={`nav-link ${location.pathname === '/live-stream' ? 'active' : ''}`}>Live Stream</Link>
+            <Link to="/movies" className={`nav-link ${location.pathname === '/movies' ? 'active' : ''}`}>Movies</Link>
             <Link to="/" className="nav-link">New & Popular</Link>
             <Link to="/" className="nav-link">My List</Link>
           </nav>
@@ -52,11 +53,29 @@ const Header = () => {
           <button className="icon-button" aria-label="Notifications">
             <FiBell />
           </button>
-          <div className="profile-menu">
-            <div className="profile-avatar">
+          
+          <div className="profile-menu-container">
+            <div 
+              className="profile-avatar" 
+              onClick={() => setShowProfileMenu(!showProfileMenu)}
+            >
               <span>U</span>
             </div>
+            
+            {showProfileMenu && (
+              <div className="profile-dropdown">
+                <Link to="/founders" className="dropdown-item">
+                  <FiUser className="dropdown-icon" />
+                  <span>Founders Area</span>
+                </Link>
+                <Link to="/login" className="dropdown-item">
+                  <FiLogOut className="dropdown-icon" />
+                  <span>Logout</span>
+                </Link>
+              </div>
+            )}
           </div>
+
         </div>
       </div>
     </header>

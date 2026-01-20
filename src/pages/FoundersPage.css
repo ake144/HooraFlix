@@ -1,0 +1,200 @@
+.founders-page {
+  background-color: #000; /* Deep black background */
+  min-height: 100vh;
+  color: #fff;
+  padding-top: 80px; /* Space for fixed header */
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+.founders-hero {
+  padding: 4rem 5%;
+  background: radial-gradient(circle at 30% 30%, rgba(229, 9, 20, 0.15), transparent 60%);
+}
+
+.welcome-text {
+  font-size: 1.2rem;
+  color: #e50914;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+.main-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+}
+
+.highlight-gold {
+  color: #ffd700; /* Gold color for "Esteemed Founder" */
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #b3b3b3;
+  max-width: 600px;
+  line-height: 1.6;
+  margin-bottom: 3rem;
+}
+
+.founder-badge {
+  display: inline-block;
+  background: rgba(255, 215, 0, 0.15);
+  color: #ffd700;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  margin-top: 1rem;
+}
+
+/* Sections */
+.benefits-section {
+  padding: 4rem 5%;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+  color: #777;
+  margin-bottom: 3rem;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.benefit-card {
+  background: #1a1a1a;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid #333;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.benefit-card:hover {
+  transform: translateY(-5px);
+  border-color: #555;
+  background: #222;
+}
+
+.benefit-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.benefit-desc {
+  color: #999;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  background-color: #e50914;
+  color: white;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary:hover {
+  background-color: #f40612;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: white;
+  padding: 12px 30px;
+  border: 1px solid #666;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-secondary:hover {
+  border-color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Footer mimicking the screenshot */
+.simple-footer {
+  border-top: 1px solid #333;
+  padding: 4rem 5%;
+  margin-top: 4rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 2rem;
+}
+
+.footer-brand h4 {
+  color: #fff;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+.footer-brand p {
+  color: #666;
+  font-size: 0.9rem;
+  max-width: 300px;
+}
+
+.footer-col h5 {
+  color: #fff;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.footer-col ul {
+  list-style: none;
+}
+
+.footer-col li {
+  margin-bottom: 0.8rem;
+}
+
+.footer-col a {
+  color: #666;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.footer-col a:hover {
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .simple-footer {
+    grid-template-columns: 1fr;
+  }
+}

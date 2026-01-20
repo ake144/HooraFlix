@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Auth.css';
 
 const Login = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -16,6 +17,8 @@ const Login = () => {
     e.preventDefault();
     console.log('Login Data:', formData);
     // Add login logic here
+    // Redirect to Founders Page (simulated login success)
+    navigate('/founders');
   };
 
   return (
