@@ -3,6 +3,8 @@ import Home from './pages/Home'
 import CoverPage from './pages/CoverPage'
 import EpisodeDetail from './pages/EpisodeDetail'
 import LiveStream from './pages/LiveStream'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
 import './App.css'
 
 function App() {
@@ -10,6 +12,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/movies" element={<CoverPage />} />
         <Route path="/episode/:showId/:seasonNumber/:episodeNumber" element={<EpisodeDetail />} />
         <Route path="/episode/:showId/:seasonNumber" element={<EpisodeDetail />} />
