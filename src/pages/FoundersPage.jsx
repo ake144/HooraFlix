@@ -1,8 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../components/Header';
 import './FoundersPage.css';
 
 const FoundersPage = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [code, setCode] = useState('');
+  const [verificationStatus, setVerificationStatus] = useState('idle'); // idle, verifying, success, error
+  const [message, setMessage] = useState('');
+
+  const handleJoinClick = (e) => {
+    e.preventDefault();
+    setShowModal(true);
+    setVerificationStatus('idle');
+    setCode('');
+    setMessage('');
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleVerify = () => {
+    if (!code.trim()) {
+      setMessage('Please enter a valid code.');
+      setVerificationStatus('error');
+      return;
+    }
+
+    setVerificationStatus('verifying');
+    
+    // Simulate verification
+    setTimeout(() => {
+      // Mock verification logic - checking against 'HOORA2026'
+      if (code.trim().toUpperCase() === 'HOORA2026') {
+        setVerificationStatus('success');
+        setMessage('Welcome to the Founders Circle!');
+      } else {
+        setVerificationStatus('error');
+        setMessage('Invalid code. Please try again.');
+      }
+    }, 1500);
+  };
+
   return (
     <div className="founders-page">
       <Header />
@@ -55,10 +94,51 @@ const FoundersPage = () => {
         </div>
 
         <div className="action-buttons">
-          <a href="#" className="btn-primary">Join the Founders Circle</a>
+          <button onClick={handleJoinClick} className="btn-primary">Join the Founders Circle</button>
           <a href="#" className="btn-secondary">View Benefits</a>
         </div>
       </section>
+
+      {/* Verification Modal */}
+      {showModal && (
+        <div className="founder-modal-overlay">
+          <div className="founder-modal">
+            <button className="founder-modal-close" onClick={handleCloseModal}>&times;</button>
+            
+            {verificationStatus === 'success' ? (
+              <div className="founder-modal-content success">
+                <div className="success-icon">🎉</div>
+                <h3>Congratulations!</h3>
+                <p>{message}</p>
+                <button className="btn-primary" onClick={handleCloseModal}>Enter Lounge</button>
+              </div>
+            ) : (
+              <div className="founder-modal-content">
+                <h3>Enter Your Founder Code</h3>
+                <p>Please enter your unique code to verify your membership.</p>
+                
+                <input 
+                  type="text" 
+                  className="founder-input" 
+                  placeholder="Enter Code (e.g. HOORA2026)" 
+                  value={code}
+                  onChange={(e) => setCode(e.target.value)}
+                />
+                
+                {message && <p className={`status-message ${verificationStatus}`}>{message}</p>}
+                
+                <button 
+                  className="btn-primary btn-full" 
+                  onClick={handleVerify}
+                  disabled={verificationStatus === 'verifying'}
+                >
+                  {verificationStatus === 'verifying' ? 'Verifying...' : 'Verify Code'}
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Simple Footer */}
       <footer className="simple-footer">
