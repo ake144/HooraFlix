@@ -1,6 +1,6 @@
 .founders-dashboard {
   background-color: #000;
-  min-height: 100vh;
+  min-height: calc(100vh - 160px);
   color: #fff;
   padding-top: 120px; /* Header space */
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -10,6 +10,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 5%;
+  padding-top: 20px;
 }
 
 /* Header */
