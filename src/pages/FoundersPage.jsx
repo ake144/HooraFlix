@@ -53,20 +53,46 @@ const FoundersPage = () => {
     <div className="founders-page">
       <Header />
       
+      <div className='founders-container'>
+
+      
       {/* Hero Section */}
       <section className="founders-hero">
-        <div className="welcome-text">HOORAFLIX</div>
-        <h1 className="main-title">
-          Welcome, <span className="highlight-gold">Esteemed Founder</span>
-        </h1>
-        
-        <p className="subtitle">
-          <strong>Access Reserved for Founding Members</strong>
-          <br />
-          Exclusive educational opportunities, premium African content, and a lifetime commitment to participation in Hooraflix productions.
-        </p>
+        <div className="founders-hero-content">
+          <div className="welcome-tag">HOORAFLIX EXCLUSIVE</div>
+          <h1 className="main-title">
+            The Future of <br />
+            <span className="highlight-text">African Storytelling</span>
+          </h1>
+          
+          <p className="subtitle">
+            Join the <strong>Founders Circle</strong> today. Unlock exclusive educational content, 
+            premium entertainment, and become a part of the cinematic revolution.
+          </p>
 
-        <div className="founder-badge">Founder since 2026</div>
+          <div className="hero-badges">
+            <div className="founder-badge">Founder Status</div>
+            <div className="founder-badge secondary">2026 Edition</div>
+          </div>
+          
+          <div className="hero-cta">
+             <button onClick={handleJoinClick} className="btn-primary btn-lg">Join the Movement</button>
+             <button className="btn-text">Watch Trailer</button>
+          </div>
+        </div>
+        
+        <div className="founders-hero-media">
+          <div className="video-container-styled">
+             {/* Using a placeholder iframe or video tag */}
+             <iframe 
+               src="https://www.youtube.com/embed/ScMzIvxBSi4?controls=0&rel=0&modestbranding=1" 
+               title="Hooraflix Founders" 
+               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+               allowFullScreen
+             ></iframe>
+             <div className="video-glow"></div>
+          </div>
+        </div>
       </section>
 
       {/* Benefits Section */}
@@ -146,6 +172,7 @@ const FoundersPage = () => {
           </div>
         </div>
       )}
+      </div>
 
       {/* Simple Footer */}
       <footer className="simple-footer">
