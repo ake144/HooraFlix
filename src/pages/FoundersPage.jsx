@@ -83,14 +83,19 @@ const FoundersPage = () => {
         
         <div className="founders-hero-media">
           <div className="video-container-styled">
-             {/* Using a placeholder iframe or video tag */}
-             <iframe 
-               src="https://www.youtube.com/embed/ScMzIvxBSi4?controls=0&rel=0&modestbranding=1" 
-               title="Hooraflix Founders" 
-               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-               allowFullScreen
-             ></iframe>
-             <div className="video-glow"></div>
+             <video 
+               src="/hooraflix-logo.mp4" 
+               className="hero-video"
+               autoPlay 
+               loop 
+               muted 
+               playsInline
+             />
+             <div className="video-overlay-gradient"></div>
+             <div className="video-badges">
+                <span>Ad</span>
+                <span>4K Ultra HD</span>
+             </div>
           </div>
         </div>
       </section>

@@ -159,95 +159,149 @@
   transform-origin: left;
 }
 
-/* Video Section */
+/* Video Section - World Class Ad Style */
 .video-container-styled {
   width: 100%;
-  max-width: 600px;
-  aspect-ratio: 16/9;
+  max-width: 800px; /* Increased size */
   background: #000;
-  border-radius: 16px;
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  border: 1px solid #333;
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), 0 0 20px rgba(229, 9, 20, 0.1); /* Deeper shadow + glow */
+  border: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
-  transform: perspective(1000px) rotateY(-5deg);
-  transition: transform 0.5s ease;
+  transform: perspective(1200px) rotateY(-8deg) rotateX(2deg); /* Enhanced 3D effect */
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .video-container-styled:hover {
-  transform: perspective(1000px) rotateY(0deg);
+  transform: perspective(1200px) rotateY(0deg) rotateX(0deg) scale(1.02);
+  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.9), 0 0 30px rgba(229, 9, 20, 0.2);
+  border-color: rgba(229, 9, 20, 0.3);
 }
 
-.video-container-styled iframe {
+.hero-video {
   width: 100%;
   height: 100%;
+  display: block;
+  object-fit: cover;
 }
 
-@media (max-width: 1024px) {
-  .founders-hero {
-    flex-direction: column;
-    padding-top: 8rem;
-    gap: 3rem;
-  }
-  
-  .founders-hero-content {
-    text-align: center;
-    max-width: 100%;
-  }
-  
-  .welcome-tag {
-    justify-content: center;
-  }
-  
-  .welcome-tag::before {
-    display: none;
-  }
-  
-  .subtitle {
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  .hero-badges, .hero-cta {
-    justify-content: center;
-  }
-  
-  .video-container-styled {
-    transform: none;
-  }
+.video-overlay-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 40%);
+  pointer-events: none;
 }
 
+.video-badges {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  display: flex;
+  gap: 8px;
+  z-index: 5;
+}
 
-/* Sections */
+.video-badges span {
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.2);
+  text-transform: uppercase;
+}
+
+/* Sections - Improved Benefits */
 .benefits-section {
   padding: 4rem 5%;
+  position: relative;
+}
+
+/* Add a subtle background accent for the section */
+.benefits-section::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  right: 0;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(229, 9, 20, 0.05) 0%, transparent 70%);
+  z-index: -1;
 }
 
 .section-title {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-.section-subtitle {
-  color: #777;
-  margin-bottom: 3rem;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(90deg, #fff, #bbb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .benefits-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 4rem;
+  gap: 2rem;
+  margin-bottom: 5rem;
 }
 
 .benefit-card {
-  background: #1a1a1a;
-  padding: 2rem;
-  border-radius: 12px;
-  border: 1px solid #333;
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  background: rgba(26, 26, 26, 0.6);
+  backdrop-filter: blur(10px);
+  padding: 2.5rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08); /* More subtle border */
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
 }
+
+.benefit-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #e50914, #ff5f6d);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.benefit-card:hover {
+  transform: translateY(-8px);
+  background: rgba(30, 30, 30, 0.9);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+}
+
+.benefit-card:hover::before {
+  transform: scaleX(1);
+}
+
+.benefit-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #fff;
+  position: relative;
+}
+
+.benefit-desc {
+  color: #a0a0a0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 1024px) {
+
 
 .benefit-card:hover {
   transform: translateY(-5px);
@@ -266,6 +320,8 @@
   color: #999;
   font-size: 0.95rem;
   line-height: 1.5;
+}
+
 }
 
 .action-buttons {
