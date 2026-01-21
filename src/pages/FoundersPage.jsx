@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import './FoundersPage.css';
 
 const FoundersPage = () => {
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [code, setCode] = useState('');
   const [verificationStatus, setVerificationStatus] = useState('idle'); // idle, verifying, success, error
@@ -35,6 +37,11 @@ const FoundersPage = () => {
       if (code.trim().toUpperCase() === 'HOORA2026') {
         setVerificationStatus('success');
         setMessage('Welcome to the Founders Circle!');
+        
+        // Redirect to dashboard after 1.5 seconds
+        setTimeout(() => {
+          navigate('/founders-dashboard');
+        }, 1500);
       } else {
         setVerificationStatus('error');
         setMessage('Invalid code. Please try again.');

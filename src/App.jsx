@@ -6,6 +6,7 @@ import LiveStream from './pages/LiveStream'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import FoundersPage from './pages/FoundersPage'
+import FoundersDashboard from './pages/FoundersDashboard'
 import './App.css'
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/founders" element={<FoundersPage />} />
+        <Route path="/founders-dashboard" element={<FoundersDashboard />} />
         <Route path="/movies" element={<CoverPage />} />
         <Route path="/episode/:showId/:seasonNumber/:episodeNumber" element={<EpisodeDetail />} />
         <Route path="/episode/:showId/:seasonNumber" element={<EpisodeDetail />} />
