@@ -1,11 +1,67 @@
+version: '3.8'
+
 services:
-  hoora_flix:
-    build: .
-    container_name: hoora_flix
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: hooraflix_db
+    environment:
+      POSTGRES_USER: hooraflix
+      POSTGRES_PASSWORD: hooraflix123
+      POSTGRES_DB: hooraflix
     ports:
-      - "3001:80"  # Host 3001 → Container 80 (Nginx)
-    restart: always
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hooraflix"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - hooraflix_network
+    restart: unless-stopped
 
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: hooraflix_backend
+    environment:
+      DATABASE_URL: "postgresql://hooraflix:hooraflix123@postgres:5432/hooraflix?schema=public"
+      JWT_ACCESS_SECRET: "hooraflix-super-secret-access-key-2026-change-in-production"
+      JWT_REFRESH_SECRET: "hooraflix-super-secret-refresh-key-2026-change-in-production"
+      NODE_ENV: "production"
+      PORT: 5000
+      FRONTEND_URL: "http://localhost:3001"
+    ports:
+      - "5001:5000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - hooraflix_network
+    restart: unless-stopped
 
+  # Frontend (React + Nginx)
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hooraflix_frontend
+    ports:
+      - "3001:80"
+    depends_on:
+      - backend
+    networks:
+      - hooraflix_network
+    restart: unless-stopped
 
+volumes:
+  postgres_data:
+    driver: local
 
+networks:
+  hooraflix_network:
+    driver: bridge

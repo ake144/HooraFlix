@@ -11,6 +11,8 @@ const Signup = () => {
     name: '',
     refId: ''
   });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -22,14 +24,41 @@ const Signup = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Signup Data:', formData);
-    // Add signup logic here
-    // Redirect to Founders Page (simulated signup success)
-    navigate('/founders');
+    setError('');
+    setLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:5001/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Registration failed');
+      }
+
+      if (data.success) {
+        // Store tokens and user info
+        localStorage.setItem('accessToken', data.data.accessToken);
+        localStorage.setItem('refreshToken', data.data.refreshToken);
+        localStorage.setItem('user', JSON.stringify(data.data.user));
+
+        // Redirect to founders page
+        navigate('/founders');
+      }
+    } catch (err) {
+      setError(err.message || 'Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -40,7 +69,7 @@ const Signup = () => {
       <div className="auth-form-side">
         <div className="auth-box">
           <h1 className="auth-title">Sign Up</h1>
-          
+
           {formData.refId && (
             <div className="ref-info">
               Referral Code Applied: <strong>{formData.refId}</strong>
@@ -71,7 +100,7 @@ const Signup = () => {
                 required
               />
             </div>
-            
+
             <div className="form-group">
               <input
                 type="password"
@@ -90,7 +119,7 @@ const Signup = () => {
           </form>
 
           <div className="auth-footer">
-            Already have an account? 
+            Already have an account?
             <Link to="/login" className="auth-link">Sign in now.</Link>
           </div>
         </div>

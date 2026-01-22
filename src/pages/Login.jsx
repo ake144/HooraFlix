@@ -8,17 +8,50 @@ const Login = () => {
     email: '',
     password: ''
   });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError(''); // Clear error on input change
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login Data:', formData);
-    // Add login logic here
-    // Redirect to Founders Page (simulated login success)
-    navigate('/founders');
+    setError('');
+    setLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:5001/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Login failed');
+      }
+
+      if (data.success) {
+        // Store tokens and user info
+        localStorage.setItem('accessToken', data.data.accessToken);
+        localStorage.setItem('refreshToken', data.data.refreshToken);
+        localStorage.setItem('user', JSON.stringify(data.data.user));
+
+        // Redirect based on user role
+        if (data.data.user.isFounder) {
+          navigate('/founders-dashboard');
+        } else {
+          navigate('/');
+        }
+      }
+    } catch (err) {
+      setError(err.message || 'Login failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -29,7 +62,7 @@ const Login = () => {
       <div className="auth-form-side">
         <div className="auth-box">
           <h1 className="auth-title">Sign In</h1>
-          
+
           <form className="auth-form" onSubmit={handleSubmit}>
             <div className="form-group">
               <input
@@ -42,7 +75,7 @@ const Login = () => {
                 required
               />
             </div>
-            
+
             <div className="form-group">
               <input
                 type="password"
@@ -61,7 +94,7 @@ const Login = () => {
           </form>
 
           <div className="auth-footer">
-            New to Hooraflix? 
+            New to Hooraflix?
             <Link to="/signup" className="auth-link">Sign up now.</Link>
           </div>
         </div>
