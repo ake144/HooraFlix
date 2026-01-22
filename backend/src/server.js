@@ -9,13 +9,13 @@ import founderRoutes from './routes/founder.routes.js';
 import { errorHandler } from './middleware/error.middleware.js';
 import prisma from './config/database.js';
 
-// Load environment variables
+
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+
 app.use(helmet());
 app.use(cors({
     origin: process.env.FRONTEND_URL || 'http://localhost:3001',

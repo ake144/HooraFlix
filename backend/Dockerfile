@@ -1,6 +1,9 @@
 # Stage 1: Build
 FROM node:20-alpine AS builder
 
+# Install OpenSSL for Prisma
+RUN apk add --no-cache openssl
+
 WORKDIR /app
 
 # Copy package files
@@ -8,7 +11,7 @@ COPY package*.json ./
 COPY prisma ./prisma/
 
 # Install dependencies
-RUN npm ci
+RUN npm install
 
 # Generate Prisma Client
 RUN npx prisma generate
@@ -18,6 +21,9 @@ COPY . .
 
 # Stage 2: Production
 FROM node:20-alpine
+
+# Install OpenSSL for Prisma
+RUN apk add --no-cache openssl
 
 WORKDIR /app
 
