@@ -76,6 +76,19 @@ const Signup = () => {
             </div>
           )}
 
+          {error && (
+            <div style={{
+              padding: '10px',
+              background: '#ff4444',
+              color: 'white',
+              borderRadius: '5px',
+              marginBottom: '15px',
+              fontSize: '14px'
+            }}>
+              {error}
+            </div>
+          )}
+
           <form className="auth-form" onSubmit={handleSubmit}>
             <div className="form-group">
               <input
@@ -113,8 +126,8 @@ const Signup = () => {
               />
             </div>
 
-            <button type="submit" className="auth-button">
-              Sign Up
+            <button type="submit" className="auth-button" disabled={loading}>
+              {loading ? 'Signing Up...' : 'Sign Up'}
             </button>
           </form>
 

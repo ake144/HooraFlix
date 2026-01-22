@@ -1,44 +1,106 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import { FiUsers, FiAward, FiDollarSign, FiCopy, FiShare2 } from 'react-icons/fi';
 import './FoundersDashboard.css';
 
 const FoundersDashboard = () => {
   const [copied, setCopied] = useState(false);
-  
-  // Mock Data
-  const user = {
-    name: "Founder Ake",
-    joinDate: "January 2026",
-    rank: "Gold Founder",
-    referralLink: "https://hooraflix.com/join?ref=ake2026"
-  };
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [dashboardData, setDashboardData] = useState(null);
+  const [referrals, setReferrals] = useState([]);
 
-  const stats = {
-    totalReferrals: 124,
-    activeReferrals: 98,
-    earnings: "$4,250.00",
-    nextMilestone: 150
-  };
+  // Fetch dashboard data on component mount
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+          window.location.href = '/login';
+          return;
+        }
 
-  const recentReferrals = [
-    { id: 1, name: "Sarah Johnson", date: "Jan 20, 2026", status: "Active", avatar: "https://i.pravatar.cc/150?u=1" },
-    { id: 2, name: "Michael Chen", date: "Jan 19, 2026", status: "Pending", avatar: "https://i.pravatar.cc/150?u=2" },
-    { id: 3, name: "Amara Okeke", date: "Jan 18, 2026", status: "Active", avatar: "https://i.pravatar.cc/150?u=3" },
-    { id: 4, name: "David Miller", date: "Jan 18, 2026", status: "Active", avatar: "https://i.pravatar.cc/150?u=4" },
-    { id: 5, name: "Priya Patel", date: "Jan 15, 2026", status: "Active", avatar: "https://i.pravatar.cc/150?u=5" },
-  ];
+        // Fetch dashboard stats
+        const dashResponse = await fetch('http://localhost:5001/api/founders/dashboard', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!dashResponse.ok) {
+          throw new Error('Failed to fetch dashboard data');
+        }
+
+        const dashData = await dashResponse.json();
+        if (dashData.success) {
+          setDashboardData(dashData.data);
+        }
+
+        // Fetch recent referrals
+        const refResponse = await fetch('http://localhost:5001/api/founders/referrals?page=1&limit=5', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (refResponse.ok) {
+          const refData = await refResponse.json();
+          if (refData.success) {
+            setReferrals(refData.data.referrals || []);
+          }
+        }
+      } catch (err) {
+        setError(err.message);
+        console.error('Dashboard error:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(user.referralLink);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    if (dashboardData?.referralLink) {
+      navigator.clipboard.writeText(dashboardData.referralLink);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="founders-dashboard">
+        <Header />
+        <div className="dashboard-container" style={{ textAlign: 'center', padding: '50px' }}>
+          <h2>Loading dashboard...</h2>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !dashboardData) {
+    return (
+      <div className="founders-dashboard">
+        <Header />
+        <div className="dashboard-container" style={{ textAlign: 'center', padding: '50px' }}>
+          <h2>Error loading dashboard</h2>
+          <p>{error || 'Please try again later'}</p>
+          <button onClick={() => window.location.reload()}>Retry</button>
+        </div>
+      </div>
+    );
+  }
+
+  const { user, stats } = dashboardData;
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
   };
 
   return (
     <div className="founders-dashboard">
       <Header />
-      
+
       <div className="dashboard-container">
         {/* Welcome Section */}
         <div className="dashboard-header">
@@ -46,7 +108,7 @@ const FoundersDashboard = () => {
             <h1 className="dashboard-title">Founders Circle Dashboard</h1>
             <p className="dashboard-subtitle">Welcome back, {user.name}. Here is your community growth.</p>
           </div>
-          <div className="user-badge">{user.rank}</div>
+          <div className="user-badge">{user.rank} Founder</div>
         </div>
 
         {/* Stats Grid */}
@@ -60,7 +122,7 @@ const FoundersDashboard = () => {
               <p>Total Referrals</p>
             </div>
           </div>
-          
+
           <div className="stat-card">
             <div className="stat-icon icon-active">
               <FiAward />
@@ -76,7 +138,7 @@ const FoundersDashboard = () => {
               <FiDollarSign />
             </div>
             <div className="stat-info">
-              <h3>{stats.earnings}</h3>
+              <h3>${stats.earnings.toFixed(2)}</h3>
               <p>Total Rewards</p>
             </div>
           </div>
@@ -84,14 +146,14 @@ const FoundersDashboard = () => {
 
         {/* content split - Referral Link & List */}
         <div className="dashboard-content-grid">
-          
+
           {/* Recent Referrals List */}
           <div className="dashboard-section referral-list-section">
             <div className="section-header">
               <h2>Recent Referrals</h2>
               <button className="view-all-btn">View All</button>
             </div>
-            
+
             <div className="referral-table-container">
               <table className="referral-table">
                 <thead>
@@ -102,22 +164,34 @@ const FoundersDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {recentReferrals.map((referral) => (
-                    <tr key={referral.id}>
-                      <td>
-                        <div className="member-cell">
-                          <img src={referral.avatar} alt={referral.name} className="member-avatar" />
-                          <span className="member-name">{referral.name}</span>
-                        </div>
-                      </td>
-                      <td>{referral.date}</td>
-                      <td>
-                        <span className={`status-badge ${referral.status.toLowerCase()}`}>
-                          {referral.status}
-                        </span>
+                  {referrals.length > 0 ? (
+                    referrals.map((referral, index) => (
+                      <tr key={referral.id || index}>
+                        <td>
+                          <div className="member-cell">
+                            <img
+                              src={`https://i.pravatar.cc/150?u=${referral.email}`}
+                              alt={referral.name}
+                              className="member-avatar"
+                            />
+                            <span className="member-name">{referral.name}</span>
+                          </div>
+                        </td>
+                        <td>{formatDate(referral.joinedAt)}</td>
+                        <td>
+                          <span className={`status-badge ${referral.status.toLowerCase()}`}>
+                            {referral.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="3" style={{ textAlign: 'center', padding: '20px' }}>
+                        No referrals yet. Start inviting friends!
                       </td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
             </div>
@@ -128,14 +202,14 @@ const FoundersDashboard = () => {
             <div className="sidebar-card invite-card">
               <h3>Invite New Founders</h3>
               <p>Share your unique code to grow your circle.</p>
-              
+
               <div className="referral-link-box">
-                <input type="text" value={user.referralLink} readOnly />
+                <input type="text" value={dashboardData.referralLink} readOnly />
                 <button onClick={copyToClipboard} className={copied ? 'copied' : ''}>
                   {copied ? 'Copied!' : <FiCopy />}
                 </button>
               </div>
-              
+
               <button className="share-btn">
                 <FiShare2 /> Share Invite
               </button>
@@ -145,17 +219,20 @@ const FoundersDashboard = () => {
               <h3>Next Milestone</h3>
               <div className="progress-container">
                 <div className="progress-labels">
-                  <span>{stats.totalReferrals} / {stats.nextMilestone}</span>
-                  <span>Platinum Founder</span>
+                  <span>{stats.totalReferrals} / {stats.nextMilestone || 150}</span>
+                  <span>{stats.nextRank || 'Max Level'}</span>
                 </div>
                 <div className="progress-bar">
-                  <div 
-                    className="progress-fill" 
-                    style={{ width: `${(stats.totalReferrals / stats.nextMilestone) * 100}%` }}
+                  <div
+                    className="progress-fill"
+                    style={{ width: `${stats.nextMilestone ? (stats.totalReferrals / stats.nextMilestone) * 100 : 100}%` }}
                   ></div>
                 </div>
                 <p className="milestone-text">
-                  You need {stats.nextMilestone - stats.totalReferrals} more referrals to unlock Platinum perks.
+                  {stats.nextMilestone ?
+                    `You need ${stats.nextMilestone - stats.totalReferrals} more referrals to unlock ${stats.nextRank} perks.` :
+                    'You have reached the maximum rank! Keep inviting to increase rewards.'
+                  }
                 </p>
               </div>
             </div>
