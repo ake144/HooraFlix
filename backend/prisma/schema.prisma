@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  FOUNDER
+  ADMIN
+}
+
+enum FounderRank {
+  BRONZE
+  SILVER
+  GOLD
+  PLATINUM
+}
+
+enum ReferralStatus {
+  PENDING
+  ACTIVE
+  INACTIVE
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      UserRole @default(USER)
+  isFounder Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  founder        Founder?
+  referredBy     Referral? @relation("ReferredUser")
+  refreshTokens  RefreshToken[]
+
+  @@map("User")
+}
+
+model Founder {
+  id             String      @id @default(uuid())
+  userId         String      @unique
+  founderCode    String?     @unique
+  rank           FounderRank @default(BRONZE)
+  joinDate       DateTime    @default(now())
+  totalEarnings  Float       @default(0)
+  referralLink   String      @unique
+  
+  // Relations
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  referrals    Referral[]
+
+  @@map("Founder")
+}
+
+model Referral {
+  id             String         @id @default(uuid())
+  founderId      String
+  referredUserId String         @unique
+  status         ReferralStatus @default(PENDING)
+  joinedAt       DateTime       @default(now())
+  
+  // Relations
+  founder      Founder @relation(fields: [founderId], references: [id], onDelete: Cascade)
+  referredUser User    @relation("ReferredUser", fields: [referredUserId], references: [id], onDelete: Cascade)
+
+  @@map("Referral")
+}
+
+model FounderCode {
+  id         String   @id @default(uuid())
+  code       String   @unique
+  isActive   Boolean  @default(true)
+  maxUses    Int?
+  usedCount  Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  @@map("FounderCode")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("RefreshToken")
+}

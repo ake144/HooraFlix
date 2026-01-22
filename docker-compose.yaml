@@ -1,0 +1,11 @@
+services:
+  hoora_flix:
+    build: .
+    container_name: hoora_flix
+    ports:
+      - "3001:80"  # Host 3001 → Container 80 (Nginx)
+    restart: always
+
+
+
+
