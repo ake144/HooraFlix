@@ -9,6 +9,10 @@ const FoundersDashboard = () => {
   const [error, setError] = useState('');
   const [dashboardData, setDashboardData] = useState(null);
   const [referrals, setReferrals] = useState([]);
+  const [showAllReferrals, setShowAllReferrals] = useState(false);
+  const [allReferrals, setAllReferrals] = useState([]);
+  const [allPagination, setAllPagination] = useState({});
+  const [allPage, setAllPage] = useState(1);
 
   // Fetch dashboard data on component mount
   useEffect(() => {
@@ -55,6 +59,30 @@ const FoundersDashboard = () => {
     fetchDashboardData();
   }, []);
 
+  const fetchAllReferrals = async (page = 1) => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      if (!token) return;
+
+      const response = await fetch(`http://localhost:5001/api/founders/referrals?page=${page}&limit=10`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch referrals');
+      }
+
+      const data = await response.json();
+      if (data.success) {
+        setAllReferrals(data.data.referrals || []);
+        setAllPagination(data.data.pagination || {});
+        setAllPage(page);
+      }
+    } catch (err) {
+      console.error('Fetch all referrals error:', err);
+    }
+  };
+
   const copyToClipboard = () => {
     if (dashboardData?.referralLink) {
       navigator.clipboard.writeText(dashboardData.referralLink);
@@ -95,6 +123,16 @@ const FoundersDashboard = () => {
       year: 'numeric'
     });
   };
+
+  const getInitial = (name, email) => {
+    if (name && name.length) {
+      return name.charAt(0).toUpperCase();
+    }
+    if (email && email.length) {
+      return email.charAt(0).toUpperCase();
+    }
+    return 'F';
+  }
 
   return (
     <div className="founders-dashboard">
@@ -148,10 +186,18 @@ const FoundersDashboard = () => {
 
           {/* Recent Referrals List */}
           <div className="dashboard-section referral-list-section">
-            <div className="section-header">
-              <h2>Recent Referrals</h2>
-              <button className="view-all-btn">View All</button>
-            </div>
+              <div className="section-header">
+                <h2>Recent Referrals</h2>
+                <button
+                  className="view-all-btn"
+                  onClick={() => {
+                    setShowAllReferrals(true);
+                    fetchAllReferrals(1);
+                  }}
+                >
+                  View All
+                </button>
+              </div>
 
             <div className="referral-table-container">
               <table className="referral-table">
@@ -168,12 +214,13 @@ const FoundersDashboard = () => {
                       <tr key={referral.id || index}>
                         <td>
                           <div className="member-cell">
-                            <img
-                              src={`https://i.pravatar.cc/150?u=${referral.email}`}
-                              alt={referral.name}
-                              className="member-avatar"
-                            />
-                            <span className="member-name">{referral.name}</span>
+                            <div className="member-avatar">
+                              {getInitial(referral.name, referral.email)}
+                            </div>
+                            <div>
+                              <span className="member-name">{referral.name || referral.email}</span>
+                              <span className="member-email">{referral.email}</span>
+                            </div>
                           </div>
                         </td>
                         <td>{formatDate(referral.joinedAt)}</td>
@@ -239,6 +286,78 @@ const FoundersDashboard = () => {
 
         </div>
       </div>
+
+      {showAllReferrals && (
+        <div className="modal-overlay">
+          <div className="modal-panel">
+            <div className="modal-header">
+              <h3>All Referrals</h3>
+              <button className="modal-close" onClick={() => setShowAllReferrals(false)}>
+                &times;
+              </button>
+            </div>
+            <div className="referral-table-container">
+              <table className="referral-table">
+                <thead>
+                  <tr>
+                    <th>Member</th>
+                    <th>Date Joined</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {allReferrals.length > 0 ? (
+                    allReferrals.map((referral, index) => (
+                      <tr key={referral.id || index}>
+                        <td>
+                          <div className="member-cell">
+                            <div className="member-avatar">
+                              {getInitial(referral.name, referral.email)}
+                            </div>
+                            <div>
+                              <span className="member-name">{referral.name || referral.email}</span>
+                              <span className="member-email">{referral.email}</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td>{formatDate(referral.joinedAt)}</td>
+                        <td>
+                          <span className={`status-badge ${referral.status.toLowerCase()}`}>
+                            {referral.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="3" style={{ textAlign: 'center', padding: '20px' }}>
+                        No referrals to show
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            <div className="modal-pagination">
+              <button
+                onClick={() => fetchAllReferrals(allPage - 1)}
+                disabled={!allPagination.hasPrev}
+              >
+                Previous
+              </button>
+              <span>
+                Page {allPagination.currentPage || allPage} of {allPagination.totalPages || 1}
+              </span>
+              <button
+                onClick={() => fetchAllReferrals(allPage + 1)}
+                disabled={!allPagination.hasNext}
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

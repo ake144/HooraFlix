@@ -63,9 +63,6 @@ const Signup = () => {
 
   return (
     <div className="auth-container">
-      <div className="auth-image-side">
-        <div className="auth-image-overlay"></div>
-      </div>
       <div className="auth-form-side">
         <div className="auth-box">
           <h1 className="auth-title">Sign Up</h1>
