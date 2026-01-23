@@ -36,37 +36,39 @@ const DashboardHeader = () => {
           </nav>
         </div>
         <div className="header-right">
-           <div className=''>
-                {user?.role && (
-                  <span className='user-role-badge'>{user?.role || 'User'}</span>
-                )}
-           </div>
+          <div className="status-block">
+            <div className="status-dot" />
+            <div>
+              <div className="status-label">Current status</div>
+              <div className="status-value">{user?.role || 'User'}</div>
+            </div>
+          </div>
           <button className="icon-button" aria-label="Notifications">
             <FiBell />
           </button>
-          
           <div className="profile-menu-container">
-            <div 
-              className="profile-avatar" 
-              onClick={() => setShowProfileMenu(!showProfileMenu)}
-            >
-              <span>U</span>
-            </div>
-            
+            <button className="profile-avatar" onClick={() => setShowProfileMenu(!showProfileMenu)}>
+              <span>{(user?.name?.[0] || user?.email?.[0] || 'U').toUpperCase()}</span>
+            </button>
             {showProfileMenu && (
               <div className="profile-dropdown">
-                <Link to="/founders" className="dropdown-item">
+                <div className="dropdown-item">
                   <FiUser className="dropdown-icon" />
-                  <span>Founders Area</span>
+                  <div>
+                    <strong>{user?.name || 'Guest Member'}</strong>
+                    <div className="email-caption">{user?.email || 'Not signed in'}</div>
+                  </div>
+                </div>
+                <Link to="/founders" className="dropdown-item">
+                  <span>Member area</span>
                 </Link>
-                <Link to="/login" className="dropdown-item">
+                <Link to="/login" className="dropdown-item logout">
                   <FiLogOut className="dropdown-icon" />
                   <span>Logout</span>
                 </Link>
               </div>
             )}
           </div>
-
         </div>
       </div>
     </header>
