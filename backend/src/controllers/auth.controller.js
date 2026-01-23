@@ -250,7 +250,6 @@ export const getMe = async (req, res, next) => {
     try {
         const user = await prisma.user.findUnique({
             where: { id: req.user.userId },
-            include: { founder: true },
             select: {
                 id: true,
                 email: true,

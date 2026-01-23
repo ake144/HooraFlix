@@ -44,7 +44,7 @@ const Login = () => {
         if (data.data.user.isFounder) {
           navigate('/founders-dashboard');
         } else {
-          navigate('/');
+          navigate('/founders');
         }
       }
     } catch (err) {
