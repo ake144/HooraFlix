@@ -327,7 +327,7 @@ const FoundersDashboard = () => {
                 <button className="share-btn primary" onClick={handleShare}>
                   <FiShare2 /> Share Invite
                 </button>
-                <button className="share-btn secondary" onClick={copyToClipboard}>
+                <button className="share-btn secondary" onClick={copyReferralLink}>
                   <FiCopy /> Copy Link
                 </button>
               </div>
