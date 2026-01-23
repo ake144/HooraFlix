@@ -117,16 +117,6 @@ const FoundersPage = () => {
     }
   ];
 
-  const summaryBenefits = [
-    { title: "Equity & Revenue Share", desc: "Own a stake and earn from subscriptions, PPV, ads, and education" },
-    { title: "Creative Influence", desc: "Priority content approval, Executive Producer credit" },
-    { title: "Early Platform Access", desc: "Shape product, tech, and monetization roadmap" },
-    { title: "Founder Recognition", desc: "“Founding Partner – HOORAFILX” public branding" },
-    { title: "Talent & Training Access", desc: "Free/discounted film & acting programs" },
-    { title: "Strategic Voice", desc: "Advisory/observer role on key decisions" },
-    { title: "First-Mover Advantage", desc: "Early deal flow, partnerships, and exits" },
-    { title: "Legacy Impact", desc: "Build Africa’s next global storytelling platform" }
-  ];
 
   return (
     <div className="founders-page">
@@ -193,7 +183,6 @@ const FoundersPage = () => {
           </video>
           <div className="hero-overlay"></div>
           <div className="hero-content">
-            <div className="user-status-pill">Current Status: {user?.role || 'User'}</div>
             <h1 className="hero-title">Join the Founders Circle</h1>
             <p className="hero-subtitle">Upgrade to unlock exclusive benefits.</p>
             <div className="hero-actions">

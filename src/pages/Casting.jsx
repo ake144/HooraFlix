@@ -58,17 +58,6 @@ const Casting = () => {
           </div>
         </section>
 
-        <section className="summary-section">
-          <h2 className="section-title">Founder Benefits (Short Summary)</h2>
-          <div className="summary-grid">
-            {summaryBenefits.map((item) => (
-              <div className="summary-card" key={item.title}>
-                <h4>{item.title}</h4>
-                <p>{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </section>
       </main>
       <Footer />
     </div>

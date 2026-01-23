@@ -24,11 +24,11 @@ const DashboardHeader = () => {
     <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
       <div className="header-content">
         <div className="header-left">
-          <Link to="/" className="logo">
+          <Link to="/founders" className="logo">
             <span className="logo-text">HOORAFLIX</span>
           </Link>
           <nav className="nav-links">
-            <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Home</Link>
+            <Link to="/founders" className={`nav-link ${location.pathname === '/founders' ? 'active' : ''}`}>Home</Link>
             <Link to="/academy" className={`nav-link ${location.pathname === '/academy' ? 'active' : ''}`}>Academy </Link>
             <Link to="/casting" className={`nav-link ${location.pathname === '/casting' ? 'active' : ''}`}>Casting</Link>
             <Link to="/opportunity" className={`nav-link ${location.pathname === '/opportunity' ? 'active' : ''}`}>Opportunity</Link>
