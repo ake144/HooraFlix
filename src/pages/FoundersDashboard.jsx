@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FiUsers, FiAward, FiDollarSign, FiCopy, FiShare2 } from 'react-icons/fi';
+import QRCode from 'react-qr-code';
 import './FoundersDashboard.css';
 import DashboardHeader from '../components/dashboard/header';
 
@@ -83,11 +84,65 @@ const FoundersDashboard = () => {
     }
   };
 
-  const copyToClipboard = () => {
-    if (dashboardData?.referralLink) {
-      navigator.clipboard.writeText(dashboardData.referralLink);
+  const copyTextFallback = (text) => {
+    if (typeof document === 'undefined') {
+      return false;
+    }
+
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'absolute';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+
+    const successful = document.execCommand('copy');
+    document.body.removeChild(textarea);
+    return successful;
+  };
+
+  const copyReferralLink = async () => {
+    const link = dashboardData?.referralLink;
+    if (!link) {
+      return false;
+    }
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(link);
+      } else if (!copyTextFallback(link)) {
+        throw new Error('Clipboard fallback failed');
+      }
+
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+      return true;
+    } catch (err) {
+      console.error('Clipboard copy failed:', err);
+      return false;
+    }
+  };
+
+  const handleShare = async () => {
+    const link = dashboardData?.referralLink;
+    if (!link) return;
+
+    const sharePayload = {
+      title: 'Join HooraFlix',
+      text: 'Join me on HooraFlix and unlock founder rewards.',
+      url: link
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(sharePayload);
+      } else {
+        await copyReferralLink();
+      }
+    } catch (err) {
+      console.debug('Share failed, falling back to copy', err);
+      await copyReferralLink();
     }
   };
 
@@ -246,19 +301,36 @@ const FoundersDashboard = () => {
           {/* Sidebar - Link & Actions */}
           <div className="dashboard-sidebar">
             <div className="sidebar-card invite-card">
-              <h3>Invite New Founders</h3>
-              <p>Share your unique code to grow your circle.</p>
+              <div className="invite-header">
+                <div>
+                  <h3>Invite Friends</h3>
+                  <p>Share your unique founder link, and every friend who joins becomes part of your community.</p>
+                  <p className="invite-note">
+                    The affiliate link will be automatically converted to a QR code. To show your friend, simply let them scan your QR code.
+                  </p>
+                </div>
+              </div>
 
               <div className="referral-link-box">
                 <input type="text" value={dashboardData.referralLink} readOnly />
-                <button onClick={copyToClipboard} className={copied ? 'copied' : ''}>
+                <button onClick={copyReferralLink} className={copied ? 'copied' : ''}>
                   {copied ? 'Copied!' : <FiCopy />}
                 </button>
               </div>
 
-              <button className="share-btn">
-                <FiShare2 /> Share Invite
-              </button>
+              <div className="qr-wrapper">
+                <QRCode value={dashboardData.referralLink} bgColor="#050505" fgColor="#fff" level="H" size={152} />
+                <span className="qr-caption">Scan to join now</span>
+              </div>
+
+              <div className="invite-actions">
+                <button className="share-btn primary" onClick={handleShare}>
+                  <FiShare2 /> Share Invite
+                </button>
+                <button className="share-btn secondary" onClick={copyToClipboard}>
+                  <FiCopy /> Copy Link
+                </button>
+              </div>
             </div>
 
             <div className="sidebar-card milestone-card">
@@ -288,7 +360,14 @@ const FoundersDashboard = () => {
       </div>
 
       {showAllReferrals && (
-        <div className="modal-overlay">
+        <div
+          className="modal-overlay"
+          onClick={(event) => {
+            if (event.target === event.currentTarget) {
+              setShowAllReferrals(false);
+            }
+          }}
+        >
           <div className="modal-panel">
             <div className="modal-header">
               <h3>All Referrals</h3>
