@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { FiSearch, FiBell, FiLogOut, FiUser } from 'react-icons/fi'
-import './Header.css'
+import './dashboard.css'
+import { useAuth } from '../../context/AuthContext'
 
-const Header = () => {
+const DashboardHeader = () => {
   const location = useLocation()
   const [isScrolled, setIsScrolled] = useState(false)
+  const {user} = useAuth() as any;
   const [showSearch, setShowSearch] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [showProfileMenu, setShowProfileMenu] = useState(false)
@@ -27,29 +29,18 @@ const Header = () => {
           </Link>
           <nav className="nav-links">
             <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Home</Link>
-            <Link to="/live-stream" className={`nav-link ${location.pathname === '/live-stream' ? 'active' : ''}`}>Live Stream</Link>
-            <Link to="/movies" className={`nav-link ${location.pathname === '/movies' ? 'active' : ''}`}>Movies</Link>
-            <Link to="/" className="nav-link">New & Popular</Link>
-            <Link to="/" className="nav-link">My List</Link>
+            <Link to="/academy" className={`nav-link ${location.pathname === '/academy' ? 'active' : ''}`}>Academy </Link>
+            <Link to="/casting" className={`nav-link ${location.pathname === '/casting' ? 'active' : ''}`}>Casting</Link>
+            <Link to="/opportunity" className={`nav-link ${location.pathname === '/opportunity' ? 'active' : ''}`}>Opportunity</Link>
+            <Link to="/revenue" className={`nav-link ${location.pathname === '/revenue' ? 'active' : ''}`}>Revenue</Link>
           </nav>
         </div>
         <div className="header-right">
-          <div className={`search-container ${showSearch ? 'active' : ''}`}>
-            <input
-              type="text"
-              placeholder="Search..."
-              className="search-input"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          <button 
-            className="icon-button"
-            onClick={() => setShowSearch(!showSearch)}
-            aria-label="Search"
-          >
-            <FiSearch />
-          </button>
+           <div className=''>
+                {user?.role && (
+                  <span className='user-role-badge'>{user?.role || 'User'}</span>
+                )}
+           </div>
           <button className="icon-button" aria-label="Notifications">
             <FiBell />
           </button>
@@ -82,6 +73,6 @@ const Header = () => {
   )
 }
 
-export default Header
+export default DashboardHeader;
 
 

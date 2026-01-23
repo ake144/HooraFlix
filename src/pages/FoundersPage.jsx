@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
 import './FoundersPage.css';
+import DashboardHeader from '../components/dashboard/header';
 
 const FoundersPage = () => {
   const navigate = useNavigate();
@@ -130,7 +130,7 @@ const FoundersPage = () => {
 
   return (
     <div className="founders-page">
-      <Header />
+      <DashboardHeader />
 
       <main className="founders-main">
         {/* Verification Modal */}

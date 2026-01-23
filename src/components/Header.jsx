@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { FiSearch, FiBell, FiLogOut, FiUser } from 'react-icons/fi'
+import { useAuth } from '../context/AuthContext'
 import './Header.css'
 
 const Header = () => {
   const location = useLocation()
+  const { user } = useAuth() || {}
   const [isScrolled, setIsScrolled] = useState(false)
   const [showSearch, setShowSearch] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -27,10 +29,10 @@ const Header = () => {
           </Link>
           <nav className="nav-links">
             <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Home</Link>
-            <Link to="/live-stream" className={`nav-link ${location.pathname === '/live-stream' ? 'active' : ''}`}>Live Stream</Link>
-            <Link to="/movies" className={`nav-link ${location.pathname === '/movies' ? 'active' : ''}`}>Movies</Link>
-            <Link to="/" className="nav-link">New & Popular</Link>
-            <Link to="/" className="nav-link">My List</Link>
+            <Link to="/academy" className={`nav-link ${location.pathname === '/academy' ? 'active' : ''}`}>Academy</Link>
+            <Link to="/casting" className={`nav-link ${location.pathname === '/casting' ? 'active' : ''}`}>Casting</Link>
+            <Link to="/opportunity" className={`nav-link ${location.pathname === '/opportunity' ? 'active' : ''}`}>Opportunity</Link>
+            <Link to="/revenue" className={`nav-link ${location.pathname === '/revenue' ? 'active' : ''}`}>Revenue</Link>
           </nav>
         </div>
         <div className="header-right">
@@ -58,8 +60,14 @@ const Header = () => {
             <div 
               className="profile-avatar" 
               onClick={() => setShowProfileMenu(!showProfileMenu)}
+              style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingRight: '10px', width: 'auto' }}
             >
-              <span>U</span>
+              <span>{user?.name?.[0] || 'U'}</span>
+              {user && (
+                  <span className="user-role-badge" style={{ fontSize: '0.7rem', backgroundColor: '#e50914', padding: '2px 6px', borderRadius: '4px', marginLeft: '5px' }}>
+                    {user.role}
+                  </span>
+              )}
             </div>
             
             {showProfileMenu && (

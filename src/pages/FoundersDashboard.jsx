@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../components/Header';
 import { FiUsers, FiAward, FiDollarSign, FiCopy, FiShare2 } from 'react-icons/fi';
 import './FoundersDashboard.css';
+import DashboardHeader from '../components/dashboard/header';
 
 const FoundersDashboard = () => {
   const [copied, setCopied] = useState(false);
@@ -66,7 +66,7 @@ const FoundersDashboard = () => {
   if (loading) {
     return (
       <div className="founders-dashboard">
-        <Header />
+        <DashboardHeader />
         <div className="dashboard-container" style={{ textAlign: 'center', padding: '50px' }}>
           <h2>Loading dashboard...</h2>
         </div>
@@ -77,7 +77,7 @@ const FoundersDashboard = () => {
   if (error || !dashboardData) {
     return (
       <div className="founders-dashboard">
-        <Header />
+        <DashboardHeader />
         <div className="dashboard-container" style={{ textAlign: 'center', padding: '50px' }}>
           <h2>Error loading dashboard</h2>
           <p>{error || 'Please try again later'}</p>
@@ -98,7 +98,7 @@ const FoundersDashboard = () => {
 
   return (
     <div className="founders-dashboard">
-      <Header />
+      <DashboardHeader />
 
       <div className="dashboard-container">
         {/* Welcome Section */}

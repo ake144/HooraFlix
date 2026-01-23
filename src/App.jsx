@@ -8,6 +8,10 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import FoundersPage from './pages/FoundersPage';
 import FoundersDashboard from './pages/FoundersDashboard';
+import Academy from './pages/Academy';
+import Casting from './pages/Casting';
+import Opportunity from './pages/Opportunity';
+import Revenue from './pages/Revenue';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
@@ -31,6 +35,38 @@ function App() {
           element={
             <ProtectedRoute>
               <FoundersDashboard />
+            </ProtectedRoute>
+          } 
+        />
+         <Route 
+          path="/academy" 
+          element={
+            <ProtectedRoute>
+              <Academy />
+            </ProtectedRoute>
+          } 
+        />
+         <Route 
+          path="/casting" 
+          element={
+            <ProtectedRoute>
+              <Casting />
+            </ProtectedRoute>
+          } 
+        />
+         <Route 
+          path="/opportunity" 
+          element={
+            <ProtectedRoute>
+              <Opportunity />
+            </ProtectedRoute>
+          } 
+        />
+         <Route 
+          path="/revenue" 
+          element={
+            <ProtectedRoute>
+              <Revenue />
             </ProtectedRoute>
           } 
         />
