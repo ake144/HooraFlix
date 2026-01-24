@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
@@ -13,7 +13,7 @@ const FoundersPage = () => {
   const [verificationStatus, setVerificationStatus] = useState('idle'); // idle, verifying, success, error
   const [message, setMessage] = useState('');
 
-  // Redirect if already founder
+
   useEffect(() => {
     if (user?.isFounder) {
       navigate('/founders-dashboard');
@@ -158,17 +158,7 @@ const FoundersPage = () => {
           </div>
         )}
 
-        {/* Hero Section */}
-        {/* <section className="hero-section">
-          <div className="hero-overlay"></div>
-          <div className="hero-content">
-            <h1 className="hero-title">HOORAFILX GOLD FOUNDER</h1>
-            <p className="hero-subtitle">Learn. Create. Get Discovered.</p>
-            <div className="hero-actions">
-              <button className="btn-primary" onClick={handleJoinClick}>Verify Founder Status</button>
-            </div>
-          </div>
-        </section> */}
+      
 
         {/* Hero Section */}
         <section className="hero-section">

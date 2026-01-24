@@ -29,7 +29,7 @@ COPY --from=builder /app/vite.config.js ./
 # Expose port
 EXPOSE 4173
 
-# Start command
+
 CMD ["npm", "run", "preview", "--", "--host"]
 
 
