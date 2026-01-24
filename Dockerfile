@@ -12,7 +12,6 @@ RUN npm ci
 # Copy only frontend source code (ignoring backend)
 COPY src ./src
 COPY public ./public
-COPY css ./css
 COPY index.html ./
 COPY vite.config.js ./
 
