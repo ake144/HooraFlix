@@ -49,6 +49,9 @@ services:
   # Frontend (React + Nginx)
   frontend:
     image: ghcr.io/ake144/hooraflix-frontend:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     pull_policy: if-not-present
     container_name: hooraflix_frontend
     ports:

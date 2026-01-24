@@ -4,7 +4,7 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Copy package files
-COPY package*.json ./
+COPY ./package.json ./package-lock.json ./
 
 # Install dependencies
 RUN npm ci
@@ -13,7 +13,7 @@ RUN npm ci
 COPY . .
 
 # Build the app
-RUN npm run build
+RUN ls -la && cat package.json && npm run build
 
 # Stage 2: Production runner
 FROM node:20-alpine
