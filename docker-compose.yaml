@@ -28,7 +28,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    pull_policy: if-not-present
+    pull_policy: missing
     container_name: hooraflix_backend
     environment:
       DATABASE_URL: "postgresql://hooraflix:hooraflix123@postgres:5432/hooraflix?schema=public"
@@ -52,7 +52,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    pull_policy: if-not-present
+    pull_policy: missing
     container_name: hooraflix_frontend
     ports:
       - "3001:80"
