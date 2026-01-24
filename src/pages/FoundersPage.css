@@ -63,6 +63,7 @@
   border-radius: 4px; /* More standard button radius */
   font-size: 1.2rem;
   font-weight: bold;
+  
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 6px rgba(0,0,0,0.3);
@@ -189,6 +190,13 @@
   padding: 0 20px;
 }
 
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
 .user-status-pill {
   display: inline-block;
   background: rgba(255, 255, 255, 0.1);
@@ -243,6 +251,74 @@
 .hero-actions .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+}
+
+.founder-visual-section {
+  background: linear-gradient(135deg, rgba(229,9,20,0.08), rgba(0,0,0,0.9));
+  padding: 4rem 20px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.founder-visual-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 3rem;
+  align-items: center;
+}
+
+.founder-visual-text {
+  color: #fff;
+}
+
+.founder-visual-text h2 {
+  font-size: 2.5rem;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+
+.founder-visual-text p {
+  color: #d8d8d8;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.eyebrow-label {
+  letter-spacing: 0.4rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--gold-secondary);
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.founder-visual-media {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+}
+
+.founder-visual-media img {
+  width: 100%;
+  display: block;
+  height: 100%;
+  object-fit: cover;
+}
+
+.media-highlight {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  padding: 0.8rem 1.2rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  letter-spacing: 0.08rem;
+  border: 1px solid rgba(255,255,255,0.4);
 }
 
 /* Sections General */
@@ -460,6 +536,23 @@
 
   .hero-title {
     font-size: 2.5rem;
+  }
+
+  .founder-visual-section {
+    padding: 3rem 15px;
+  }
+
+  .founder-visual-content {
+    gap: 2rem;
+  }
+
+  .founder-visual-media img {
+    height: 320px;
+  }
+
+  .media-highlight {
+    bottom: 15px;
+    left: 15px;
   }
 }
 

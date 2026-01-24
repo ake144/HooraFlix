@@ -164,7 +164,10 @@ const FoundersDashboard = () => {
         <div className="dashboard-container" style={{ textAlign: 'center', padding: '50px' }}>
           <h2>Error loading dashboard</h2>
           <p>{error || 'Please try again later'}</p>
+        <div className='' style={{textAlign: 'center', marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '10px'}}>
           <button onClick={() => window.location.reload()}>Retry</button>
+          <button onClick={() => navigate('/founders')}>Go to Founders Page</button>  
+           </div>
         </div>
       </div>
     );

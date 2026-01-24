@@ -41,6 +41,25 @@ function Home() {
   return (
     <div className="home-page">
       <Header />
+      <section className="home-founder-callout">
+        <div className="home-callout-inner">
+          <div className="home-callout-text">
+            <p className="home-callout-eyebrow">Founders Circle</p>
+            <h2>See how founders own every premiere.</h2>
+            <p>
+              When the community converges, hoora3 is the still that captures the energy.
+              Founders watch, vote, and lead the next spotlight—now you can be the next voice.
+            </p>
+            <button className="home-callout-btn" onClick={() => navigate('/founders')}>
+              Unlock Founder Access
+            </button>
+          </div>
+          <div className="home-callout-media">
+            <img src="/hoora3.jpg" alt="Founder showcase" />
+            <span className="home-callout-tag">Members-only premiere</span>
+          </div>
+        </div>
+      </section>
       <div className="home-container">
         <FeaturedSection 
           featuredContent={categories[0].data}

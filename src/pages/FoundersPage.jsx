@@ -191,6 +191,27 @@ const FoundersPage = () => {
           </div>
         </section>
 
+        <section className="founder-visual-section">
+          <div className="founder-visual-content">
+            <div className="founder-visual-text">
+              <p className="eyebrow-label">Founder Spotlight</p>
+              <h2>Live rooms, backstage premieres, and the people who built it.</h2>
+              <p>
+                hoora2 captures the intensity of a founder session -- the mentors, cameras,
+                and creators converging to decide what belongs on the big stage. This is the
+                experience we invite you to join.
+              </p>
+              <div className="hero-actions">
+                <button className="btn-primary" onClick={handleJoinClick}>Claim Your Seat</button>
+              </div>
+            </div>
+            <div className="founder-visual-media">
+              <img src="/hoora2.jpg" alt="Founders collaborating" />
+              {/* <span className="media-highlight">Members-only premieres &amp; real-time feedback</span> */}
+            </div>
+          </div>
+        </section>
+
         {/* Education Access Section */}
         <section className="education-access-section">
           <div className="section-container">

@@ -11,6 +11,16 @@
   background: linear-gradient(180deg, rgba(0,0,0,0.7) 10%, transparent);
   transition: background-color 0.3s ease;
 }
+.join-cta{
+  padding: 2px;
+  font-style:normal;
+  cursor:pointer;
+  transition: background-color 0.3s ease;
+  background-color: rgba(0,0,0,0.75);
+  border: 6px solid #110e0e;
+  border-radius: 9px;
+  color:#e50914;
+}
 
 .header.scrolled {
   background-color: #141414;

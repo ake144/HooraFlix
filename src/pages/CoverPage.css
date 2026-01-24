@@ -264,6 +264,7 @@
     height: auto;
     max-height: 600px;
   }
+
 }
 
 @media (max-width: 768px) {
@@ -302,5 +303,6 @@
     width: 100px;
     height: 56px;
   }
+
 }
 

@@ -86,6 +86,7 @@ const CoverPage = () => {
           </div>
         </div>
       </div>
+
       <Footer />
     </div>
   )

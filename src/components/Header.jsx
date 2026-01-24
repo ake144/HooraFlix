@@ -29,10 +29,10 @@ const Header = () => {
           </Link>
           <nav className="nav-links">
             <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Home</Link>
-            <Link to="/academy" className={`nav-link ${location.pathname === '/academy' ? 'active' : ''}`}>Academy</Link>
-            <Link to="/casting" className={`nav-link ${location.pathname === '/casting' ? 'active' : ''}`}>Casting</Link>
-            <Link to="/opportunity" className={`nav-link ${location.pathname === '/opportunity' ? 'active' : ''}`}>Opportunity</Link>
-            <Link to="/revenue" className={`nav-link ${location.pathname === '/revenue' ? 'active' : ''}`}>Revenue</Link>
+            <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Live Stream</Link>
+            <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Movies</Link>
+            <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>New & Popular</Link>
+            <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>My List</Link>
           </nav>
         </div>
         <div className="header-right">
@@ -58,16 +58,11 @@ const Header = () => {
           
           <div className="profile-menu-container">
             <div 
-              className="profile-avatar" 
+              className='join-cta'
               onClick={() => setShowProfileMenu(!showProfileMenu)}
               style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingRight: '10px', width: 'auto' }}
             >
-              <span>{user?.name?.[0] || 'U'}</span>
-              {user && (
-                  <span className="user-role-badge" style={{ fontSize: '0.7rem', backgroundColor: '#e50914', padding: '2px 6px', borderRadius: '4px', marginLeft: '5px' }}>
-                    {user.role}
-                  </span>
-              )}
+             Join Funders  
             </div>
             
             {showProfileMenu && (
@@ -78,7 +73,7 @@ const Header = () => {
                 </Link>
                 <Link to="/login" className="dropdown-item">
                   <FiLogOut className="dropdown-icon" />
-                  <span>Logout</span>
+                  <span>LogIn</span>
                 </Link>
               </div>
             )}
