@@ -4,13 +4,17 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Copy package files
-COPY ./package.json ./package-lock.json ./
+COPY package.json package-lock.json ./
 
 # Install dependencies
 RUN npm ci
 
-# Copy source code
-COPY . .
+# Copy only frontend source code (ignoring backend)
+COPY src ./src
+COPY public ./public
+COPY css ./css
+COPY index.html ./
+COPY vite.config.js ./
 
 # Build the app
 RUN npm run build
