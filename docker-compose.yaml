@@ -51,7 +51,7 @@ services:
     image: ghcr.io/ake144/hooraflix-frontend:latest
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.frontend
     pull_policy: missing
     container_name: hooraflix_frontend
     ports:
