@@ -62,10 +62,7 @@ function Home() {
         </div>
       </section> */}
       <div className="home-container">
-        <FeatureSection 
-          featuredContent={categories[0].data}
-          onVideoClick={handleVideoClick}
-        />
+        <FeatureSection />
         
         <div className="home-content">
           <ComingSoon />
