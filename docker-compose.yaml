@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: hooraflix123
       POSTGRES_DB: hooraflix
     ports:
-      - "5432:5432"
+      - "5435:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -24,9 +24,11 @@ services:
 
   # Backend API
   backend:
+    image: ghcr.io/ake144/hooraflix-backend:latest
     build:
       context: ./backend
       dockerfile: Dockerfile
+    pull_policy: if-not-present
     container_name: hooraflix_backend
     environment:
       DATABASE_URL: "postgresql://hooraflix:hooraflix123@postgres:5432/hooraflix?schema=public"
@@ -46,9 +48,8 @@ services:
 
   # Frontend (React + Nginx)
   frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/ake144/hooraflix-frontend:latest
+    pull_policy: if-not-present
     container_name: hooraflix_frontend
     ports:
       - "3001:80"
