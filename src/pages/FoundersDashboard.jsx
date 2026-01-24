@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FiUsers, FiAward, FiDollarSign, FiCopy, FiShare2 } from 'react-icons/fi';
 import QRCode from 'react-qr-code';
+import { founderAPI } from '../utils/api';
 import './FoundersDashboard.css';
 import DashboardHeader from '../components/dashboard/header';
 
@@ -19,36 +20,23 @@ const FoundersDashboard = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const token = localStorage.getItem('accessToken');
-        if (!token) {
-          return;
-        }
-
         // Fetch dashboard stats
-        const dashResponse = await fetch('http://localhost:5001/api/founders/dashboard', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (!dashResponse.ok) {
-          throw new Error('Failed to fetch dashboard data');
-        }
-
-        const dashData = await dashResponse.json();
+        const dashData = await founderAPI.getDashboard();
         if (dashData.success) {
           setDashboardData(dashData.data);
         }
 
         // Fetch recent referrals
-        const refResponse = await fetch('http://localhost:5001/api/founders/referrals?page=1&limit=5', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (refResponse.ok) {
-          const refData = await refResponse.json();
+        try {
+          const refData = await founderAPI.getReferrals(1, 5);
           if (refData.success) {
             setReferrals(refData.data.referrals || []);
           }
+        } catch (refError) {
+          console.error('Failed to fetch referrals:', refError);
+          // Don't fail the whole dashboard if referrals fail
         }
+
       } catch (err) {
         setError(err.message);
         console.error('Dashboard error:', err);
@@ -62,18 +50,7 @@ const FoundersDashboard = () => {
 
   const fetchAllReferrals = async (page = 1) => {
     try {
-      const token = localStorage.getItem('accessToken');
-      if (!token) return;
-
-      const response = await fetch(`http://localhost:5001/api/founders/referrals?page=${page}&limit=10`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch referrals');
-      }
-
-      const data = await response.json();
+      const data = await founderAPI.getReferrals(page, 10);
       if (data.success) {
         setAllReferrals(data.data.referrals || []);
         setAllPagination(data.data.pagination || {});

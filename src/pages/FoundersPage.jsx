@@ -2,6 +2,7 @@ import  { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
+import { founderAPI } from '../utils/api';
 import './FoundersPage.css';
 import DashboardHeader from '../components/dashboard/header';
 
@@ -42,20 +43,7 @@ const FoundersPage = () => {
     setVerificationStatus('verifying');
 
     try {
-      const response = await fetch('http://localhost:5001/api/founders/verify-code', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
-        },
-        body: JSON.stringify({ code: code.trim() })
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Verification failed');
-      }
+      const data = await founderAPI.verifyCode(code.trim());
 
       if (data.success) {
         setVerificationStatus('success');
