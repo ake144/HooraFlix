@@ -1,34 +1,25 @@
-# Stage 1: Build
-FROM node:20-alpine AS builder
-
+# Build stage
+FROM node:20-alpine AS build
 WORKDIR /app
 
-# Copy package files
-COPY package.json package-lock.json ./
-
-# Install dependencies
-RUN npm ci
+# Copy package files and install deps
+COPY package*.json ./
+RUN npm install
 
 # Copy source code
 COPY . .
 
-# Build the app
+# Build the frontend
 RUN npm run build
 
-# Stage 2: Production runner
-FROM node:20-alpine
+# Runtime stage: serve static files with Nginx
+FROM nginx:alpine
 
-WORKDIR /app
+# Copy built frontend
+COPY --from=build /app/dist /usr/share/nginx/html
 
-# Copy built artifacts and dependencies
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/vite.config.js ./
-
-
+# Expose port 80
 EXPOSE 80
 
+# Run Nginx in foreground
 CMD ["nginx", "-g", "daemon off;"]
-
-
