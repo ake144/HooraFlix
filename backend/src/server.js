@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(helmet());
 app.use(cors({
-     origin: [process.env.FRONTEND_URL, 'http://localhost:3001', "https://hooraflix.esperanza.et/", 'https://hooraflix.com/'],
+     origin: [process.env.FRONTEND_URL, 'http://localhost:3001', "https://hooraflix.esperanza.et/", 'https://hoorafilx.com/'],
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
