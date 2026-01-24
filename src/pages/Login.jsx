@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { authAPI } from '../utils/api';
+import { useAuth } from '../context/AuthContext';
 import './Auth.css';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -23,20 +24,19 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const data = await authAPI.login(formData);
+      const result = await login(formData.email, formData.password);
 
-      if (data.success) {
-        // Store tokens and user info
-        localStorage.setItem('accessToken', data.data.accessToken);
-        localStorage.setItem('refreshToken', data.data.refreshToken);
-        localStorage.setItem('user', JSON.stringify(data.data.user));
-
+      if (result.success) {
+        console.log('Logged in user:', result.user);
+        
         // Redirect based on user role
-        if (data.data.user.isFounder) {
+        if (result.user.isFounder) {
           navigate('/founders-dashboard');
         } else {
           navigate('/founders');
         }
+      } else {
+        throw new Error(result.error || 'Login failed');
       }
     } catch (err) {
       setError(err.message || 'Login failed. Please try again.');

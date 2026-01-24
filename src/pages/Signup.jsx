@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { authAPI } from '../utils/api';
+import { useAuth } from '../context/AuthContext';
 import './Auth.css';
 
 const Signup = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { register } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -34,16 +35,13 @@ const Signup = () => {
     setLoading(true);
 
     try {
-      const data = await authAPI.register(formData);
+      const result = await register(formData.name, formData.email, formData.password, formData.refId);
 
-      if (data.success) {
-        // Store tokens and user info
-        localStorage.setItem('accessToken', data.data.accessToken);
-        localStorage.setItem('refreshToken', data.data.refreshToken);
-        localStorage.setItem('user', JSON.stringify(data.data.user));
-
+      if (result.success) {
         // Redirect to founders page
         navigate('/founders');
+      } else {
+        throw new Error(result.error || 'Registration failed');
       }
     } catch (err) {
       setError(err.message || 'Registration failed. Please try again.');
