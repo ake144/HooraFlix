@@ -13,7 +13,7 @@ RUN npm ci
 COPY . .
 
 # Build the app
-RUN ls -la && cat package.json && npm run build
+RUN npm run build
 
 # Stage 2: Production runner
 FROM node:20-alpine
