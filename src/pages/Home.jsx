@@ -9,6 +9,7 @@ import VideoModal from '../components/VideoModal'
 import { moviesData } from '../data/moviesData'
 import { showsData } from '../data/showsData'
 import './Home.css'
+import FeatureSection from '../components/homeFeature'
 
 function Home() {
   const navigate = useNavigate()
@@ -41,7 +42,7 @@ function Home() {
   return (
     <div className="home-page">
       <Header />
-      <section className="home-founder-callout">
+      {/* <section className="home-founder-callout">
         <div className="home-callout-inner">
           <div className="home-callout-text">
             <p className="home-callout-eyebrow">Founders Circle</p>
@@ -59,9 +60,9 @@ function Home() {
             <span className="home-callout-tag">Members-only premiere</span>
           </div>
         </div>
-      </section>
+      </section> */}
       <div className="home-container">
-        <FeaturedSection 
+        <FeatureSection 
           featuredContent={categories[0].data}
           onVideoClick={handleVideoClick}
         />
