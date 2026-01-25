@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { FiSearch, FiBell, FiLogOut, FiUser } from 'react-icons/fi'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { FiSearch, FiBell, FiLogOut, FiUser, FiLogIn } from 'react-icons/fi'
 import { useAuth } from '../context/AuthContext'
 import './Header.css'
 
 const Header = () => {
   const location = useLocation()
-  const { user } = useAuth() || {}
+  const navigate = useNavigate()
+  const { user, logout, isAuthenticated } = useAuth() || {}
   const [isScrolled, setIsScrolled] = useState(false)
   const [showSearch, setShowSearch] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -19,6 +20,12 @@ const Header = () => {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
+    setShowProfileMenu(false);
+  };
 
   return (
     <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
@@ -62,19 +69,44 @@ const Header = () => {
               onClick={() => setShowProfileMenu(!showProfileMenu)}
               style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingRight: '10px', width: 'auto' }}
             >
-             Join Funders  
+             {user?.isFounder ? 'Founder Circle' : isAuthenticated ? 'My Account' : 'Join Funders'}
             </div>
             
             {showProfileMenu && (
               <div className="profile-dropdown">
-                <Link to="/founders" className="dropdown-item">
-                  <FiUser className="dropdown-icon" />
-                  <span>Founders Area</span>
-                </Link>
-                <Link to="/login" className="dropdown-item">
-                  <FiLogOut className="dropdown-icon" />
-                  <span>LogIn</span>
-                </Link>
+                {isAuthenticated ? (
+                  <>
+                     <Link to="/founders" className="dropdown-item" onClick={() => setShowProfileMenu(false)}>
+                      <FiUser className="dropdown-icon" />
+                      <span>Founders Area</span>
+                    </Link>
+                    {user?.isFounder && (
+                        <Link to="/founders-dashboard" className="dropdown-item" onClick={() => setShowProfileMenu(false)}>
+                        <FiUser className="dropdown-icon" />
+                        <span>Dashboard</span>
+                        </Link>
+                    )}
+                    <button onClick={handleLogout} className="dropdown-item" style={{background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer'}}>
+                      <FiLogOut className="dropdown-icon" />
+                      <span>Log Out</span>
+                    </button>
+                  </>
+                ) : (
+                  <>
+                     <Link to="/founders" className="dropdown-item" onClick={() => setShowProfileMenu(false)}>
+                      <FiUser className="dropdown-icon" />
+                      <span>Founders Area</span>
+                    </Link>
+                    <Link to="/login" className="dropdown-item" onClick={() => setShowProfileMenu(false)}>
+                      <FiLogIn className="dropdown-icon" />
+                      <span>Log In</span>
+                    </Link>
+                    <Link to="/signup" className="dropdown-item" onClick={() => setShowProfileMenu(false)}>
+                      <FiUser className="dropdown-icon" />
+                      <span>Sign Up</span>
+                    </Link>
+                  </>
+                )}
               </div>
             )}
           </div>

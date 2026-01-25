@@ -1,7 +1,7 @@
 .home-page {
   background-color: #141414;
   min-height: 100vh;
-  padding-top: 0; /* Removed padding so hero goes under header */
+  padding-top: 70px; /* Removed padding so hero goes under header */
 }
 
 .home-container {

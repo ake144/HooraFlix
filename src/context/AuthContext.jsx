@@ -69,10 +69,13 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
+            console.log('Logging out user');
             const refreshToken = localStorage.getItem('refreshToken');
             if (refreshToken) {
                 await authAPI.logout(refreshToken);
+                
             }
+            console.log('User logged out successfully');
         } catch (error) {
             console.error('Logout error:', error);
         } finally {
@@ -98,6 +101,7 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => {
+
     const context = useContext(AuthContext);
     if (!context) {
         throw new Error('useAuth must be used within AuthProvider');

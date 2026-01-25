@@ -49,11 +49,23 @@ const FoundersPage = () => {
         setVerificationStatus('success');
         setMessage('Welcome to the Founders Circle!');
 
+        // Update tokens if provided
+        if (data.data && data.data.accessToken) {
+            localStorage.setItem('accessToken', data.data.accessToken);
+            if (data.data.refreshToken) {
+                localStorage.setItem('refreshToken', data.data.refreshToken);
+            }
+        }
+
         // Update local storage with founder status
-        const userData = JSON.parse(localStorage.getItem('user') || '{}');
-        userData.isFounder = true;
-        userData.role = 'FOUNDER';
+        const userData = data.data?.user || JSON.parse(localStorage.getItem('user') || '{}');
+        if (!data.data?.user) {
+             userData.isFounder = true;
+             userData.role = 'FOUNDER';
+        }
         localStorage.setItem('user', JSON.stringify(userData));
+        
+        // Refresh auth state with new token
         await checkAuth();
 
         // Redirect to dashboard after 1.5 seconds

@@ -1,5 +1,11 @@
 import prisma from '../config/database.js';
 import crypto from 'crypto';
+import { 
+    generateAccessToken, 
+    generateRefreshToken, 
+    getRefreshTokenExpiry,
+    verifyToken
+} from '../utils/jwt.util.js';
 
 /**
  * Verify founder code and activate founder status
@@ -7,7 +13,18 @@ import crypto from 'crypto';
 export const verifyFounderCode = async (req, res, next) => {
     try {
         const { code } = req.body;
-        const userId = req.user?.userId; // Optional - might not be authenticated
+        let userId = req.user?.userId;
+
+        // Manually parse token if middleware didn't populate req.user
+        if (!userId && req.headers.authorization?.startsWith('Bearer ')) {
+            try {
+                const token = req.headers.authorization.split(' ')[1];
+                const decoded = verifyToken(token, process.env.JWT_ACCESS_SECRET);
+                userId = decoded.userId;
+            } catch (error) {
+                // Invalid token - proceed as unauthenticated
+            }
+        }
 
         // Find the founder code
         const founderCode = await prisma.founderCode.findUnique({
@@ -79,15 +96,35 @@ export const verifyFounderCode = async (req, res, next) => {
                 data: { usedCount: { increment: 1 } }
             });
 
+            // Generate new tokens with FOUNDER role
+            const accessToken = generateAccessToken(user.id, user.email, 'FOUNDER');
+            const refreshToken = generateRefreshToken(user.id);
+
+            // Store new refresh token
+            await prisma.refreshToken.create({
+                data: {
+                    token: refreshToken,
+                    userId: user.id,
+                    expiresAt: getRefreshTokenExpiry()
+                }
+            });
+
             return res.json({
                 success: true,
                 message: 'Founder status activated successfully',
                 data: {
+                    accessToken,
+                    refreshToken,
                     founder: {
                         id: founder.id,
                         rank: founder.rank,
                         referralLink: founder.referralLink,
                         joinDate: founder.joinDate
+                    },
+                    user: {
+                        ...user,
+                        isFounder: true,
+                        role: 'FOUNDER'
                     }
                 }
             });
