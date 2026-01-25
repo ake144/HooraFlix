@@ -66,7 +66,7 @@ async function main() {
             create: {
                 userId: founderUser.id,
                 founderCode: 'HOORA2026',
-                referralLink: 'https://hooraflix.com/signup?refId=samplefounder',
+                referralLink: 'https://hoorafilx.com/signup?refId=samplefounder',
                 rank: 'GOLD',
                 totalEarnings: 2500.00
             }

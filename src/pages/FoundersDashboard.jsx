@@ -180,7 +180,14 @@ const FoundersDashboard = () => {
             <h1 className="dashboard-title">Founders Circle Dashboard</h1>
             <p className="dashboard-subtitle">Welcome back, {user.name}. Here is your community growth.</p>
           </div>
-          <div className="user-badge">{user.rank} Founder</div>
+
+          <div className="user-badge">
+            <img className='founder-badge-icon' src='/founder.jpg' alt="Founder Badge"/>
+            <div className="founder-badge-text">
+              <span className="founder-rank">{user.rank}</span>
+              <span className="founder-label">FOUNDER MEMBER</span>
+            </div>
+          </div>
         </div>
 
         {/* Stats Grid */}

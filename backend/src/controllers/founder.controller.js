@@ -69,17 +69,28 @@ export const verifyFounderCode = async (req, res, next) => {
 
             // Generate unique referral link
             const referralCode = crypto.randomBytes(4).toString('hex');
-            const referralLink = `https://hooraflix.com/signup?refId=${referralCode}`;
+            const referralLink = `https://hoorafilx.com/signup?refId=${referralCode}`;
 
             // Create founder profile
-            const founder = await prisma.founder.create({
-                data: {
-                    userId: user.id,
-                    founderCode: code.toUpperCase(),
-                    referralLink,
-                    rank: 'BRONZE'
+            let founder;
+            try {
+                founder = await prisma.founder.create({
+                    data: {
+                        userId: user.id,
+                        founderCode: code.toUpperCase(),
+                        referralLink,
+                        rank: 'GOLD'
+                    }
+                });
+            } catch (error) {
+                if (error.code === 'P2002' && error.meta?.target?.includes('founderCode')) {
+                    return res.status(400).json({
+                        success: false,
+                        message: 'This founder code has already been claimed by another user'
+                    });
                 }
-            });
+                throw error;
+            }
 
             // Update user role
             await prisma.user.update({
@@ -90,10 +101,16 @@ export const verifyFounderCode = async (req, res, next) => {
                 }
             });
 
-            // Increment usage count
+            // Increment usage count and deactivate if it's a one-time code
+            // For founder codes that are meant to be unique per founder (100 founders scenario),
+            // we should deactivate them after use to ensure "no longer available"
             await prisma.founderCode.update({
                 where: { id: founderCode.id },
-                data: { usedCount: { increment: 1 } }
+                data: { 
+                    usedCount: { increment: 1 },
+                    // If maxUses is 1, or simply if we want to enforce single usage for founder uniqueness
+                    isActive: founderCode.maxUses === 1 ? false : undefined 
+                }
             });
 
             // Generate new tokens with FOUNDER role
