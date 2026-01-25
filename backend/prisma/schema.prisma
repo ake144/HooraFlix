@@ -51,7 +51,7 @@ model User {
 model Founder {
   id             String      @id @default(uuid())
   userId         String      @unique
-  founderCode    String?     @unique
+  founderCode    String?
   rank           FounderRank @default(GOLD)
   joinDate       DateTime    @default(now())
   totalEarnings  Float       @default(0)
