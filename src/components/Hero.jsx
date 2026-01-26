@@ -1,13 +1,17 @@
 import { useState, useEffect, useRef } from 'react'
-import { FiPlay, FiPlus, FiVolume2, FiVolumeX, FiInfo } from 'react-icons/fi'
+import { FiPlay, FiPlus, FiVolume2, FiVolumeX, FiInfo, FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import './Hero.css'
 
-const Hero = ({ movie, onPlayClick }) => {
+const Hero = ({ movies, onPlayClick }) => {
+  const [currentIndex, setCurrentIndex] = useState(0)
   const [isMuted, setIsMuted] = useState(true)
   const videoRef = useRef(null)
 
+  const movie = movies && movies.length > 0 ? movies[currentIndex] : null
+
   useEffect(() => {
     if (videoRef.current) {
+        videoRef.current.load();
         // Attempt to play automatically
         videoRef.current.play().catch(error => {
             console.log("Autoplay prevented:", error);
@@ -19,6 +23,18 @@ const Hero = ({ movie, onPlayClick }) => {
     if (videoRef.current) {
       videoRef.current.muted = !videoRef.current.muted
       setIsMuted(!isMuted)
+    }
+  }
+
+  const handleNext = () => {
+    if (currentIndex < movies.length - 1) {
+      setCurrentIndex(prev => prev + 1)
+    }
+  }
+
+  const handlePrev = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(prev => prev - 1)
     }
   }
 
@@ -34,7 +50,7 @@ const Hero = ({ movie, onPlayClick }) => {
                 poster={movie.image}
                 autoPlay
                 loop
-                muted={true}
+                muted={isMuted}
                 playsInline
                 controls={false}
              >
@@ -49,6 +65,18 @@ const Hero = ({ movie, onPlayClick }) => {
         <div className="hero-overlay-gradient"></div>
         <div className="hero-overlay-vignette"></div>
       </div>
+
+      {currentIndex > 0 && (
+        <button className="hero-nav-btn left" onClick={handlePrev}>
+          <FiChevronLeft />
+        </button>
+      )}
+
+      {currentIndex < movies.length - 1 && (
+        <button className="hero-nav-btn right" onClick={handleNext}>
+          <FiChevronRight />
+        </button>
+      )}
 
       <div className="hero-content">
         <div className="hero-meta-top">
@@ -83,6 +111,10 @@ const Hero = ({ movie, onPlayClick }) => {
                 {isMuted ? <FiVolumeX /> : <FiVolume2 />}
             </button>
         )}
+      
+      <div className="hero-pagination">
+          {currentIndex + 1} <span className="pagination-line"></span> {movies.length}
+      </div>
     </div>
   )
 }

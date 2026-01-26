@@ -33,11 +33,11 @@ const DashboardHeader = () => {
     <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
       <div className="header-content">
         <div className="header-left">
-          <Link to="/founders" className="logo">
+          <Link to="/" className="logo">
             <span className="logo-text">HOORAFLIX</span>
           </Link>
           <nav className="nav-links">
-            <Link to="/founders" className={`nav-link ${location.pathname === '/founders' ? 'active' : ''}`}>Home</Link>
+            <Link to="/" className={`nav-link ${location.pathname === '/founders' ? 'active' : ''}`}>Home</Link>
             <Link to="/academy" className={`nav-link ${location.pathname === '/academy' ? 'active' : ''}`}>Academy </Link>
             <Link to="/casting" className={`nav-link ${location.pathname === '/casting' ? 'active' : ''}`}>Casting</Link>
             <Link to="/opportunity" className={`nav-link ${location.pathname === '/opportunity' ? 'active' : ''}`}>Opportunity</Link>
@@ -73,7 +73,7 @@ const DashboardHeader = () => {
                 </Link>
                 <button onClick={()=>handleLogOut()} className="dropdown-item logout">
                   <FiLogOut className="dropdown-icon" />
-                  <span style={{color:'black'}}>Logout</span>
+                  <span>Logout</span>
                 </button>
               </div>
             )}

@@ -161,22 +161,28 @@ const FoundersPage = () => {
       
 
         {/* Hero Section */}
-        <section className="hero-section">
-          <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline
-            className="hero-video-bg"
-          >
-            <source src="/hooraflix-logo.mp4" type="video/mp4" />
-          </video>
-          <div className="hero-overlay"></div>
-          <div className="hero-content">
-            <h1 className="hero-title">Join the Founders Circle</h1>
-            <p className="hero-subtitle">Upgrade to unlock exclusive benefits.</p>
+        <section className="hero-section founders-split-hero">
+          <div className="founders-hero-content">
+            <h1 className="hero-title">Join the Founders <span className="highlight-text">Circle</span></h1>
+            <p className="hero-subtitle">
+              Unlock exclusive access to backend tours, premium insights, and the community shaping the future. Experience the journey from the inside.
+            </p>
             <div className="hero-actions">
-              <button className="btn-primary" onClick={handleJoinClick}>Upgrade</button>
+              <button className="btn-primary" onClick={handleJoinClick}>Start Your Journey</button>
+            </div>
+          </div>
+          <div className="founders-hero-media">
+            <div className="video-container-pro">
+              <video 
+                autoPlay 
+                loop 
+                muted 
+                playsInline
+                className="hero-video-element"
+              >
+                <source src="/hooraflix-logo.mp4" type="video/mp4" />
+              </video>
+              <div className="video-glow-effect"></div>
             </div>
           </div>
         </section>

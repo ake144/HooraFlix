@@ -60,9 +60,9 @@ const Header = () => {
             <FiSearch />
           </button>
           
-          <Link to="/subscribe" className="subscribe-btn">
+          {/* <Link  className="subscribe-btn">
             Subscribe
-          </Link>
+          </Link> */}
 
           <button className="icon-button" aria-label="Notifications">
             <FiBell />
@@ -70,7 +70,7 @@ const Header = () => {
           
           <div className="profile-menu-container">
             <div 
-              className='join-cta'
+              className='subscribe-btn'
               onClick={() => setShowProfileMenu(!showProfileMenu)}
               style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingRight: '10px', width: 'auto' }}
             >

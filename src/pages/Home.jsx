@@ -9,28 +9,21 @@ import './Home.css'
 
 function Home() {
   const [featuredMovie, setFeaturedMovie] = useState(null)
+  const [heroMovies, setHeroMovies] = useState([])
   const [trendingMovies, setTrendingMovies] = useState([])
   const [newReleases, setNewReleases] = useState([])
-  const [dealMovies, setDealMovies] = useState([])
-  const [featuredBlockMovie, setFeaturedBlockMovie] = useState(null)
-
+ const [featuredBlockMovie, setFeaturedBlockMovie] = useState(null)
   useEffect(() => {
-    // Determine the featured movie (John Wick 4 from the screenshot)
-    // We can pick by ID or by `featured` flag.
-    const hero = moviesData.find(m => m.title === "John Wick 4") || moviesData[0]
-    setFeaturedMovie(hero)
+    // Select hero movies (trending ones) instead of just one
+    const heroes = moviesData.filter(m => m.category === 'trending' || m.featured).slice(0, 5)
+    setHeroMovies(heroes)
+    setFeaturedMovie(heroes[0])
 
-    // Filter categories
-
-    // const releases = moviesData.filter(m => m.category === 'release' || m.year >= 2023)
-    // const deals = moviesData.filter(m => m.category === 'deal' || m.maturity === 'TV-14')
-    
-    // Featured Middle Block (Almost Adults)
-    const midFeature = moviesData.find(m => m.title === "Almost Adults") || moviesData[2]
+    const midFeature = moviesData.find(m => m.title === "Bilen 2026") || moviesData[2]
 
     setTrendingMovies(moviesData)
     setNewReleases(moviesData)
-    setDealMovies(moviesData)
+    // setDealMovies(moviesData)
     setFeaturedBlockMovie(midFeature)
   }, [])
 
@@ -44,7 +37,7 @@ function Home() {
       <Header />
       
       <Hero 
-        movie={featuredMovie} 
+        movies={heroMovies} 
         onPlayClick={handlePlayClick} 
       />
 

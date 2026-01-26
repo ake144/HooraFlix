@@ -51,6 +51,8 @@ services:
     pull_policy: always
     ports:
       - "3001:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - backend
     networks:

@@ -196,21 +196,37 @@
   color: #fff;
   text-decoration: none;
   font-size: 14px;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  background: transparent;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
 }
 
 .dropdown-item:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  text-decoration: underline;
+  background-color: rgba(255, 255, 255, 0.15);
+  text-decoration: none;
 }
 
 .dropdown-icon {
   font-size: 16px;
-  color: #999;
+  color: #b3b3b3;
+  transition: color 0.2s ease;
 }
 
 .dropdown-item:hover .dropdown-icon {
   color: #fff;
+}
+
+.dropdown-item.logout:hover {
+  background-color: rgba(229, 9, 20, 0.2); 
+  color: #ff4d4d;
+}
+
+.dropdown-item.logout:hover .dropdown-icon {
+  color: #ff4d4d;
 }
 
 @media (max-width: 768px) {

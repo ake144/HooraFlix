@@ -7,7 +7,7 @@
     overflow: hidden;
     display: flex; /* Flexbox for centering */
     align-items: center;
-    justify-content: center; /* Center horizontally if needed, though we have absolute positioning */
+    justify-content: flex-start; /* Align content to the left */
     padding: 0;
     margin: 0;
 }
@@ -57,10 +57,12 @@
 .hero-content {
     position: relative;
     z-index: 2;
-    top: -30%;
-    right: 25%;
+    margin-left: 5%; /* Push from left edge */
     margin-top: auto;
+    margin-bottom: auto; /* Vertically center */
     max-width: 600px;
+    top: -5%;
+    right: 30%;
 }
 
 .hero-meta-top {
@@ -183,6 +185,68 @@
 .mute-btn:hover {
     background: rgba(0, 0, 0, 0.8);
 }
+
+.hero-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    z-index: 20;
+    padding: 5px;
+    transition: all 0.3s ease;
+    font-size: 2rem; /* Smaller chevron */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-nav-btn:hover {
+    color: white;
+    transform: translateY(-50%) scale(1.1);
+    background: rgba(0,0,0,0.2); /* Slight background on hover to see hit area */
+    border-radius: 50%;
+}
+
+.hero-nav-btn.left {
+    left: 10px;
+}
+
+.hero-nav-btn.right {
+    right: 10px;
+}
+
+.hero-pagination {
+    position: absolute;
+    bottom: 40px;
+    right: 80px;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    letter-spacing: 1px;
+}
+
+.pagination-line {
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(to right, #8b5cf6 50%, #333 50%); /* Progress bar style? Or just line */
+    background: #444; /* Base line */
+    position: relative;
+    border-radius: 2px;
+}
+/* Let's make the line look like a progress indicator if we want, or just a static line */
+.pagination-line {
+    width: 60px;
+    height: 2px;
+    background-color: #8b5cf6;
+}
+
 
 @media (max-width: 768px) {
     .hero-title {
