@@ -29,8 +29,7 @@ const FeaturedBlock = ({ movie, onPlayClick }) => {
                 </div>
                 
                 <div className="featured-block-media-preview">
-                     {/* This could be a trailer preview or a gallery in the future. 
-                         The screenshot showed a clapperboard image/video preview */}
+
                      <div className="media-preview-card">
                         <div className="play-icon-overlay">
                             <FiPlay size={40} />

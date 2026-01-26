@@ -15,10 +15,10 @@ body {
 }
 
 .sections-container {
-    margin-top: -60px; /* Pull content up over the hero fade if needed, or just 0 */
+    margin-top: 0; 
     position: relative;
     z-index: 10;
-    padding: 0 4%;
+    padding: 0 4%; /* Keep horizontal padding */
     display: flex;
     flex-direction: column;
     gap: 40px;
@@ -38,12 +38,15 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 26px;
-  margin: 2rem auto 1rem;
-  max-width: 1200px;
-  padding: 2.5rem;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+
+.home-founder-callout {
+    background: linear-gradient(135deg, #1f1f2e, #14141f);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 26px;
+    margin: 2rem auto 1rem;
+    max-width: 1200px;
+    padding: 2.5rem;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.6);
 }
 
 .home-callout-inner {

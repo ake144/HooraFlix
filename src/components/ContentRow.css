@@ -1,11 +1,11 @@
 .content-row {
-  margin-bottom: 50px;
+  margin-bottom: 40px;
   padding: 0 60px;
 }
 
 .row-title {
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 800;
   margin-bottom: 15px;
   color: #e5e5e5;
 }
@@ -16,7 +16,7 @@
 
 .row-content {
   display: flex;
-  gap: 5px;
+  gap: 40px;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-behavior: smooth;

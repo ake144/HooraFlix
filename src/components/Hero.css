@@ -1,11 +1,15 @@
 .hero-section {
     position: relative;
-    height: 90vh; /* Takes up most of the viewport */
-    width: 100%;
+    height: 100vh;
+    min-height: 100vh; /* Ensure it stays full height */
+    width: 100vw; /* Ensure full width */
     color: white;
     overflow: hidden;
-    display: flex;
+    display: flex; /* Flexbox for centering */
     align-items: center;
+    justify-content: center; /* Center horizontally if needed, though we have absolute positioning */
+    padding: 0;
+    margin: 0;
 }
 
 .hero-background-container {
@@ -53,7 +57,9 @@
 .hero-content {
     position: relative;
     z-index: 2;
-    padding-left: 5%;
+    top: -30%;
+    right: 25%;
+    margin-top: auto;
     max-width: 600px;
 }
 

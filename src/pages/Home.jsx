@@ -21,16 +21,16 @@ function Home() {
     setFeaturedMovie(hero)
 
     // Filter categories
-    const trending = moviesData.filter(m => m.category === 'trending' || (m.genre && m.genre.includes('Action')))
-    const releases = moviesData.filter(m => m.category === 'release' || m.year >= 2023)
-    const deals = moviesData.filter(m => m.category === 'deal' || m.maturity === 'TV-14')
+
+    // const releases = moviesData.filter(m => m.category === 'release' || m.year >= 2023)
+    // const deals = moviesData.filter(m => m.category === 'deal' || m.maturity === 'TV-14')
     
     // Featured Middle Block (Almost Adults)
     const midFeature = moviesData.find(m => m.title === "Almost Adults") || moviesData[2]
 
-    setTrendingMovies(trending)
-    setNewReleases(releases)
-    setDealMovies(deals)
+    setTrendingMovies(moviesData)
+    setNewReleases(moviesData)
+    setDealMovies(moviesData)
     setFeaturedBlockMovie(midFeature)
   }, [])
 
@@ -55,22 +55,22 @@ function Home() {
             onVideoClick={handlePlayClick}
         />
         
-        <ContentRow 
+        {/* <ContentRow 
             title="New Release" 
             videos={newReleases} 
             onVideoClick={handlePlayClick}
-        />
+        /> */}
 
         <FeaturedBlock 
             movie={featuredBlockMovie}
             onPlayClick={handlePlayClick}
         />
 
-        <ContentRow 
+        {/* <ContentRow 
             title="Deal of the Week" 
             videos={dealMovies} 
             onVideoClick={handlePlayClick}
-        />
+        /> */}
       </div>
 
       <Footer />
