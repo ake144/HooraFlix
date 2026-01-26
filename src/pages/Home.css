@@ -1,53 +1,43 @@
+body {
+    background-color: #0b0b15; /* Deep dark blue/black background */
+    color: #e5e5e5;
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
 .home-page {
-  background-color: #141414;
-  min-height: 100vh;
-  padding-top: 70px; /* Removed padding so hero goes under header */
+    background-color: #0b0b15;
+    min-height: 100vh;
 }
 
 .home-container {
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
+    padding-bottom: 50px;
 }
 
-.home-content {
-  padding: 40px 60px;
-  max-width: 1400px;
-  margin: 0 auto;
+.sections-container {
+    margin-top: -60px; /* Pull content up over the hero fade if needed, or just 0 */
+    position: relative;
+    z-index: 10;
+    padding: 0 4%;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
 }
 
-.genres-section {
-  margin-top: 60px;
-  padding-top: 40px;
-  border-top: 1px solid #333;
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
 }
-
-.section-title {
-  font-size: 28px;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 30px;
+::-webkit-scrollbar-track {
+    background: #0b0b15;
 }
-
-.genres-horizontal {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
 }
-
-@media (max-width: 768px) {
-  .home-content {
-    padding: 20px;
-  }
-  
-  .section-title {
-    font-size: 22px;
-  }
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
-
-.home-founder-callout {
-  background: linear-gradient(135deg, rgba(229,9,20,0.08), rgba(0,0,0,0.95));
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 26px;
   margin: 2rem auto 1rem;

@@ -1,0 +1,185 @@
+.featured-block-container {
+    position: relative;
+    width: 100%;
+    margin: 40px 0;
+    height: 400px;
+    overflow: hidden;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.featured-block-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60%; /* Only half bg like screenshot? or full? Screenshot looks like it fades */
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+}
+
+.featured-block-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, #0b0b15 40%, rgba(11, 11, 21, 0.8) 60%, rgba(11, 11, 21, 0.2) 100%);
+    /* On the screenshot, the left side is solid color with text, right side has image */
+}
+
+/* Let's adjust to match the screenshot more closely where the image is on the RIGHT */
+.featured-block-bg {
+    left: auto;
+    right: 0;
+    width: 65%;
+}
+
+.featured-block-overlay {
+    background: linear-gradient(to right, #0b0b15 35%, rgba(11, 11, 21, 0.8) 60%, transparent 100%);
+}
+
+.featured-block-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5%;
+}
+
+.featured-block-text {
+    width: 40%;
+}
+
+.featured-block-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.featured-block-desc {
+    font-size: 1rem;
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.featured-block-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.featured-block-btn {
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.featured-block-btn.play {
+    background-color: #8b5cf6;
+    color: white;
+    padding: 10px 24px;
+    font-size: 1rem;
+}
+
+.featured-block-btn.play:hover {
+    background-color: #7c3aed;
+}
+
+.featured-block-btn.add {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+    width: 42px;
+    height: 42px;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.featured-block-btn.add:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.featured-block-media-preview {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.media-preview-card {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    aspect-ratio: 16/9;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    background: black;
+}
+
+.media-preview-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.7;
+}
+
+.play-icon-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    gap: 5px;
+}
+
+.media-gallery-small {
+    display: flex;
+    gap: 10px;
+}
+
+.gallery-item {
+    width: 80px;
+    height: 50px;
+    background-color: #333;
+    border-radius: 4px;
+    opacity: 0.6;
+}
+
+@media (max-width: 900px) {
+    .featured-block-content {
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+    }
+    .featured-block-text {
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+    .featured-block-media-preview {
+        width: 100%;
+        align-items: center;
+    }
+    .featured-block-bg {
+        width: 100%;
+        opacity: 0.4;
+    }
+    .featured-block-overlay {
+        background: linear-gradient(to top, #0b0b15 20%, rgba(11, 11, 21, 0.8) 100%);
+    }
+}

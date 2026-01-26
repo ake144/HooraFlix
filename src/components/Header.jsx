@@ -46,7 +46,7 @@ const Header = () => {
           <div className={`search-container ${showSearch ? 'active' : ''}`}>
             <input
               type="text"
-              placeholder="Search..."
+              placeholder="Find movies, TV shows and more..."
               className="search-input"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -59,6 +59,11 @@ const Header = () => {
           >
             <FiSearch />
           </button>
+          
+          <Link to="/subscribe" className="subscribe-btn">
+            Subscribe
+          </Link>
+
           <button className="icon-button" aria-label="Notifications">
             <FiBell />
           </button>
