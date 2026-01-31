@@ -30,7 +30,6 @@ async function main() {
         });
         console.log(`✅ Created ${founderCodes.count} founder codes`);
 
-        // Create admin user
         const adminPassword = await bcrypt.hash('admin123456', 10);
         const admin = await prisma.user.upsert({
             where: { email: 'admin@hooraflix.com' },

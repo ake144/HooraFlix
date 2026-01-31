@@ -68,9 +68,21 @@
 
 @media (max-width: 768px) {
   .content-row {
-    padding: 0 20px;
+    padding: 0 5px;
+    margin-bottom: 32px;
   }
-  
+
+  .row-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .row-content {
+    gap: 16px;
+    padding: 12px 0;
+    min-height: 180px;
+  }
+
   .scroll-button {
     display: none;
   }
