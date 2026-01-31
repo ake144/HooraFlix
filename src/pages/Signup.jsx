@@ -15,6 +15,7 @@ const Signup = () => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [passwordError, setPasswordError] = useState('');
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -25,7 +26,15 @@ const Signup = () => {
   }, [location]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (name === 'password') {
+      if (value.length < 8) {
+        setPasswordError('Password must be at least 8 characters long.');
+      } else {
+        setPasswordError('');
+      }
+    }
     setError('');
   };
 
@@ -38,7 +47,7 @@ const Signup = () => {
       const result = await register(formData.name, formData.email, formData.password, formData.refId);
 
       if (result.success) {
-        // Redirect to founders page
+ 
         navigate('/founders');
       } else {
         throw new Error(result.error || 'Registration failed');
@@ -106,10 +115,24 @@ const Signup = () => {
                 name="password"
                 placeholder="Password"
                 className="form-input"
+                minLength={8}
+                maxLength={128}
                 value={formData.password}
                 onChange={handleChange}
                 required
               />
+              {passwordError && (
+                <div style={{
+                  padding: '10px',
+                  background: '#ff4444',
+                  color: 'white',
+                  borderRadius: '5px',
+                  marginTop: '8px',
+                  fontSize: '14px'
+                }}>
+                  {passwordError}
+                </div>
+              )}
             </div>
 
             <button type="submit" className="auth-button" disabled={loading}>
