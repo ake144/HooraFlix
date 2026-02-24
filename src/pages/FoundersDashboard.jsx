@@ -267,8 +267,8 @@ const FoundersDashboard = () => {
                         </td>
                         <td>{formatDate(referral.joinedAt)}</td>
                         <td>
-                          <span className={`status-badge ${referral.status.toLowerCase()}`}>
-                            {referral.status}
+                          <span className={`status-badge ${referral.role === "Founder" ? 'active' : 'pending'}`}>
+                            {referral.role === "Founder" ? "Active" : "Pending"}
                           </span>
                         </td>
                       </tr>
