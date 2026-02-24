@@ -5,6 +5,7 @@ import Hero from '../components/Hero'
 import ContentRow from '../components/ContentRow'
 import FeaturedBlock from '../components/FeaturedBlock'
 import { moviesData } from '../data/moviesData'
+import ComingSoon from '../components/ComingSoon'
 import './Home.css'
 
 function Home() {
@@ -36,17 +37,18 @@ function Home() {
     <div className="home-page">
       <Header />
       
-      <Hero 
+      {/* <Hero 
         movies={heroMovies} 
         onPlayClick={handlePlayClick} 
-      />
+      /> */}
+      <ComingSoon  />
 
-      <div className="sections-container">
-        <ContentRow 
+      {/* <div className="sections-container"> */}
+        {/* <ContentRow 
             title="Trending Movies" 
             videos={trendingMovies} 
             onVideoClick={handlePlayClick}
-        />
+        /> */}
         
         {/* <ContentRow 
             title="New Release" 
@@ -54,17 +56,17 @@ function Home() {
             onVideoClick={handlePlayClick}
         /> */}
 
-        <FeaturedBlock 
+        {/* <FeaturedBlock 
             movie={featuredBlockMovie}
             onPlayClick={handlePlayClick}
-        />
+        /> */}
 
         {/* <ContentRow 
             title="Deal of the Week" 
             videos={dealMovies} 
             onVideoClick={handlePlayClick}
         /> */}
-      </div>
+      {/* </div> */}
 
       <Footer />
     </div>

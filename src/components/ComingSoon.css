@@ -2,7 +2,8 @@
   width: 100%;
   min-height: 500px;
   position: relative;
-  margin: 40px 0;
+  
+  margin: 90px 0;
   border-radius: 12px;
   overflow: hidden;
 }
@@ -10,12 +11,12 @@
 .coming-soon-background {
   width: 100%;
   min-height: 500px;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  background: linear-gradient(135deg, #040405 0%, #16213e 50%, #0f3460 100%);
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 60px 40px;
+  padding: 20px 10px;
 }
 
 .coming-soon-background::before {
