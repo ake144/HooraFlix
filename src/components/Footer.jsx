@@ -6,15 +6,14 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-container">
-        {/* Top Header Section */}
+     
         <div className="footer-header">
             <h2 className="footer-brand">HOORAFLIX</h2>
             <p className="footer-tagline">Innovating Content, Empowering Creators</p>
         </div>
 
         <div className="footer-main-content">
-            {/* Column 1: About, Founder & Investors */}
-            <div className="footer-column about-column">
+              <div className="footer-column about-column">
                 <div className="footer-section">
                     <h3>About Us</h3>
                     <p>
