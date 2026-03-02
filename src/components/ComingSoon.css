@@ -36,7 +36,7 @@
   background-image: url('/landing.jpg');
   background-size: cover;
   background-position: center;
-  filter: blur(20px) brightness(0.4); /* Blur and darken background */
+  filter: blur(4px) brightness(0.5); /* Blur and darken background */
   z-index: -1;
 }
 
@@ -106,8 +106,8 @@
 
   /* Glass card for the group */
   /* background: rgba(0, 0, 0, 0.6); */
-  backdrop-filter: blur(15px);
-  padding: 3rem 4rem;
+  /* backdrop-filter: blur(15px); */
+  padding: 2rem 4rem;
   border-radius: 24px;
   /* border: 1px solid rgba(255, 255, 255, 0.2); */
   /* box-shadow: 0 20px 50px rgba(0,0,0,0.5);  */
@@ -152,7 +152,7 @@
   
   /* Glassmorphism Effect */
   /* background: rgba(0, 0, 0, 0.5); */
-  backdrop-filter: blur(12px);
+  /* backdrop-filter: blur(12px); */
   -webkit-backdrop-filter: blur(12px);
   padding: 1.5rem .1rem;
   border-radius: 20px;
@@ -209,8 +209,8 @@ background: linear-gradient(to bottom, #ffffff 0%, #cbd5e1 100%);
   text-transform: uppercase;
 }
 
-.left-group .time-label { color: #a78bfa; }
-.right-group .time-label { color: #a78bfa; }
+.left-group .time-label { color: #c5c4ca; }
+.right-group .time-label { color: #c0bfc4; }
 
 .colon {
   font-size: 3.5rem;
