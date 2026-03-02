@@ -271,7 +271,7 @@ background: linear-gradient(to bottom, #ffffff 0%, #cbd5e1 100%);
   /* Use specific portrait image for mobile */
   .coming-soon-background::after,
   .coming-soon-background::before {
-    background-image: url('/landing3.jpg'); 
+    background-image: url('/landing5.jpg'); 
     background-position: center top; 
     background-size: cover; 
   }
