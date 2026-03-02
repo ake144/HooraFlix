@@ -97,7 +97,7 @@
 .time-value {
   font-size: 3.5rem;
   font-weight: 800;
-  color: #fff;
+  color: #c93131;
   margin-bottom: 0.5rem;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   line-height: 1;
@@ -107,7 +107,7 @@
 .time-label {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #cbd5e1;
+  color: #c93131;
   text-transform: uppercase;
   letter-spacing: 0.2em;
 }

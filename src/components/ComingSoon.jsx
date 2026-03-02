@@ -45,9 +45,7 @@ const ComingSoon = () => {
   return (
     <div className="coming-soon-section">
       <div className="coming-soon-background">
-        <div className="coming-soon-content">
-          <h1 className="coming-soon-title">Coming Soon</h1>
-          
+        <div className="coming-soon-content">          
           <div className="countdown-timer">
             <div className="time-unit">
               <div className="time-value">{formatTime(timeLeft.weeks)}</div>
