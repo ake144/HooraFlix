@@ -10,7 +10,7 @@ const ComingSoon = () => {
     seconds: 0
   })
 
-  // Set target date (example: 30 days from now)
+ 
   const targetDate = new Date()
   targetDate.setDate(targetDate.getDate() + 30)
 
