@@ -14,7 +14,7 @@ const ComingSoon = () => {
  
   // Set target to roughly 1 month and 2 weeks from now for demo
   const targetDate = new Date()
-  targetDate.setDate(targetDate.getDate() + 20)
+  targetDate.setDate(targetDate.getDate() + 30)
 
   useEffect(() => {
     const calculateTimeLeft = () => {
