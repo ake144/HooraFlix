@@ -15,6 +15,9 @@ const FoundersDashboard = () => {
   const [allReferrals, setAllReferrals] = useState([]);
   const [allPagination, setAllPagination] = useState({});
   const [allPage, setAllPage] = useState(1);
+  const [coins, setCoins] = useState(0);
+  const [claiming, setClaiming] = useState(false);
+  const [withdrawing, setWithdrawing] = useState(false);
 
   // Fetch dashboard data on component mount
   useEffect(() => {
@@ -24,6 +27,7 @@ const FoundersDashboard = () => {
         const dashData = await founderAPI.getDashboard();
         if (dashData.success) {
           setDashboardData(dashData.data);
+          setCoins(dashData.data.stats.coins || 0);
         }
 
         // Fetch recent referrals
@@ -58,6 +62,44 @@ const FoundersDashboard = () => {
       }
     } catch (err) {
       console.error('Fetch all referrals error:', err);
+    }
+  };
+
+  const handleClaimCoin = async () => {
+    if (claiming) return;
+    setClaiming(true);
+    try {
+      const res = await founderAPI.claimCoin();
+      if (res.success) {
+        setCoins(res.data.coins);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setClaiming(false);
+    }
+  };
+
+  const handleWithdrawCoin = async () => {
+    if (coins < 1000) {
+      alert('Minimum 1000 coins required to withdraw');
+      return;
+    }
+    if (withdrawing) return;
+    setWithdrawing(true);
+    try {
+      const res = await founderAPI.withdrawCoin();
+      if (res.success) {
+        setCoins(res.data.coins);
+        alert(res.message);
+      } else {
+        alert(res.message || 'Withdrawal failed');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Withdrawal failed');
+    } finally {
+      setWithdrawing(false);
     }
   };
 
@@ -179,15 +221,43 @@ const FoundersDashboard = () => {
           <div>
             <h1 className="dashboard-title">Founders Circle Dashboard</h1>
             <p className="dashboard-subtitle">Welcome back, {user.name}. Here is your community growth.</p>
-          </div>
-
-          <div className="user-badge">
+              <div className="user-badge">
             <img className='founder-badge-icon' src='/founder.jpg' alt="Founder Badge"/>
             <div className="founder-badge-text">
               <span className="founder-rank">{user.rank}</span>
               <span className="founder-label">FOUNDER MEMBER</span>
             </div>
           </div>
+          </div>
+          
+          <div className="stat-card coin-card">
+            <div className="stat-icon icon-coin">
+              <span role="img" aria-label="coin">🪙</span>
+            </div>
+            <div className="stat-info">
+              <h3>{coins}</h3>
+              <p>My Coins</p>
+              <div className="coin-actions">
+                <button 
+                  className="coin-btn claim-btn" 
+                  onClick={handleClaimCoin} 
+                  disabled={claiming}
+                >
+                  {claiming ? '...' : '+2 Claim'}
+                </button>
+                <button 
+                  className="coin-btn withdraw-btn" 
+                  onClick={handleWithdrawCoin} 
+                  disabled={withdrawing || coins < 1000}
+                  title={coins < 1000 ? "Minimum 1000 coins to withdraw" : "Withdraw Funds"}
+                >
+                  {withdrawing ? '...' : 'Withdraw'}
+                </button>
+              </div>
+            </div>
+          </div>
+
+        
         </div>
 
         {/* Stats Grid */}
@@ -221,6 +291,33 @@ const FoundersDashboard = () => {
               <p>Total Rewards</p>
             </div>
           </div>
+
+          {/* <div className="stat-card coin-card">
+            <div className="stat-icon icon-coin">
+              <span role="img" aria-label="coin">🪙</span>
+            </div>
+            <div className="stat-info">
+              <h3>{coins}</h3>
+              <p>My Coins</p>
+              <div className="coin-actions">
+                <button 
+                  className="coin-btn claim-btn" 
+                  onClick={handleClaimCoin} 
+                  disabled={claiming}
+                >
+                  {claiming ? '...' : '+2 Claim'}
+                </button>
+                <button 
+                  className="coin-btn withdraw-btn" 
+                  onClick={handleWithdrawCoin} 
+                  disabled={withdrawing || coins < 1000}
+                  title={coins < 1000 ? "Minimum 1000 coins to withdraw" : "Withdraw Funds"}
+                >
+                  {withdrawing ? '...' : 'Withdraw'}
+                </button>
+              </div>
+            </div>
+          </div> */}
         </div>
 
         {/* content split - Referral Link & List */}

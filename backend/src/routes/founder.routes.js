@@ -4,7 +4,9 @@ import {
     verifyFounderCode,
     getFounderDashboard,
     getReferrals,
-    getStats
+    getStats,
+    claimCoin,
+    withdrawCoin
 } from '../controllers/founder.controller.js';
 import { authMiddleware, isFounder } from '../middleware/auth.middleware.js';
 import { validate } from '../middleware/validation.middleware.js';
@@ -21,5 +23,7 @@ router.post('/verify-code', codeValidation, validate, verifyFounderCode);
 router.get('/dashboard', authMiddleware, isFounder, getFounderDashboard);
 router.get('/referrals', authMiddleware, isFounder, getReferrals);
 router.get('/stats', authMiddleware, isFounder, getStats);
+router.post('/claim-coin', authMiddleware, isFounder, claimCoin);
+router.post('/withdraw-coin', authMiddleware, isFounder, withdrawCoin);
 
 export default router;

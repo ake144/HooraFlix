@@ -7,7 +7,7 @@
 }
 
 .dashboard-container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 2rem 5%;
   padding-top: 20px;
@@ -40,12 +40,12 @@
 .user-badge {
   display: flex;
   align-items: center;
-  gap: 12px;
-  background: rgba(26, 26, 26, 0.6);
+  gap: 5px;
+  /* background: rgba(26, 26, 26, 0.6); */
   backdrop-filter: blur(10px);
   padding: 8px 20px;
-  border-radius: 50px;
-  border: 1px solid rgba(255, 215, 0, 0.2);
+  /* border-radius: 30px;
+  border: 1px solid rgba(255, 215, 0, 0.2); */
   transition: all 0.3s ease;
 }
 
@@ -56,8 +56,8 @@
 }
 
 .founder-badge-icon {
-  width: 52px;
-  height: 52px;
+  width: 22px;
+  height: 22px;
   object-fit: contain;
   filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.3));
 }
@@ -513,4 +513,82 @@
     align-items: flex-start;
     gap: 1.5rem;
   }
+}
+
+/* Coin Card Styles */
+.stat-card.coin-card {
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.05);
+  background: linear-gradient(145deg, #1a1a1a, #202020);
+}
+
+.coin-card:hover {
+  border-color: rgba(255, 215, 0, 0.5);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+}
+
+.icon-coin {
+  font-size: 1.8rem;
+  background-color: rgba(255, 215, 0, 0.1);
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.coin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.coin-btn {
+  padding: 6px 14px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.claim-btn {
+  background: linear-gradient(135deg, #ffd700, #e6ac00);
+  color: #000;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+.claim-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(255, 215, 0, 0.25);
+}
+
+.claim-btn:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.withdraw-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ddd;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.withdraw-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.withdraw-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.05);
 }

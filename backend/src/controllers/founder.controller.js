@@ -231,6 +231,7 @@ export const getFounderDashboard = async (req, res, next) => {
                     activeReferrals,
                     pendingReferrals,
                     earnings: founder.totalEarnings,
+                    coins: founder.coins,
                     nextMilestone: currentMilestone.threshold,
                     nextRank: currentMilestone.next
                 },
@@ -368,6 +369,86 @@ export const getStats = async (req, res, next) => {
                 rank: founder.rank
             }
         });
+    } catch (error) {
+        next(error);
+    }
+};
+
+/**
+ * Claim coins for founder
+ */
+export const claimCoin = async (req, res, next) => {
+    try {
+        const userId = req.user.userId;
+
+        const founder = await prisma.founder.findUnique({
+            where: { userId } 
+        });
+
+        if (!founder) {
+            return res.status(404).json({
+                success: false,
+                message: 'Founder profile not found'
+            });
+        }
+
+        const updatedFounder = await prisma.founder.update({
+            where: { userId },
+            data: { coins: { increment: 2 } }
+        });
+
+        res.json({ 
+            success: true, 
+            message: 'Coins claimed successfully',
+            data: {
+                coins: updatedFounder.coins
+            } 
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+/**
+ * Withdraw coins request
+ */
+export const withdrawCoin = async (req, res, next) => {
+    try {
+        const userId = req.user.userId;
+
+        const founder = await prisma.founder.findUnique({
+            where: { userId } 
+        });
+
+        if (!founder) {
+             return res.status(404).json({
+                success: false,
+                message: 'Founder profile not found'
+            });
+        }
+
+        if (founder.coins < 1000) {
+            return res.status(400).json({
+                success: false,
+                message: 'Insufficient coins for withdrawal. Minimum 1000 coins required.'
+            });
+        }
+
+        // Process withdrawal (This is a placeholder logic)
+        // Deduct coins
+        const updatedFounder = await prisma.founder.update({
+             where: { userId },
+             data: { coins: { decrement: 1000 } }
+        });
+
+        res.json({ 
+            success: true, 
+            message: 'Withdrawal processed successfully. 1000 coins deducted.',
+            data: {
+                coins: updatedFounder.coins
+            }
+        });
+
     } catch (error) {
         next(error);
     }

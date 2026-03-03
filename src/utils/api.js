@@ -164,6 +164,8 @@ export const founderAPI = {
     getDashboard: () => api.get('/founders/dashboard'),
     getReferrals: (page = 1, limit = 10) => api.get(`/founders/referrals?page=${page}&limit=${limit}`),
     getStats: () => api.get('/founders/stats'),
+    claimCoin: () => api.post('/founders/claim-coin', {}),
+    withdrawCoin: () => api.post('/founders/withdraw-coin', {}),
 };
 
 export default api;

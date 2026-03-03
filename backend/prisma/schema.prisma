@@ -55,6 +55,7 @@ model Founder {
   rank           FounderRank @default(GOLD)
   joinDate       DateTime    @default(now())
   totalEarnings  Float       @default(0)
+  coins          Int         @default(0)
   referralLink   String      @unique
   
   // Relations
