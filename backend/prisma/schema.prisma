@@ -56,6 +56,8 @@ model Founder {
   joinDate       DateTime    @default(now())
   totalEarnings  Float       @default(0)
   coins          Int         @default(0)
+  lastClaimDate  DateTime?
+  claimStreak    Int         @default(0)
   referralLink   String      @unique
   
   // Relations

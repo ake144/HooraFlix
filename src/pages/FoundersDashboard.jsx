@@ -16,8 +16,9 @@ const FoundersDashboard = () => {
   const [allPagination, setAllPagination] = useState({});
   const [allPage, setAllPage] = useState(1);
   const [coins, setCoins] = useState(0);
+  const [streak, setStreak] = useState(0);
+  const [lastClaimDate, setLastClaimDate] = useState(null);
   const [claiming, setClaiming] = useState(false);
-  const [withdrawing, setWithdrawing] = useState(false);
 
   // Fetch dashboard data on component mount
   useEffect(() => {
@@ -28,6 +29,8 @@ const FoundersDashboard = () => {
         if (dashData.success) {
           setDashboardData(dashData.data);
           setCoins(dashData.data.stats.coins || 0);
+          setStreak(dashData.data.stats.claimStreak || 0);
+          setLastClaimDate(dashData.data.stats.lastClaimDate);
         }
 
         // Fetch recent referrals
@@ -72,35 +75,23 @@ const FoundersDashboard = () => {
       const res = await founderAPI.claimCoin();
       if (res.success) {
         setCoins(res.data.coins);
+        setStreak(res.data.streak);
+        setLastClaimDate(res.data.lastClaimDate);
+        alert(res.message);
       }
     } catch (err) {
       console.error(err);
+      alert(err.message || 'Failed to claim reward');
     } finally {
       setClaiming(false);
     }
   };
 
-  const handleWithdrawCoin = async () => {
-    if (coins < 1000) {
-      alert('Minimum 1000 coins required to withdraw');
-      return;
-    }
-    if (withdrawing) return;
-    setWithdrawing(true);
-    try {
-      const res = await founderAPI.withdrawCoin();
-      if (res.success) {
-        setCoins(res.data.coins);
-        alert(res.message);
-      } else {
-        alert(res.message || 'Withdrawal failed');
-      }
-    } catch (err) {
-      console.error(err);
-      alert('Withdrawal failed');
-    } finally {
-      setWithdrawing(false);
-    }
+  const isClaimedToday = () => {
+    if (!lastClaimDate) return false;
+    const today = new Date().toDateString();
+    const last = new Date(lastClaimDate).toDateString();
+    return today === last;
   };
 
   const copyTextFallback = (text) => {
@@ -237,27 +228,42 @@ const FoundersDashboard = () => {
             <div className="stat-info">
               <h3>{coins}</h3>
               <p>My Coins</p>
+              <div className="streak-badge">🔥 {streak} Day Streak</div>
               <div className="coin-actions">
                 <button 
                   className="coin-btn claim-btn" 
                   onClick={handleClaimCoin} 
-                  disabled={claiming}
+                  disabled={claiming || isClaimedToday()}
                 >
-                  {claiming ? '...' : '+2 Claim'}
-                </button>
-                <button 
-                  className="coin-btn withdraw-btn" 
-                  onClick={handleWithdrawCoin} 
-                  disabled={withdrawing || coins < 1000}
-                  title={coins < 1000 ? "Minimum 1000 coins to withdraw" : "Withdraw Funds"}
-                >
-                  {withdrawing ? '...' : 'Withdraw'}
+                  {claiming ? '...' : isClaimedToday() ? 'Claimed ✅' : 'Claim Daily Reward'}
                 </button>
               </div>
             </div>
           </div>
-
         
+        </div>
+
+        {/* Daily Rewards Info */}
+        <div className="daily-rewards-container">
+            <h3>Daily Reward Structure</h3>
+            <div className="rewards-track">
+                {[5, 10, 15, 20, 25, 30, 50].map((amount, idx) => {
+                    const day = idx + 1;
+                    const isCompleted = (streak > day) || (isClaimedToday() && streak === day); 
+                    // Simplifying logic for display: 
+                    // Just show the fixed structure.
+                    return (
+                        <div key={idx} className={`reward-step day-${day}`}>
+                            <div className="step-circle">{day}</div>
+                            <div className="step-amount">{idx === 6 ? '🎁 ' : ''}{amount}</div>
+                            <div className="step-label">Coins</div>
+                        </div>
+                    );
+                })}
+            </div>
+            <div className="rewards-footer">
+                <p>Cycle resets after 7 days. <strong>Monthly Bonus:</strong> 200 Coins for 30-day streak! 🏆</p>
+            </div>
         </div>
 
         {/* Stats Grid */}

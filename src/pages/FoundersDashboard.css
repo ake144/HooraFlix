@@ -108,8 +108,8 @@
 }
 
 .stat-icon {
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -523,7 +523,6 @@
 }
 
 .coin-card:hover {
-  border-color: rgba(255, 215, 0, 0.5);
   box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
 }
 
@@ -591,4 +590,108 @@
   cursor: not-allowed;
   background: transparent;
   border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Daily Rewards UI */
+.daily-rewards-container {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.daily-rewards-container h3 {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 15px;
+  color: #ffd700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.rewards-track {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.reward-step {
+  background: #252525;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 15px 10px;
+  min-width: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.3s ease;
+}
+
+.reward-step:hover {
+  transform: translateY(-3px);
+  border-color: #ffd700;
+  box-shadow: 0 5px 15px rgba(255, 215, 0, 0.1);
+}
+
+.step-circle {
+  width: 30px;
+  height: 30px;
+  background: #333;
+  color: #888;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
+.step-amount {
+  color: #ffd700;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.step-label {
+  font-size: 0.75rem;
+  color: #bbb;
+  text-transform: uppercase;
+}
+
+.day-7 {
+  border-color: #ffd700;
+  background: linear-gradient(145deg, #252525, #3a3a20);
+}
+
+.day-7 .step-amount {
+  font-size: 1.4rem;
+}
+
+.rewards-footer {
+  margin-top: 15px;
+  color: #888;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.rewards-footer strong {
+  color: #ffd700;
+}
+
+.streak-badge {
+  background: rgba(255, 69, 0, 0.2);
+  color: #ff4500;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 1px solid rgba(255, 69, 0, 0.4);
+  margin: 5px 0 10px;
+  display: inline-block;
 }

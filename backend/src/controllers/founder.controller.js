@@ -232,6 +232,8 @@ export const getFounderDashboard = async (req, res, next) => {
                     pendingReferrals,
                     earnings: founder.totalEarnings,
                     coins: founder.coins,
+                    lastClaimDate: founder.lastClaimDate,
+                    claimStreak: founder.claimStreak,
                     nextMilestone: currentMilestone.threshold,
                     nextRank: currentMilestone.next
                 },
@@ -392,16 +394,61 @@ export const claimCoin = async (req, res, next) => {
             });
         }
 
+        const today = new Date();
+        const lastClaim = founder.lastClaimDate ? new Date(founder.lastClaimDate) : null;
+        
+        let streak = founder.claimStreak;
+        let reward = 5;
+
+        // Check if claimed today
+        if (lastClaim && lastClaim.toDateString() === today.toDateString()) {
+             return res.status(400).json({
+                success: false,
+                message: 'You have already claimed your daily reward today.'
+            });
+        }
+
+        // Check if streak continues (claimed yesterday)
+        if (lastClaim) {
+            const yesterday = new Date(today);
+            yesterday.setDate(yesterday.getDate() - 1);
+            
+            if (lastClaim.toDateString() === yesterday.toDateString()) {
+                streak += 1;
+            } else {
+                streak = 1; // Reset streak if missed a day
+            }
+        } else {
+            streak = 1; // First claim
+        }
+
+        // Calculate Reward
+        const rewardsMap = [5, 10, 15, 20, 25, 30, 50];
+        const dayIndex = (streak - 1) % 7;
+        reward = rewardsMap[dayIndex];
+
+        // Monthly Bonus (30 days streak)
+        if (streak % 30 === 0) {
+            reward += 200;
+        }
+
         const updatedFounder = await prisma.founder.update({
             where: { userId },
-            data: { coins: { increment: 2 } }
+            data: { 
+                coins: { increment: reward },
+                lastClaimDate: today,
+                claimStreak: streak
+            }
         });
 
         res.json({ 
             success: true, 
-            message: 'Coins claimed successfully',
+            message: `You claimed ${reward} coins! Streak: ${streak} days.`,
             data: {
-                coins: updatedFounder.coins
+                coins: updatedFounder.coins,
+                streak: updatedFounder.claimStreak,
+                reward,
+                lastClaimDate: updatedFounder.lastClaimDate
             } 
         });
     } catch (error) {
@@ -410,46 +457,11 @@ export const claimCoin = async (req, res, next) => {
 };
 
 /**
- * Withdraw coins request
+ * Withdraw coins request (Deprecated)
  */
 export const withdrawCoin = async (req, res, next) => {
-    try {
-        const userId = req.user.userId;
-
-        const founder = await prisma.founder.findUnique({
-            where: { userId } 
-        });
-
-        if (!founder) {
-             return res.status(404).json({
-                success: false,
-                message: 'Founder profile not found'
-            });
-        }
-
-        if (founder.coins < 1000) {
-            return res.status(400).json({
-                success: false,
-                message: 'Insufficient coins for withdrawal. Minimum 1000 coins required.'
-            });
-        }
-
-        // Process withdrawal (This is a placeholder logic)
-        // Deduct coins
-        const updatedFounder = await prisma.founder.update({
-             where: { userId },
-             data: { coins: { decrement: 1000 } }
-        });
-
-        res.json({ 
-            success: true, 
-            message: 'Withdrawal processed successfully. 1000 coins deducted.',
-            data: {
-                coins: updatedFounder.coins
-            }
-        });
-
-    } catch (error) {
-        next(error);
-    }
+    res.status(400).json({
+        success: false,
+        message: 'Withdrawal feature is currently disabled.'
+    });
 };
