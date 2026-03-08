@@ -245,7 +245,7 @@ const FoundersDashboard = () => {
 
         {/* Daily Rewards Info */}
         <div className="daily-rewards-container">
-            <h3>Daily Reward Structure</h3>
+            <h3>Daily Reward </h3>
             <div className="rewards-track">
                 {[5, 10, 15, 20, 25, 30, 50].map((amount, idx) => {
                     const day = idx + 1;
@@ -262,7 +262,7 @@ const FoundersDashboard = () => {
                 })}
             </div>
             <div className="rewards-footer">
-                <p>Cycle resets after 7 days. <strong>Monthly Bonus:</strong> 200 Coins for 30-day streak! 🏆</p>
+                <p><strong>Monthly Bonus:</strong> 200 Coins for 30-day streak! 🏆</p>
             </div>
         </div>
 
