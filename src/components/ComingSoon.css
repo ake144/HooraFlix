@@ -234,10 +234,10 @@ background: linear-gradient(to bottom, #ffffff 0%, #cbd5e1 100%);
 }
 
 
-/* Mobile Optimizations */
+
 @media (max-width: 1024px) {
   .timer-container-split {
-    flex-direction: column; /* Stack them vertically on smaller screens */
+    flex-direction: horizontal; /* Stack them vertically on smaller screens */
     gap: 2rem;
     margin-top: 1rem;
   }
@@ -249,8 +249,8 @@ background: linear-gradient(to bottom, #ffffff 0%, #cbd5e1 100%);
   }
 
   .timer-group {
-    width: 100%;
-    max-width: 500px; /* Limit width */
+    width: 90%;
+    max-width:400px; /* Limit width */
     padding: 1.5rem;
     gap: 1rem;
     justify-content: center;
