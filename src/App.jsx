@@ -8,6 +8,8 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import FoundersPage from './pages/FoundersPage';
 import FoundersDashboard from './pages/FoundersDashboard';
+import FounderTrainingCenter from './pages/founderDashboard/FounderTrainingCenter';
+import FounderMarketingLibrary from './pages/founderDashboard/FounderMarketingLibrary';
 import Academy from './pages/Academy';
 import Casting from './pages/Casting';
 import Opportunity from './pages/Opportunity';
@@ -33,10 +35,26 @@ function App() {
         <Route 
           path="/founders-dashboard" 
           element={
-            <ProtectedRoute>
+            <ProtectedRoute requireFounder>
               <FoundersDashboard />
             </ProtectedRoute>
           } 
+        />
+        <Route
+          path="/founders-dashboard/training"
+          element={
+            <ProtectedRoute requireFounder>
+              <FounderTrainingCenter />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/founders-dashboard/materials"
+          element={
+            <ProtectedRoute requireFounder>
+              <FounderMarketingLibrary />
+            </ProtectedRoute>
+          }
         />
          <Route 
           path="/academy" 

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { FiUsers, FiAward, FiDollarSign, FiCopy, FiShare2 } from 'react-icons/fi';
+import { FiUsers, FiAward, FiDollarSign, FiCopy, FiShare2, FiBookOpen, FiDownload, FiBell, FiShield, FiHome, FiVideo, FiGift, FiSettings, FiLifeBuoy, FiLogOut } from 'react-icons/fi';
+import { useNavigate, Link } from 'react-router-dom';
 import QRCode from 'react-qr-code';
 import { founderAPI } from '../utils/api';
 import './FoundersDashboard.css';
-import DashboardHeader from '../components/dashboard/header';
 
 const FoundersDashboard = () => {
+  const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -19,12 +20,27 @@ const FoundersDashboard = () => {
   const [streak, setStreak] = useState(0);
   const [lastClaimDate, setLastClaimDate] = useState(null);
   const [claiming, setClaiming] = useState(false);
+  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
+  const [withdrawMethod, setWithdrawMethod] = useState('');
 
-  // Fetch dashboard data on component mount
+  const trainingModules = [
+    'How to Promote Films',
+    'TikTok Promotion Strategy',
+    'Social Media Marketing',
+    'Personal Branding',
+  ];
+
+  const marketingMaterials = [
+    'Ready-to-use Posters',
+    'Film Trailer Clips',
+    'Course Promo Videos',
+    'High-converting Social Captions',
+    'Affiliate Banner Kits',
+  ];
+
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        // Fetch dashboard stats
         const dashData = await founderAPI.getDashboard();
         if (dashData.success) {
           setDashboardData(dashData.data);
@@ -33,7 +49,6 @@ const FoundersDashboard = () => {
           setLastClaimDate(dashData.data.stats.lastClaimDate);
         }
 
-        // Fetch recent referrals
         try {
           const refData = await founderAPI.getReferrals(1, 5);
           if (refData.success) {
@@ -41,9 +56,7 @@ const FoundersDashboard = () => {
           }
         } catch (refError) {
           console.error('Failed to fetch referrals:', refError);
-          // Don't fail the whole dashboard if referrals fail
         }
-
       } catch (err) {
         setError(err.message);
         console.error('Dashboard error:', err);
@@ -51,7 +64,6 @@ const FoundersDashboard = () => {
         setLoading(false);
       }
     };
-
     fetchDashboardData();
   }, []);
 
@@ -94,37 +106,13 @@ const FoundersDashboard = () => {
     return today === last;
   };
 
-  const copyTextFallback = (text) => {
-    if (typeof document === 'undefined') {
-      return false;
-    }
-
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    textarea.setAttribute('readonly', '');
-    textarea.style.position = 'absolute';
-    textarea.style.left = '-9999px';
-    document.body.appendChild(textarea);
-    textarea.select();
-
-    const successful = document.execCommand('copy');
-    document.body.removeChild(textarea);
-    return successful;
-  };
-
   const copyReferralLink = async () => {
     const link = dashboardData?.referralLink;
-    if (!link) {
-      return false;
-    }
-
+    if (!link) return false;
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(link);
-      } else if (!copyTextFallback(link)) {
-        throw new Error('Clipboard fallback failed');
       }
-
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
       return true;
@@ -134,50 +122,24 @@ const FoundersDashboard = () => {
     }
   };
 
-  const handleShare = async () => {
-    const link = dashboardData?.referralLink;
-    if (!link) return;
-
-    const sharePayload = {
-      title: 'Join HooraFlix',
-      text: 'Join me on HooraFlix and unlock founder rewards.',
-      url: link
-    };
-
-    try {
-      if (navigator.share) {
-        await navigator.share(sharePayload);
-      } else {
-        await copyReferralLink();
-      }
-    } catch (err) {
-      console.debug('Share failed, falling back to copy', err);
-      await copyReferralLink();
-    }
-  };
-
   if (loading) {
     return (
-      <div className="founders-dashboard">
-        <DashboardHeader />
-        <div className="dashboard-container" style={{ textAlign: 'center', padding: '50px' }}>
-          <h2>Loading dashboard...</h2>
-        </div>
+      <div className="fd-layout">
+        <div className="fd-loader">Loading dashboard...</div>
       </div>
     );
   }
 
   if (error || !dashboardData) {
     return (
-      <div className="founders-dashboard">
-        <DashboardHeader />
-        <div className="dashboard-container" style={{ textAlign: 'center', padding: '50px' }}>
+      <div className="fd-layout">
+        <div className="fd-error">
           <h2>Error loading dashboard</h2>
           <p>{error || 'Please try again later'}</p>
-        <div className='' style={{textAlign: 'center', marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '10px'}}>
-          <button onClick={() => window.location.reload()}>Retry</button>
-          <button onClick={() => navigate('/founders')}>Go to Founders Page</button>  
-           </div>
+          <div className="fd-error-actions">
+            <button onClick={() => window.location.reload()}>Retry</button>
+            <button onClick={() => navigate('/founders')}>Go to Founders Page</button>  
+          </div>
         </div>
       </div>
     );
@@ -186,347 +148,300 @@ const FoundersDashboard = () => {
   const { user, stats } = dashboardData;
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
+      month: 'short', day: 'numeric', year: 'numeric'
     });
   };
 
   const getInitial = (name, email) => {
-    if (name && name.length) {
-      return name.charAt(0).toUpperCase();
-    }
-    if (email && email.length) {
-      return email.charAt(0).toUpperCase();
-    }
-    return 'F';
-  }
+    return (name || email || 'F').charAt(0).toUpperCase();
+  };
+
+  const rewardMilestones = [5, 10, 15, 20, 25, 30, 50];
+  const currentRewardDay = Math.min(Math.max(streak, 0), rewardMilestones.length);
 
   return (
-    <div className="founders-dashboard">
-      <DashboardHeader />
-
-      <div className="dashboard-container">
-        {/* Welcome Section */}
-        <div className="dashboard-header">
-          <div>
-            <h1 className="dashboard-title">Founders Circle Dashboard</h1>
-            <p className="dashboard-subtitle">Welcome back, {user.name}. Here is your community growth.</p>
-              <div className="user-badge">
-            <img className='founder-badge-icon' src='/founder.jpg' alt="Founder Badge"/>
-            <div className="founder-badge-text">
-              <span className="founder-rank">{user.rank}</span>
-              <span className="founder-label">FOUNDER MEMBER</span>
-            </div>
-          </div>
-          </div>
+    <div className="fd-layout">
+      
+      {/* LEFT SIDEBAR */}
+      <aside className="fd-sidebar">
+        <div className="fd-sidebar-top">
+          <div className="fd-logo">HOORAFLIX</div>
           
-          <div className="stat-card coin-card">
-            <div className="stat-icon icon-coin">
-              <span role="img" aria-label="coin">🪙</span>
-            </div>
-            <div className="stat-info">
-              <h3>{coins}</h3>
-              <p>My Coins</p>
-              <div className="streak-badge">🔥 {streak} Day Streak</div>
-              <div className="coin-actions">
-                <button 
-                  className="coin-btn claim-btn" 
-                  onClick={handleClaimCoin} 
-                  disabled={claiming || isClaimedToday()}
-                >
-                  {claiming ? '...' : isClaimedToday() ? 'Claimed ✅' : 'Claim Daily Reward'}
-                </button>
-              </div>
+          <div className="fd-user-profile">
+            <div className="fd-avatar">{getInitial(user.name, user.email)}</div>
+            <div className="fd-user-info">
+              <div className="fd-user-status">Premium Member</div>
+              <div className="fd-user-rank">{user.rank} Level</div>
             </div>
           </div>
+
+          <nav className="fd-nav">
+            <Link to="/founders-dashboard" className="fd-nav-item active"><FiHome /> Dashboard</Link>
+            <Link to="/founders-dashboard/training" className="fd-nav-item"><FiVideo /> Training</Link>
+            <Link to="/founders-dashboard/materials" className="fd-nav-item"><FiDownload /> Assets</Link>
+            <Link to="/founders-dashboard/rewards" className="fd-nav-item"><FiGift /> Rewards</Link>
+            <Link to="/settings" className="fd-nav-item"><FiSettings /> Settings</Link>
+          </nav>
+
+          <button 
+            className="fd-claim-sidebar-btn" 
+            onClick={handleClaimCoin} 
+            disabled={claiming || isClaimedToday()}
+          >
+            {claiming ? '...' : isClaimedToday() ? 'Claimed ✅' : 'Claim Daily Coins'}
+          </button>
+        </div>
+
+        <div className="fd-sidebar-bottom">
+          <Link to="/support" className="fd-nav-item"><FiLifeBuoy /> Support</Link>
+          <button className="fd-nav-item fd-logout-btn"><FiLogOut /> Logout</button>
+        </div>
+      </aside>
+
+      {/* MAIN CONTENT */}
+      <main className="fd-main-content">
         
-        </div>
+        {/* Header */}
+        <header className="fd-header">
+          <div>
+            <h1 className="fd-welcome-title">Welcome Back, {user.name}.</h1>
+            <p className="fd-welcome-subtitle">Your {user.rank} Founder status is active. Continue your streak to level up.</p>
+          </div>
+          <button className="fd-insights-btn">View Detailed Insights</button>
+        </header>
 
-        {/* Daily Rewards Info */}
-        <div className="daily-rewards-container">
-            <h3>Daily Reward </h3>
-            <div className="rewards-track">
-                {[5, 10, 15, 20, 25, 30, 50].map((amount, idx) => {
-                    const day = idx + 1;
-                    const isCompleted = (streak > day) || (isClaimedToday() && streak === day); 
-                    // Simplifying logic for display: 
-                    // Just show the fixed structure.
-                    return (
-                        <div key={idx} className={`reward-step day-${day}`}>
-                            <div className="step-circle">{day}</div>
-                            <div className="step-amount">{idx === 6 ? '🎁 ' : ''}{amount}</div>
-                            <div className="step-label">Coins</div>
-                        </div>
-                    );
-                })}
-            </div>
-            <div className="rewards-footer">
-                <p><strong>Monthly Bonus:</strong> 200 Coins for 30-day streak! 🏆</p>
-            </div>
-        </div>
-
-        {/* Stats Grid */}
-        <div className="stats-grid">
-          <div className="stat-card">
-            <div className="stat-icon icon-users">
-              <FiUsers />
-            </div>
-            <div className="stat-info">
+        {/* Stats Row */}
+        <section className="fd-stats-row">
+          <div className="fd-stat-card">
+            <div className="fd-stat-icon fd-icon-users"><FiUsers /></div>
+            <div className="fd-stat-data">
+              <p className="fd-stat-label">Total Referrals</p>
               <h3>{stats.totalReferrals}</h3>
-              <p>Total Referrals</p>
+              <span className="fd-stat-change positive">+12% this month</span>
             </div>
           </div>
-
-          <div className="stat-card">
-            <div className="stat-icon icon-active">
-              <FiAward />
-            </div>
-            <div className="stat-info">
+          <div className="fd-stat-card">
+            <div className="fd-stat-icon fd-icon-active"><FiShield /></div>
+            <div className="fd-stat-data">
+              <p className="fd-stat-label">Active Members</p>
               <h3>{stats.activeReferrals}</h3>
-              <p>Active Members</p>
+              <span className="fd-stat-change">67% Retention Rate</span>
             </div>
           </div>
-
-          <div className="stat-card">
-            <div className="stat-icon icon-money">
-              <FiDollarSign />
+          <div className="fd-stat-card fd-rewards-stat">
+            <div className="fd-stat-icon fd-icon-money"><FiDollarSign /></div>
+            <div className="fd-stat-data">
+              <p className="fd-stat-label">Total Rewards</p>
+              <h3>${stats.earnings ? stats.earnings.toFixed(2) : "0.00"}</h3>
+              <span className="fd-stat-change">Lifetime Earnings</span>
             </div>
-            <div className="stat-info">
-              <h3>${stats.earnings.toFixed(2)}</h3>
-              <p>Total Rewards</p>
-            </div>
+            <button className="fd-withdraw-btn" onClick={() => setShowWithdrawModal(true)}>Withdraw</button>
           </div>
+        </section>
 
-          {/* <div className="stat-card coin-card">
-            <div className="stat-icon icon-coin">
-              <span role="img" aria-label="coin">🪙</span>
-            </div>
-            <div className="stat-info">
-              <h3>{coins}</h3>
-              <p>My Coins</p>
-              <div className="coin-actions">
-                <button 
-                  className="coin-btn claim-btn" 
-                  onClick={handleClaimCoin} 
-                  disabled={claiming}
-                >
-                  {claiming ? '...' : '+2 Claim'}
-                </button>
-                <button 
-                  className="coin-btn withdraw-btn" 
-                  onClick={handleWithdrawCoin} 
-                  disabled={withdrawing || coins < 1000}
-                  title={coins < 1000 ? "Minimum 1000 coins to withdraw" : "Withdraw Funds"}
-                >
-                  {withdrawing ? '...' : 'Withdraw'}
-                </button>
-              </div>
-            </div>
-          </div> */}
-        </div>
-
-        {/* content split - Referral Link & List */}
-        <div className="dashboard-content-grid">
-
-          {/* Recent Referrals List */}
-          <div className="dashboard-section referral-list-section">
-              <div className="section-header">
+        {/* Content Layout */}
+        <div className="fd-content-layout">
+          
+          <div className="fd-content-left">
+            {/* Recent Referrals */}
+            <div className="fd-card fd-referrals-card">
+              <div className="fd-card-header">
                 <h2>Recent Referrals</h2>
-                <button
-                  className="view-all-btn"
-                  onClick={() => {
-                    setShowAllReferrals(true);
-                    fetchAllReferrals(1);
-                  }}
-                >
-                  View All
-                </button>
+                <button className="fd-view-all" onClick={() => { setShowAllReferrals(true); fetchAllReferrals(1); }}>View All</button>
               </div>
-
-            <div className="referral-table-container">
-              <table className="referral-table">
-                <thead>
-                  <tr>
-                    <th>Member</th>
-                    <th>Date Joined</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {referrals.length > 0 ? (
-                    referrals.map((referral, index) => (
-                      <tr key={referral.id || index}>
-                        <td>
-                          <div className="member-cell">
-                            <div className="member-avatar">
-                              {getInitial(referral.name, referral.email)}
-                            </div>
-                            <div>
-                              <span className="member-name">{referral.name || referral.email}</span>
-                              <span className="member-email">{referral.email}</span>
-                            </div>
-                          </div>
-                        </td>
-                        <td>{formatDate(referral.joinedAt)}</td>
-                        <td>
-                          <span className={`status-badge ${referral.role === "Founder" ? 'active' : 'pending'}`}>
-                            {referral.role === "Founder" ? "Active" : "Pending"}
-                          </span>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
+              <div className="fd-table-wrapper">
+                <table className="fd-table">
+                  <thead>
                     <tr>
-                      <td colSpan="3" style={{ textAlign: 'center', padding: '20px' }}>
-                        No referrals yet. Start inviting friends!
-                      </td>
+                      <th>Member Name</th>
+                      <th>Date Joined</th>
+                      <th>Status</th>
                     </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Sidebar - Link & Actions */}
-          <div className="dashboard-sidebar">
-            <div className="sidebar-card invite-card">
-              <div className="invite-header">
-                <div>
-                  <h3>Invite Friends</h3>
-                  <p>Share your unique founder link, and every friend who joins becomes part of your community.</p>
-                  <p className="invite-note">
-                    The affiliate link will be automatically converted to a QR code. To show your friend, simply let them scan your QR code.
-                  </p>
-                </div>
-              </div>
-
-              <div className="referral-link-box">
-                <input type="text" value={dashboardData.referralLink} readOnly />
-                <button onClick={copyReferralLink} className={copied ? 'copied' : ''}>
-                  {copied ? 'Copied!' : <FiCopy />}
-                </button>
-              </div>
-
-              <div className="qr-wrapper">
-                <QRCode value={dashboardData.referralLink} bgColor="#050505" fgColor="#fff" level="H" size={152} />
-                <span className="qr-caption">Scan to join now</span>
-              </div>
-
-              <div className="invite-actions">
-                <button className="share-btn primary" onClick={handleShare}>
-                  <FiShare2 /> Share Invite
-                </button>
-                <button className="share-btn secondary" onClick={copyReferralLink}>
-                  <FiCopy /> Copy Link
-                </button>
+                  </thead>
+                  <tbody>
+                    {referrals.length > 0 ? (
+                      referrals.map((r, i) => (
+                        <tr key={r.id || i}>
+                          <td>
+                            <div className="fd-member-cell">
+                              <div className="fd-member-avatar">{getInitial(r.name, r.email)}</div>
+                              <div className="fd-member-name">{r.name || r.email}</div>
+                            </div>
+                          </td>
+                          <td>{formatDate(r.joinedAt)}</td>
+                          <td>
+                            <span className={`fd-status-badge ${r.role === "Founder" ? 'active' : 'pending'}`}>
+                              {r.role === "Founder" ? "Active" : "Pending"}
+                            </span>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr><td colSpan="3" style={{textAlign:'center', padding:'20px'}}>No referrals yet.</td></tr>
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
 
-            <div className="sidebar-card milestone-card">
-              <h3>Next Milestone</h3>
-              <div className="progress-container">
-                <div className="progress-labels">
-                  <span>{stats.totalReferrals} / {stats.nextMilestone || 150}</span>
-                  <span>{stats.nextRank || 'Max Level'}</span>
-                </div>
-                <div className="progress-bar">
-                  <div
-                    className="progress-fill"
-                    style={{ width: `${stats.nextMilestone ? (stats.totalReferrals / stats.nextMilestone) * 100 : 100}%` }}
-                  ></div>
-                </div>
-                <p className="milestone-text">
-                  {stats.nextMilestone ?
-                    `You need ${stats.nextMilestone - stats.totalReferrals} more referrals to unlock ${stats.nextRank} perks.` :
-                    'You have reached the maximum rank! Keep inviting to increase rewards.'
-                  }
-                </p>
+            {/* Growth Cards */}
+            <div className="fd-growth-cards">
+              <div className="fd-growth-card">
+                <h3><FiBookOpen /> Affiliate Training</h3>
+                <p>Inside your dashboard, learn how to sell better and convert followers into active members.</p>
+                <button onClick={() => navigate('/founders-dashboard/training')}>Open Training Center</button>
+              </div>
+              <div className="fd-growth-card">
+                <h3><FiDownload /> Marketing Library</h3>
+                <p>Download ready-made campaign assets and launch your promotions instantly.</p>
+                <button className="alt" onClick={() => navigate('/founders-dashboard/materials')}>Browse Assets</button>
               </div>
             </div>
           </div>
 
-        </div>
-      </div>
+          <div className="fd-content-right">
+            {/* Daily Rewards Sidebar */}
+            <div className="fd-card fd-daily-card">
+              <div className="fd-daily-header">
+                <h3>Daily Rewards</h3>
+                <div className="fd-streak-badge">Day {currentRewardDay} Streak</div>
+              </div>
+              <p className="fd-daily-desc">Stack coins every day and earn bonuses.</p>
+              
+              <div className="fd-timeline">
+                {rewardMilestones.slice(0, 5).map((amount, idx) => {
+                  const day = idx + 1;
+                  const isCompleted = day < currentRewardDay || (day === currentRewardDay && isClaimedToday());
+                  const isCurrent = day === currentRewardDay && !isClaimedToday();
+                  return (
+                    <div key={idx} className={`fd-timeline-step ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''}`}>
+                      <div className="fd-timeline-circle">{day}</div>
+                      <div className="fd-timeline-info">
+                        <span className="fd-timeline-amount">{amount} Coins</span>
+                        <span className="fd-timeline-label">Day {day}</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
 
-      {showAllReferrals && (
-        <div
-          className="modal-overlay"
-          onClick={(event) => {
-            if (event.target === event.currentTarget) {
-              setShowAllReferrals(false);
-            }
-          }}
-        >
-          <div className="modal-panel">
-            <div className="modal-header">
-              <h3>All Referrals</h3>
-              <button className="modal-close" onClick={() => setShowAllReferrals(false)}>
-                &times;
+              <button 
+                className="fd-daily-claim-btn" 
+                onClick={handleClaimCoin} 
+                disabled={claiming || isClaimedToday()}
+              >
+                {claiming ? '...' : isClaimedToday() ? 'Reward Claimed Today' : 'Claim Daily Reward'}
               </button>
             </div>
-            <div className="referral-table-container">
-              <table className="referral-table">
+
+            {/* Expand Your Circle */}
+            <div className="fd-card fd-invite-card">
+              <h3>Expand Your Circle</h3>
+              <p>Share your unique founder link. Every referral earns you more rewards.</p>
+              
+              <div className="fd-qr-box">
+                <QRCode value={dashboardData.referralLink || ''} bgColor="#1a1a1a" fgColor="#ffd700" level="H" size={120} />
+              </div>
+
+              <div className="fd-link-input">
+                <input type="text" value={dashboardData.referralLink || ''} readOnly />
+                <button onClick={copyReferralLink} className={copied ? 'copied' : ''}>
+                  {copied ? 'Copied' : 'Copy'}
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+
+      {/* Withdraw Modal */}
+      {showWithdrawModal && (
+        <div className="fd-modal-overlay" onClick={(e) => e.target === e.currentTarget && setShowWithdrawModal(false)}>
+          <div className="fd-modal">
+            <div className="fd-modal-header">
+              <h2>Withdraw Rewards</h2>
+              <button className="fd-close" onClick={() => setShowWithdrawModal(false)}>&times;</button>
+            </div>
+            <div className="fd-modal-body">
+              <p>Select your preferred withdrawal method:</p>
+              <div className="fd-withdraw-options">
+                {['Bank Transfer', 'Mobile Money', 'Crypto', 'PayPal'].map(method => (
+                  <label key={method} className={`fd-option ${withdrawMethod === method ? 'selected' : ''}`}>
+                    <input 
+                      type="radio" 
+                      name="withdrawMethod" 
+                      value={method} 
+                      onChange={(e) => setWithdrawMethod(e.target.value)} 
+                    />
+                    {method}
+                  </label>
+                ))}
+              </div>
+              <div className="fd-withdraw-amount">
+                <label>Amount to Withdraw:</label>
+                <input type="number" placeholder="Enter amount" max={stats.earnings} />
+                <span className="fd-max-balance">Max: ${stats.earnings ? stats.earnings.toFixed(2) : "0.00"}</span>
+              </div>
+            </div>
+            <div className="fd-modal-footer">
+              <button className="fd-btn-cancel" onClick={() => setShowWithdrawModal(false)}>Cancel</button>
+              <button className="fd-btn-confirm" disabled={!withdrawMethod}>Confirm Withdrawal</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* All Referrals Modal */}
+      {showAllReferrals && (
+        <div className="fd-modal-overlay" onClick={(e) => e.target === e.currentTarget && setShowAllReferrals(false)}>
+          <div className="fd-modal fd-modal-large">
+            <div className="fd-modal-header">
+              <h2>All Referrals</h2>
+              <button className="fd-close" onClick={() => setShowAllReferrals(false)}>&times;</button>
+            </div>
+            <div className="fd-table-wrapper">
+              <table className="fd-table">
                 <thead>
                   <tr>
-                    <th>Member</th>
+                    <th>Member Name</th>
                     <th>Date Joined</th>
                     <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {allReferrals.length > 0 ? (
-                    allReferrals.map((referral, index) => (
-                      <tr key={referral.id || index}>
+                    allReferrals.map((r, i) => (
+                      <tr key={r.id || i}>
                         <td>
-                          <div className="member-cell">
-                            <div className="member-avatar">
-                              {getInitial(referral.name, referral.email)}
-                            </div>
-                            <div>
-                              <span className="member-name">{referral.name || referral.email}</span>
-                              <span className="member-email">{referral.email}</span>
-                            </div>
+                          <div className="fd-member-cell">
+                            <div className="fd-member-avatar">{getInitial(r.name, r.email)}</div>
+                            <div className="fd-member-name">{r.name || r.email}</div>
                           </div>
                         </td>
-                        <td>{formatDate(referral.joinedAt)}</td>
+                        <td>{formatDate(r.joinedAt)}</td>
                         <td>
-                          <span className={`status-badge ${referral.status.toLowerCase()}`}>
-                            {referral.status}
+                          <span className={`fd-status-badge ${r.role === "Founder" ? 'active' : 'pending'}`}>
+                            {r.role === "Founder" ? "Active" : "Pending"}
                           </span>
                         </td>
                       </tr>
                     ))
                   ) : (
-                    <tr>
-                      <td colSpan="3" style={{ textAlign: 'center', padding: '20px' }}>
-                        No referrals to show
-                      </td>
-                    </tr>
+                    <tr><td colSpan="3" style={{textAlign:'center', padding:'20px'}}>No referrals inside network.</td></tr>
                   )}
                 </tbody>
               </table>
             </div>
-            <div className="modal-pagination">
-              <button
-                onClick={() => fetchAllReferrals(allPage - 1)}
-                disabled={!allPagination.hasPrev}
-              >
-                Previous
-              </button>
-              <span>
-                Page {allPagination.currentPage || allPage} of {allPagination.totalPages || 1}
-              </span>
-              <button
-                onClick={() => fetchAllReferrals(allPage + 1)}
-                disabled={!allPagination.hasNext}
-              >
-                Next
-              </button>
+            <div className="fd-pagination">
+              <button onClick={() => fetchAllReferrals(allPage - 1)} disabled={!allPagination.hasPrev}>Prev</button>
+              <span>Page {allPagination.currentPage || allPage} of {allPagination.totalPages || 1}</span>
+              <button onClick={() => fetchAllReferrals(allPage + 1)} disabled={!allPagination.hasNext}>Next</button>
             </div>
           </div>
         </div>
       )}
+
     </div>
   );
 };
