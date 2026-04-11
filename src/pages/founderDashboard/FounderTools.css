@@ -145,3 +145,229 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* New additional CSS for redesigned FounderTrainingCenter */
+
+.founder-tool-page-content {
+  background: transparent; /* Use layout logic */
+  padding-top: 0;
+  max-width: 100%;
+}
+
+.founder-tool-page-content .founder-tool-container {
+  max-width: 100%;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.training-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.tool-hero-content h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.tool-hero-content p {
+  color: #a0a0a0;
+  font-size: 1.1rem;
+  max-width: 90%;
+  margin-bottom: 2rem;
+}
+
+.tool-hero-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.tool-hero-buttons .btn-primary {
+  background: #e50914;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.tool-hero-buttons .btn-primary:hover {
+  background: #b0070e;
+}
+
+.tool-hero-buttons .btn-secondary {
+  background: #1e1e1e;
+  color: white;
+  border: 1px solid #333;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.tool-hero-buttons .btn-secondary:hover {
+  background: #2a2a2a;
+}
+
+.tool-hero-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tool-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+}
+
+.play-button-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background: rgba(229, 9, 20, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.3s;
+}
+
+.play-button-overlay svg {
+  color: white;
+  font-size: 24px;
+  margin-left: 4px;
+}
+
+.play-button-overlay:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+  background: #e50914;
+}
+
+.section-title {
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.tool-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #111;
+  border: 1px solid #222;
+}
+
+.tool-card-image {
+  background: #202020;
+  height: 160px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tool-card-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tool-card-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.tool-card-head {
+  margin-bottom: 0.5rem;
+}
+
+.tool-card-head h3 {
+  font-size: 1.2rem;
+  line-height: 1.4;
+  height: 2.8em; /* 2 lines max roughly */
+}
+
+.focus-tag {
+  color: #ffd700 !important;
+}
+
+.tool-card-content p {
+  color: #888;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+.bottom-banner {
+  margin-top: 4rem;
+  background: linear-gradient(to right, #111, #1a1a1a);
+  border: 1px solid #333;
+  border-radius: 16px;
+  padding: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bottom-banner-content h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.bottom-banner-content p {
+  color: #aaa;
+  font-size: 1.1rem;
+}
+
+.btn-yellow {
+  background: #ffd700;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.btn-yellow:hover {
+  background: #ffea00;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .bottom-banner {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
+  }
+}
