@@ -212,6 +212,7 @@ const FoundersDashboard = () => {
         </header>
 
         {/* Stats Row */}
+        
         <section className="fd-stats-row">
           <div className="fd-stat-card">
             <div className="fd-stat-icon fd-icon-users"><FiUsers /></div>
@@ -284,6 +285,16 @@ const FoundersDashboard = () => {
                 </table>
               </div>
             </div>
+
+            <div className="fd-promo-banners" style={{ display: 'flex',  gap: '20px', marginBottom: '30px' }}>
+              <Link to="/founders-dashboard/training" style={{ flex: 1, borderRadius: '12px', overflow: 'hidden', display: 'block', textDecoration: 'none', border: '1px solid #222', transition: 'transform 0.2s', cursor: 'pointer' }} onMouseOver={e => e.currentTarget.style.transform = 'translateY(-3px)'} onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}>
+                <img src="/new-course.jpg" alt="New Courses Coming Soon" style={{ width: '100%', height: 'auto', display: 'block' }} onError={(e) => { e.target.src = 'https://via.placeholder.com/800x200/101010/ff4500?text=NEW+COURSES+COMING+SOON'; }} />
+              </Link>
+              {/* <Link to="/founders-dashboard/training" style={{ flex: 1, borderRadius: '12px', overflow: 'hidden', display: 'block', textDecoration: 'none', border: '1px solid #222', transition: 'transform 0.2s', cursor: 'pointer' }} onMouseOver={e => e.currentTarget.style.transform = 'translateY(-3px)'} onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}>
+                <img src="/newCourse.jpg" alt="Different Courses for Founders" style={{ width: '100%', height: 'auto', display: 'block' }} onError={(e) => { e.target.src = 'https://via.placeholder.com/800x200/101010/ffd700?text=DIFFERENT+COURSES+FOR+FOUNDERS'; }} />
+              </Link> */}
+            </div>
+
 
             {/* Growth Cards */}
             <div className="fd-growth-cards">

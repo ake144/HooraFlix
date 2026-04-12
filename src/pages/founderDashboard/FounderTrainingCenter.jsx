@@ -160,6 +160,12 @@ const FounderTrainingCenter = () => {
             </div>
           </section>
 
+          {/* New Courses Banners */}
+          <div className="training-banners" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', margin: '2rem 0', padding: '1rem', background: '#0a0a0a', borderRadius: '16px', border: '1px solid #1a1a1a' }}>
+            <img src="/new-course.jpg" alt="New courses" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }} onError={(e) => { e.target.src = 'https://via.placeholder.com/800x400/101010/ff4500?text=NEW+COURSES+COMING+SOON'; }} />
+            <img src="/newCourse.jpg" alt="Founder courses" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }} onError={(e) => { e.target.src = 'https://via.placeholder.com/800x400/101010/ffd700?text=DIFFERENT+COURSES+FOR+FOUNDERS'; }} />
+          </div>
+
           <h2 className="section-title">Masterclass Series</h2>
 
           <section className="tool-grid">
