@@ -10,6 +10,7 @@ import FoundersPage from './pages/FoundersPage';
 import FoundersDashboard from './pages/FoundersDashboard';
 import FounderTrainingCenter from './pages/founderDashboard/FounderTrainingCenter';
 import FounderMarketingLibrary from './pages/founderDashboard/FounderMarketingLibrary';
+import FounderSettings from './pages/founderDashboard/FounderSettings';
 import Academy from './pages/Academy';
 import Casting from './pages/Casting';
 import Opportunity from './pages/Opportunity';
@@ -53,6 +54,14 @@ function App() {
           element={
             <ProtectedRoute requireFounder>
               <FounderMarketingLibrary />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute requireFounder>
+              <FounderSettings />
             </ProtectedRoute>
           }
         />

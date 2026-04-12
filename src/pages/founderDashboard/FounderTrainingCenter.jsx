@@ -12,28 +12,33 @@ const trainingCourses = [
     duration: '45 mins',
     level: 'Beginner',
     description: 'Learn campaign setup, targeting, and launch timing for independent films.',
-    focus: 'Conversion'
+    focus: 'Conversion',
+    thumbnail: 'https://images.unsplash.com/photo-1682130301125-5b63bbf93241?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   },
   {
     title: 'TikTok Promotion Strategy',
     duration: '35 mins',
     level: 'Intermediate',
     description: 'Build short-form hooks and posting systems that drive real referral growth.',
-    focus: 'Viral'
+    focus: 'Viral',
+    thumbnail: 'https://images.unsplash.com/photo-1660136007317-b0d7dd3cee08?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+
   },
   {
     title: 'Social Media Marketing',
     duration: '60 mins',
     level: 'Beginner',
     description: 'Design a weekly content calendar across Instagram, TikTok, and YouTube Shorts.',
-    focus: 'ROI'
+    focus: 'ROI',
+    thumbnail: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
   },
   {
     title: 'Personal Branding for Founders',
     duration: '50 mins',
     level: 'Advanced',
     description: 'Position your identity, story, and voice to increase trust and conversions.',
-    focus: 'Trust'
+    focus: 'Trust',
+    thumbnail: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
   },
 ];
 
@@ -114,7 +119,6 @@ const FounderTrainingCenter = () => {
             <Link to="/founders-dashboard" className="fd-nav-item"><FiHome /> Dashboard</Link>
             <Link to="/founders-dashboard/training" className="fd-nav-item active"><FiVideo /> Training</Link>
             <Link to="/founders-dashboard/materials" className="fd-nav-item"><FiDownload /> Assets</Link>
-            <Link to="/founders-dashboard/rewards" className="fd-nav-item"><FiGift /> Rewards</Link>
             <Link to="/settings" className="fd-nav-item"><FiSettings /> Settings</Link>
           </nav>
 
@@ -153,7 +157,7 @@ const FounderTrainingCenter = () => {
               </div>
             </div>
             <div className="tool-hero-image-wrapper">
-              <img src="/landing3.jpg" alt="Training center" className="tool-hero-img" />
+              <img src="/newCourse.jpg" alt="Training center" className="tool-hero-img" />
               <div className="play-button-overlay">
                 <FiPlay />
               </div>
@@ -161,19 +165,25 @@ const FounderTrainingCenter = () => {
           </section>
 
           {/* New Courses Banners */}
-          <div className="training-banners" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', margin: '2rem 0', padding: '1rem', background: '#0a0a0a', borderRadius: '16px', border: '1px solid #1a1a1a' }}>
+          {/* <div className="training-banners" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', margin: '2rem 0', padding: '1rem', background: '#0a0a0a', borderRadius: '16px', border: '1px solid #1a1a1a' }}>
             <img src="/new-course.jpg" alt="New courses" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }} onError={(e) => { e.target.src = 'https://via.placeholder.com/800x400/101010/ff4500?text=NEW+COURSES+COMING+SOON'; }} />
             <img src="/newCourse.jpg" alt="Founder courses" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }} onError={(e) => { e.target.src = 'https://via.placeholder.com/800x400/101010/ffd700?text=DIFFERENT+COURSES+FOR+FOUNDERS'; }} />
-          </div>
+          </div> */}
 
           <h2 className="section-title">Masterclass Series</h2>
 
           <section className="tool-grid">
             {trainingCourses.map((course) => (
               <article key={course.title} className="tool-card">
-                <div className="tool-card-image">
+                {/* <div className="tool-card-image">
                   <div className="tool-card-badge">{course.level}</div>
+                  <img src={course.thumbnail} alt={course.title} className="tool-card-img" />
+                </div> */}
+                <div className="ml-asset-img-container">
+                  <span className={`ml-type-badge ml-type-${course.level.toLowerCase()}`}>{course.level}</span>
+                  <img src={course.thumbnail} alt={course.title} className="ml-asset-img" />
                 </div>
+
                 <div className="tool-card-content">
                   <div className="tool-card-head">
                     <h3>{course.title}</h3>
