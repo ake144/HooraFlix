@@ -159,6 +159,7 @@ const FoundersDashboard = () => {
   const rewardMilestones = [5, 10, 15, 20, 25, 30, 50];
   const currentRewardDay = Math.min(Math.max(streak, 0), rewardMilestones.length);
 
+
   return (
     <div className="fd-layout">
       
@@ -188,7 +189,7 @@ const FoundersDashboard = () => {
             onClick={handleClaimCoin} 
             disabled={claiming || isClaimedToday()}
           >
-            {claiming ? '...' : isClaimedToday() ? 'Claimed ✅' : 'Claim Daily Coins'}
+           {stats.coins}  {"  "}   {claiming ? '...' : isClaimedToday() ? 'Claimed ✅' : 'Claim Daily Coins'}
           </button>
         </div>
 
@@ -304,7 +305,10 @@ const FoundersDashboard = () => {
             <div className="fd-card fd-daily-card">
               <div className="fd-daily-header">
                 <h3>Daily Rewards</h3>
-                <div className="fd-streak-badge">Day {currentRewardDay} Streak</div>
+                <div className='fd-stats-section'>               
+                  <div className="fd-streak-badge">{stats.coins} Coins</div>
+                  <div className="fd-streak-badge-current">{currentRewardDay} Day  Streak</div>
+               </div>
               </div>
               <p className="fd-daily-desc">Stack coins every day and earn bonuses.</p>
               

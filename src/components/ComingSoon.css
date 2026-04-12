@@ -33,7 +33,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('/landing1.jpg');
+  background-image: url('/Desktop1.jpg');
   background-size: cover;
   background-position: center;
   filter: blur(4px) brightness(0.5); /* Blur and darken background */
@@ -47,7 +47,7 @@
   left: 0; 
   right: 0; 
   bottom: 0;
-  background-image: url('/landing1.jpg');
+  background-image: url('/Desktop1.jpg');
   background-size: contain; /* Ensure FULL image is visible */
   background-position: center;
   background-repeat: repeat;
@@ -236,6 +236,15 @@ background: linear-gradient(to bottom, #ffffff 0%, #cbd5e1 100%);
 
 
 @media (max-width: 1024px) {
+
+   .coming-soon-background::after,
+  .coming-soon-background::before {
+    background-image: url('/Tablet1.jpg'); 
+    background-position: center top; 
+    background-size: cover; 
+  }
+
+
   .timer-container-split {
     flex-direction: horizontal; /* Stack them vertically on smaller screens */
     gap: 2rem;
@@ -271,7 +280,7 @@ background: linear-gradient(to bottom, #ffffff 0%, #cbd5e1 100%);
   /* Use specific portrait image for mobile */
   .coming-soon-background::after,
   .coming-soon-background::before {
-    background-image: url('/landing5.jpg'); 
+    background-image: url('/mobile1.jpg'); 
     background-position: center top; 
     background-size: cover; 
   }

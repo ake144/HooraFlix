@@ -1,6 +1,7 @@
 .founder-tool-page {
   min-height: 100vh;
   padding-top: 110px;
+  margin-left: 260px; /* Offset the static sidebar */
   background: radial-gradient(circle at 10% -10%, rgba(229, 9, 20, 0.18), transparent 45%), #050505;
   color: #fff;
 }
