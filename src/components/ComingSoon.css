@@ -280,7 +280,7 @@ background: linear-gradient(to bottom, #ffffff 0%, #cbd5e1 100%);
   /* Use specific portrait image for mobile */
   .coming-soon-background::after,
   .coming-soon-background::before {
-    background-image: url('/mobile1.jpg'); 
+    background-image: url('/Mobile1.jpg'); 
     background-position: center top; 
     background-size: cover; 
   }
@@ -317,7 +317,7 @@ background: linear-gradient(to bottom, #ffffff 0%, #cbd5e1 100%);
   .timer-container-split {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: end;
     justify-content: center;
     margin-top: 1rem;
     width: 100%;

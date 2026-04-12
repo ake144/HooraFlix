@@ -119,7 +119,6 @@ const FounderMarketingLibrary = () => {
             <Link to="/founders-dashboard" className="fd-nav-item"><FiHome /> Dashboard</Link>
             <Link to="/founders-dashboard/training" className="fd-nav-item"><FiVideo /> Training</Link>
             <Link to="/founders-dashboard/materials" className="fd-nav-item active"><FiDownload /> Assets</Link>
-            <Link to="/founders-dashboard/rewards" className="fd-nav-item"><FiGift /> Rewards</Link>
             <Link to="/settings" className="fd-nav-item"><FiSettings /> Settings</Link>
           </nav>
 
