@@ -7,8 +7,9 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center; /* Vertically center content */
+  align-items: flex-end; /* Align right on larger screens */
+  justify-content: flex-end; /* Align bottom on larger screens */
+  padding: 2rem 5%; /* Offset from the screen edges */
   background-color: #000;
 }
 
@@ -34,9 +35,9 @@
   width: 100%;
   height: 100%;
   background-image: url('/Desktop1.jpg');
-  background-size: cover;
+  background-size:auto;
   background-position: center;
-  filter: blur(4px) brightness(0.5); /* Blur and darken background */
+  filter: blur(2px) brightness(0.8); /* Blur and darken background */
   z-index: -1;
 }
 
@@ -48,9 +49,9 @@
   right: 0; 
   bottom: 0;
   background-image: url('/Desktop1.jpg');
-  background-size: contain; /* Ensure FULL image is visible */
+  background-size: auto; /* Ensure FULL image is visible */
   background-position: center;
-  background-repeat: repeat;
+  background-repeat: no-repeat;
   z-index: 0;
 }
 
@@ -62,8 +63,8 @@
   padding: 2px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-end; /* Align right */
+  justify-content: flex-end; /* Bottom */
   /* Removed the background box from content to let elements float freely */
   background: transparent;
   backdrop-filter: none; 
@@ -129,7 +130,7 @@
 
 .timer-container-split {
   display: flex;
-  justify-content: center; /* Center everything */
+  justify-content: flex-end; /* Align to the right edge */
   align-items: center;
   width: auto; /* Fit to content */
   margin-top: 3rem;
@@ -317,7 +318,7 @@ background: linear-gradient(to bottom, #ffffff 0%, #cbd5e1 100%);
   .timer-container-split {
     display: flex;
     flex-direction: column;
-    align-items: end;
+    align-items: center;
     justify-content: center;
     margin-top: 1rem;
     width: 100%;
