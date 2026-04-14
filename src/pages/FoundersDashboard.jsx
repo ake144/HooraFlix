@@ -166,8 +166,10 @@ const FoundersDashboard = () => {
       {/* LEFT SIDEBAR */}
       <aside className="fd-sidebar">
         <div className="fd-sidebar-top">
-          <div className="fd-logo">HOORAFLIX</div>
-          
+          <Link to="/founders-dashboard">
+             <div className="fd-logo">HOORAFLIX</div>
+          </Link>
+
           <div className="fd-user-profile">
             <div className="fd-avatar">{getInitial(user.name, user.email)}</div>
             <div className="fd-user-info">
