@@ -207,13 +207,17 @@ const FoundersDashboard = () => {
             <h1 className="fd-welcome-title">Welcome Back, {user.name}.</h1>
             <p className="fd-welcome-subtitle">Your {user.rank} Founder status is active. Continue your streak to level up.</p>
           </div>
-           <div className="fd-promo-banners" style={{   gap: '20px', marginBottom: '30px' }}>
-              <Link to="/founders-dashboard/training" style={{ flex: 1, borderRadius: '12px', overflow: 'hidden', display: 'block', textDecoration: 'none', border: '1px solid #222', transition: 'transform 0.2s', cursor: 'pointer' }} onMouseOver={e => e.currentTarget.style.transform = 'translateY(-3px)'} onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}>
-                <img src="/new-course.jpg" alt="New Courses Coming Soon" style={{ width: '100%', height: '200px', display: 'block' }} onError={(e) => { e.target.src = 'https://via.placeholder.com/800x200/101010/ff4500?text=NEW+COURSES+COMING+SOON'; }} />
+           <div className="fd-promo-banners" style={{ marginBottom: '20px', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: '-15px', right: '-15px', background: '#ff4500', color: 'white', padding: '8px 20px', borderRadius: '30px', fontWeight: 'bold', fontSize: '14px', zIndex: 10, boxShadow: '0 4px 15px rgba(255, 69, 0, 0.6)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <FiBell size={18} /> NEW ANNOUNCEMENT
+              </div>
+              <Link to="/founders-dashboard/training" style={{ flex: 1, borderRadius: '16px', overflow: 'hidden', display: 'block', textDecoration: 'none', border: '1px solid rgba(255, 215, 0, 0.3)', transition: 'all 0.3s ease', cursor: 'pointer', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }} onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = '0 15px 40px rgba(255, 215, 0, 0.3)'; }} onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5)'; }}>
+                <div style={{ position: 'relative', width: '100%', height: '270px' }}>
+                  <img src="/new-course.jpg" alt="New Courses Coming Soon" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} onError={(e) => { e.target.src = 'https://via.placeholder.com/1200x400/101010/ff4500?text=NEW+COURSES+COMING+SOON'; }} />
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 60%)', pointerEvents: 'none' }}></div>
+                 
+                </div>
               </Link>
-              {/* <Link to="/founders-dashboard/training" style={{ flex: 1, borderRadius: '12px', overflow: 'hidden', display: 'block', textDecoration: 'none', border: '1px solid #222', transition: 'transform 0.2s', cursor: 'pointer' }} onMouseOver={e => e.currentTarget.style.transform = 'translateY(-3px)'} onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}>
-                <img src="/newCourse.jpg" alt="Different Courses for Founders" style={{ width: '100%', height: 'auto', display: 'block' }} onError={(e) => { e.target.src = 'https://via.placeholder.com/800x200/101010/ffd700?text=DIFFERENT+COURSES+FOR+FOUNDERS'; }} />
-              </Link> */}
             </div>
         </header>
     
