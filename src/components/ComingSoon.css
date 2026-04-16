@@ -7,7 +7,7 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  align-items: flex-end; /* Align right on larger screens */
+  align-items: center; /* Align center on larger screens */
   justify-content: flex-end; /* Align bottom on larger screens */
   padding: 2rem 5%; /* Offset from the screen edges */
   background-color: #000;
@@ -63,7 +63,7 @@
   padding: 2px;
   display: flex;
   flex-direction: column;
-  align-items: flex-end; /* Align right */
+  align-items: center; /* Align center */
   justify-content: flex-end; /* Bottom */
   /* Removed the background box from content to let elements float freely */
   background: transparent;
@@ -130,7 +130,7 @@
 
 .timer-container-split {
   display: flex;
-  justify-content: flex-end; /* Align to the right edge */
+  justify-content: center; /* Center everything */
   align-items: center;
   width: auto; /* Fit to content */
   margin-top: 3rem;
@@ -289,21 +289,23 @@ background: linear-gradient(to bottom, #ffffff 0%, #cbd5e1 100%);
   /* Reset layout for mobile to ensure visibility */
   .coming-soon-section {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Stack content vertically */
     justify-content: flex-end; /* Push content to bottom */
     align-items: center;
-    padding-bottom: 80px; /* Space for bottom nav/safe area */
+    padding-bottom: 20px; /* Reduced space at the bottom */
     height: 100vh;
     min-height: -webkit-fill-available;
   }
 
   .coming-soon-content {
+    margin-top: auto; /* Force to the bottom */
     justify-content: flex-end; 
     padding: 1rem;
-    margin-bottom: 1rem;
+    padding-bottom: 20px;
+    margin-bottom: 0;
     width: 100%;
     /* Ensure content has a dark backdrop for readability */
-    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+    background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
     border-radius: 0;
     max-width: 100%;
   }
@@ -319,8 +321,9 @@ background: linear-gradient(to bottom, #ffffff 0%, #cbd5e1 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    margin-top: 1rem;
+    justify-content: flex-end;
+    margin-top: auto;
+    margin-bottom: 0;
     width: 100%;
     
     /* Ensure no container styling leaks from desktop */
