@@ -3,7 +3,7 @@
 .fd-layout {
   display: flex;
   min-height: 100vh;
-  background: #040404; /* Pitch black background */
+  background: #111111; /* Dark app background */
   color: #fff;
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
@@ -231,15 +231,20 @@
 }
 
 .fd-stat-card {
-  background: linear-gradient(135deg, rgba(30, 41, 59, 1), rgba(15, 23, 42, 1));
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 20px;
   padding: 24px;
   display: flex;
-  align-items: center;
-  gap: 20px;
+  flex-direction: column;
+  gap: 16px;
   position: relative;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+}
+
+.fd-stat-card.primary {
+  background: #3b5ce8; /* Bright Blue */
+  border: none;
+  box-shadow: 0 10px 30px rgba(59, 92, 232, 0.4);
 }
 
 .fd-stat-icon {
@@ -855,9 +860,9 @@
     flex-direction: row;
     justify-content: space-around;
     padding: 0;
-    background: #0a0a0a;
+    background: #111111;
     border-right: none;
-    border-top: 1px solid #1a1a1a;
+    border-top: 1px solid #222;
     z-index: 1000;
   }
 
