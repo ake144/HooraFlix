@@ -158,6 +158,17 @@ const FoundersDashboard = () => {
 
   const rewardMilestones = [5, 10, 15, 20, 25, 30, 50];
   const currentRewardDay = Math.min(Math.max(streak, 0), rewardMilestones.length);
+  const currentCoins = Number(stats.coins || coins || 0);
+  const rankTiers = [
+    { name: 'Starter', requiredCoins: 1000, theme: 'starter' },
+    { name: 'Promoter', requiredCoins: 2000, theme: 'promoter' },
+    { name: 'Gold', requiredCoins: 3000, theme: 'gold' },
+  ];
+  const nextRankTier = rankTiers.find((tier) => currentCoins < tier.requiredCoins) || null;
+  const coinsNeededForNextRank = nextRankTier ? nextRankTier.requiredCoins - currentCoins : 0;
+  const nextRankProgress = nextRankTier
+    ? Math.min((currentCoins / nextRankTier.requiredCoins) * 100, 100)
+    : 100;
 
 
   return (
@@ -209,8 +220,8 @@ const FoundersDashboard = () => {
             <h1 className="fd-welcome-title">Welcome Back, {user.name}.</h1>
             <p className="fd-welcome-subtitle">Your {user.rank} Founder status is active. Continue your streak to level up.</p>
           </div>
-           <div className="fd-promo-banners" style={{ marginBottom: '20px', position: 'relative' }}>
-              <div style={{ position: 'absolute', top: '-15px', right: '-15px', background: '#ff4500', color: 'white', padding: '8px 20px', borderRadius: '30px', fontWeight: 'bold', fontSize: '14px', zIndex: 10, boxShadow: '0 4px 15px rgba(255, 69, 0, 0.6)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div className="fd-promo-banners" style={{ marginBottom: '20px', position: 'relative' }}>
+              <div className="fd-promo-chip" style={{ position: 'absolute', top: '-15px', right: '-15px', background: '#ff4500', color: 'white', padding: '8px 20px', borderRadius: '30px', fontWeight: 'bold', fontSize: '14px', zIndex: 10, boxShadow: '0 4px 15px rgba(255, 69, 0, 0.6)', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <FiBell size={18} /> NEW ANNOUNCEMENT
               </div>
               <Link to="/founders-dashboard/training" style={{ flex: 1, borderRadius: '16px', overflow: 'hidden', display: 'block', textDecoration: 'none', border: '1px solid rgba(255, 215, 0, 0.3)', transition: 'all 0.3s ease', cursor: 'pointer', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }} onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = '0 15px 40px rgba(255, 215, 0, 0.3)'; }} onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5)'; }}>
@@ -296,7 +307,60 @@ const FoundersDashboard = () => {
                   </tbody>
                 </table>
               </div>
+
+              <div className="fd-next-rank-card">
+                <div className="fd-next-rank-head">
+                  <h4>Next Milestone</h4>
+                  {nextRankTier ? (
+                    <span className={`fd-next-rank-pill ${nextRankTier.theme}`}>{nextRankTier.name}</span>
+                  ) : (
+                    <span className="fd-next-rank-pill gold">Max Rank Reached</span>
+                  )}
+                </div>
+
+                {nextRankTier ? (
+                  <>
+                    <p>
+                      You need <strong>{coinsNeededForNextRank}</strong> more coins to unlock <strong>{nextRankTier.name}</strong>.
+                    </p>
+                    <div className="fd-next-rank-track">
+                      <div className="fd-next-rank-fill" style={{ width: `${nextRankProgress}%` }} />
+                    </div>
+                    <small>{currentCoins} / {nextRankTier.requiredCoins} coins</small>
+                  </>
+                ) : (
+                  <p>All founder core ranks unlocked. Keep building for future elite tiers.</p>
+                )}
+              </div>
             </div>
+
+            <section className="fd-ranks-section">
+              <div className="fd-ranks-title-row">
+                <h2>Your Founder Roadmap</h2>
+                <span>Level up to unlock higher commissions</span>
+              </div>
+
+              <div className="fd-ranks-image-wrap">
+                <img
+                  src="/rank.jpg"
+                  alt="Affiliate ranks: Starter, Promoter, Gold"
+                  className="fd-ranks-image"
+                  onError={(e) => {
+                    e.target.src = 'https://via.placeholder.com/1000x450/101010/f0b90b?text=Rank+Roadmap';
+                    e.target.style.opacity = '0.5';
+                  }}
+                />
+              </div>
+
+              <div className="fd-rank-steps">
+                {rankTiers.map((tier) => (
+                  <div key={tier.name} className={`fd-rank-step ${tier.theme}`}>
+                    <h4>{tier.name}</h4>
+                    <p>{tier.requiredCoins.toLocaleString()} coins</p>
+                  </div>
+                ))}
+              </div>
+            </section>
 
            
 
