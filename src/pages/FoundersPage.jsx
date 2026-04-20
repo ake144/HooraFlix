@@ -189,7 +189,7 @@ const FoundersPage = () => {
 
         <section className="founder-affiliate-promo-section">
           <div className="founder-affiliate-promo-wrap">
-            <img src="/founder.jpg" alt="Founder affiliate pre-launch promotion" className="founder-affiliate-promo-image" />
+            <img src="/promo.jpg" alt="Founder affiliate pre-launch promotion" className="founder-affiliate-promo-image" />
           </div>
           <div className="founder-affiliate-cta-row">
             <button className="founder-affiliate-cta-btn" onClick={handleJoinClick}>
