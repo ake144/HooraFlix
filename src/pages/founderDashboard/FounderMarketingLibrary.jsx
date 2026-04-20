@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { FiHome, FiVideo, FiDownload, FiGift, FiSettings, FiLifeBuoy, FiLogOut, FiSearch, FiFilter, FiImage, FiFileText } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
+import { FiHome, FiVideo, FiDownload, FiSettings, FiLifeBuoy, FiLogOut, FiSearch, FiFilter, FiImage, FiFileText, FiBell, FiHelpCircle, FiGrid, FiShield } from 'react-icons/fi';
+import { useAuth } from '../../context/AuthContext';
 import { founderAPI } from '../../utils/api';
 import '../FoundersDashboard.css';
 import './FounderTools.css';
@@ -45,12 +46,10 @@ const marketingAssets = [
 ];
 
 const FounderMarketingLibrary = () => {
-  const navigate = useNavigate();
+  const { logout } = useAuth();
   const [loading, setLoading] = useState(true);
   const [dashboardData, setDashboardData] = useState(null);
   const [coins, setCoins] = useState(0);
-  const [lastClaimDate, setLastClaimDate] = useState(null);
-  const [claiming, setClaiming] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
@@ -60,7 +59,6 @@ const FounderMarketingLibrary = () => {
         if (dashData.success) {
           setDashboardData(dashData.data);
           setCoins(dashData.data.stats?.coins || 0);
-          setLastClaimDate(dashData.data.stats?.lastClaimDate);
         }
       } catch (err) {
         console.error('Dashboard error:', err);
@@ -71,76 +69,73 @@ const FounderMarketingLibrary = () => {
     fetchDashboardData();
   }, []);
 
-  const handleClaimCoin = async () => {
-    if (claiming) return;
-    setClaiming(true);
-    try {
-      const res = await founderAPI.claimCoin();
-      if (res.success) {
-        setCoins(res.data.coins);
-        setLastClaimDate(res.data.lastClaimDate);
-        alert(res.message);
-      }
-    } catch (err) {
-      console.error(err);
-      alert(err.message || 'Failed to claim reward');
-    } finally {
-      setClaiming(false);
-    }
-  };
-
-  const isClaimedToday = () => {
-    if (!lastClaimDate) return false;
-    const today = new Date().toDateString();
-    const last = new Date(lastClaimDate).toDateString();
-    return today === last;
-  };
-
   const getInitial = (name, email) => {
     return (name || email || 'F').charAt(0).toUpperCase();
   };
 
+  const user = dashboardData?.user || { name: 'Founder', email: 'founder@hooraflix.com', rank: 'Starter' };
+  const filteredAssets = marketingAssets.filter((asset) => {
+    if (!searchQuery.trim()) return true;
+    const haystack = `${asset.title} ${asset.type} ${asset.description} ${asset.formats.join(' ')}`.toLowerCase();
+    return haystack.includes(searchQuery.toLowerCase());
+  });
+
   return (
     <div className="fd-layout">
-      {/* LEFT SIDEBAR */}
       <aside className="fd-sidebar">
         <div className="fd-sidebar-top">
-          <div className="fd-logo">HOORAFLIX</div>
-          
-          <div className="fd-user-profile">
-            <div className="fd-avatar">{dashboardData ? getInitial(dashboardData.user.name, dashboardData.user.email) : 'F'}</div>
-            <div className="fd-user-info">
-              <div className="fd-user-status">Premium Member</div>
-              <div className="fd-user-rank">{dashboardData ? dashboardData.user.rank : 'Loading'} Level</div>
-            </div>
-          </div>
+          <Link to="/founders-dashboard">
+            <div className="fd-logo">Hooraflix</div>
+            <p className="fd-logo-sub">Admin Console</p>
+          </Link>
 
           <nav className="fd-nav">
-            <Link to="/founders-dashboard" className="fd-nav-item"><FiHome /> Dashboard</Link>
+            <Link to="/founders-dashboard" className="fd-nav-item"><FiGrid /> Dashboard</Link>
             <Link to="/founders-dashboard/training" className="fd-nav-item"><FiVideo /> Training</Link>
             <Link to="/founders-dashboard/materials" className="fd-nav-item active"><FiDownload /> Assets</Link>
             <Link to="/settings" className="fd-nav-item"><FiSettings /> Settings</Link>
           </nav>
-
-          <button 
-            className="fd-claim-sidebar-btn" 
-            onClick={handleClaimCoin} 
-            disabled={claiming || isClaimedToday()}
-          >
-            {claiming ? '...' : isClaimedToday() ? 'Claimed ✅' : 'Claim Daily Coins'}
-          </button>
         </div>
 
         <div className="fd-sidebar-bottom">
+          <div className="fd-profile-card">
+            <div className="fd-avatar">{getInitial(user.name, user.email)}</div>
+            <div className="fd-user-info">
+              <div className="fd-user-status">{user.name || user.email}</div>
+              <div className="fd-user-rank">{user.rank} Level</div>
+            </div>
+          </div>
           <Link to="/support" className="fd-nav-item"><FiLifeBuoy /> Support</Link>
-          <button className="fd-nav-item fd-logout-btn"><FiLogOut /> Logout</button>
+          <button className="fd-nav-item fd-logout-btn" onClick={logout}><FiLogOut /> Logout</button>
         </div>
       </aside>
 
-      {/* MAIN CONTENT */}
       <main className="fd-main-content founder-tool-page-content">
+        <header className="fd-desktop-topbar">
+          <div>
+            <h1 className="fd-welcome-title">Marketing Library</h1>
+          </div>
+          <div className="fd-topbar-actions">
+            <span className="fd-member-pill">{coins} Coins</span>
+            <button className="fd-icon-btn" type="button" aria-label="Notifications"><FiBell /></button>
+            <button className="fd-icon-btn" type="button" aria-label="Support"><FiHelpCircle /></button>
+          </div>
+        </header>
+
+        <section className="founder-mobile-page-head">
+          <div className="fd-mobile-head">
+            <div className="fd-mobile-avatar">{getInitial(user.name, user.email)}</div>
+            <div className="fd-mobile-search">
+              <FiSearch />
+              <input type="text" value="Search marketing assets..." readOnly />
+            </div>
+            <button className="fd-mobile-bell" type="button" aria-label="Notifications"><FiBell /></button>
+          </div>
+        </section>
+
         <div className="founder-tool-container marketing-library-container">
-          
+          {loading && <p className="tool-inline-status">Loading library...</p>}
+
           <div className="ml-header-section">
             <div className="ml-badge">LIVE LIBRARY</div>
             <h1 className="ml-title">Marketing Materials <span className="text-red">Library</span></h1>
@@ -178,7 +173,7 @@ const FounderMarketingLibrary = () => {
           </div>
 
           <div className="ml-asset-grid">
-            {marketingAssets.map((asset, index) => (
+            {filteredAssets.map((asset, index) => (
               <div key={index} className="ml-asset-card">
                 <div className="ml-asset-img-container">
                   <span className={`ml-type-badge ml-type-${asset.type.toLowerCase()}`}>{asset.type}</span>
@@ -197,6 +192,9 @@ const FounderMarketingLibrary = () => {
                 </div>
               </div>
             ))}
+            {filteredAssets.length === 0 && (
+              <div className="ml-empty-state">No assets match your search.</div>
+            )}
           </div>
 
           <div className="ml-premium-bundle">
@@ -222,6 +220,13 @@ const FounderMarketingLibrary = () => {
           </div>
 
         </div>
+
+        <nav className="fd-mobile-nav founder-mobile-nav-only">
+          <Link to="/founders-dashboard" className="fd-mobile-nav-item"><FiHome /><span>Home</span></Link>
+          <Link to="/founders-dashboard/training" className="fd-mobile-nav-item"><FiVideo /><span>Training</span></Link>
+          <Link to="/founders-dashboard/materials" className="fd-mobile-nav-item active"><FiDownload /><span>Assets</span></Link>
+          <Link to="/settings" className="fd-mobile-nav-item"><FiShield /><span>Profile</span></Link>
+        </nav>
       </main>
     </div>
   );

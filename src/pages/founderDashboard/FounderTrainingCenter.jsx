@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiPlayCircle, FiClock, FiTrendingUp, FiArrowLeft, FiHome, FiVideo, FiDownload, FiGift, FiSettings, FiLifeBuoy, FiLogOut, FiPlay } from 'react-icons/fi';
+import { FiPlayCircle, FiClock, FiTrendingUp, FiArrowLeft, FiHome, FiVideo, FiDownload, FiSettings, FiLifeBuoy, FiLogOut, FiPlay, FiBell, FiHelpCircle, FiGrid, FiSearch, FiShield } from 'react-icons/fi';
 import { useAuth } from '../../context/AuthContext';
 import { founderAPI } from '../../utils/api';
 import '../FoundersDashboard.css';
@@ -102,48 +102,69 @@ const FounderTrainingCenter = () => {
 
   return (
     <div className="fd-layout">
-      {/* LEFT SIDEBAR */}
       <aside className="fd-sidebar">
         <div className="fd-sidebar-top">
-          <div className="fd-logo">HOORAFLIX</div>
-          
-          <div className="fd-user-profile">
-            <div className="fd-avatar">{getInitial(user.name, user.email)}</div>
-            <div className="fd-user-info">
-              <div className="fd-user-status">Premium Member</div>
-              <div className="fd-user-rank">{user.rank} Level</div>
-            </div>
-          </div>
+          <Link to="/founders-dashboard">
+            <div className="fd-logo">Hooraflix</div>
+            <p className="fd-logo-sub">Admin Console</p>
+          </Link>
 
           <nav className="fd-nav">
-            <Link to="/founders-dashboard" className="fd-nav-item"><FiHome /> Dashboard</Link>
+            <Link to="/founders-dashboard" className="fd-nav-item"><FiGrid /> Dashboard</Link>
             <Link to="/founders-dashboard/training" className="fd-nav-item active"><FiVideo /> Training</Link>
             <Link to="/founders-dashboard/materials" className="fd-nav-item"><FiDownload /> Assets</Link>
             <Link to="/settings" className="fd-nav-item"><FiSettings /> Settings</Link>
           </nav>
-
-          <button 
-            className="fd-claim-sidebar-btn" 
-            onClick={handleClaimCoin} 
-            disabled={claiming || isClaimedToday()}
-          >
-            {claiming ? '...' : isClaimedToday() ? 'Claimed ✅' : 'Claim Daily Coins'}
-          </button>
         </div>
 
         <div className="fd-sidebar-bottom">
+          <div className="fd-profile-card">
+            <div className="fd-avatar">{getInitial(user.name, user.email)}</div>
+            <div className="fd-user-info">
+              <div className="fd-user-status">{user.name || user.email}</div>
+              <div className="fd-user-rank">{user.rank} Level</div>
+            </div>
+          </div>
           <Link to="/support" className="fd-nav-item"><FiLifeBuoy /> Support</Link>
           <button className="fd-nav-item fd-logout-btn" onClick={() => { logout(); navigate('/login'); }}><FiLogOut /> Logout</button>
         </div>
       </aside>
 
-      {/* MAIN CONTENT */}
       <main className="fd-main-content founder-tool-page-content">
+        <header className="fd-desktop-topbar">
+          <div>
+            <h1 className="fd-welcome-title">Training Center</h1>
+          </div>
+          <div className="fd-topbar-actions">
+            <span className="fd-member-pill">{coins} Coins</span>
+            <button className="fd-icon-btn" type="button" aria-label="Notifications"><FiBell /></button>
+            <button className="fd-icon-btn" type="button" aria-label="Support"><FiHelpCircle /></button>
+          </div>
+        </header>
+
+        <section className="founder-mobile-page-head">
+          <div className="fd-mobile-head">
+            <div className="fd-mobile-avatar">{getInitial(user.name, user.email)}</div>
+            <div className="fd-mobile-search">
+              <FiSearch />
+              <input type="text" value="Search training lessons..." readOnly />
+            </div>
+            <button className="fd-mobile-bell" type="button" aria-label="Notifications"><FiBell /></button>
+          </div>
+        </section>
+
         <div className="founder-tool-container">
           <div className="tool-page-topbar">
             <Link to="/founders-dashboard" className="tool-back-link">
               <FiArrowLeft /> Back to Dashboard
             </Link>
+            <button
+              className="tool-claim-btn"
+              onClick={handleClaimCoin}
+              disabled={claiming || isClaimedToday()}
+            >
+              {claiming ? '...' : isClaimedToday() ? 'Claimed Today' : `Claim ${Math.max(5, streak || 5)} Coins`}
+            </button>
           </div>
 
           <section className="tool-hero training-hero">
@@ -209,6 +230,13 @@ const FounderTrainingCenter = () => {
             <button className="btn-yellow" onClick={() => navigate('/founders-dashboard')}>Go to Dashboard</button>
           </section>
         </div>
+
+        <nav className="fd-mobile-nav founder-mobile-nav-only">
+          <Link to="/founders-dashboard" className="fd-mobile-nav-item"><FiHome /><span>Home</span></Link>
+          <Link to="/founders-dashboard/training" className="fd-mobile-nav-item active"><FiVideo /><span>Training</span></Link>
+          <Link to="/founders-dashboard/materials" className="fd-mobile-nav-item"><FiDownload /><span>Assets</span></Link>
+          <Link to="/settings" className="fd-mobile-nav-item"><FiShield /><span>Profile</span></Link>
+        </nav>
       </main>
     </div>
   );

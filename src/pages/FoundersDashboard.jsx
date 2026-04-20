@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiUsers, FiAward, FiDollarSign, FiCopy, FiShare2, FiBookOpen, FiDownload, FiBell, FiShield, FiHome, FiVideo, FiGift, FiSettings, FiLifeBuoy, FiLogOut } from 'react-icons/fi';
+import { FiUsers, FiDollarSign, FiCopy, FiBookOpen, FiDownload, FiBell, FiShield, FiHome, FiVideo, FiGift, FiSettings, FiLifeBuoy, FiLogOut, FiSearch, FiHelpCircle, FiGrid } from 'react-icons/fi';
 import { useNavigate, Link } from 'react-router-dom';
 import QRCode from 'react-qr-code';
 import { founderAPI } from '../utils/api';
@@ -22,21 +22,6 @@ const FoundersDashboard = () => {
   const [claiming, setClaiming] = useState(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [withdrawMethod, setWithdrawMethod] = useState('');
-
-  const trainingModules = [
-    'How to Promote Films',
-    'TikTok Promotion Strategy',
-    'Social Media Marketing',
-    'Personal Branding',
-  ];
-
-  const marketingMaterials = [
-    'Ready-to-use Posters',
-    'Film Trailer Clips',
-    'Course Promo Videos',
-    'High-converting Social Captions',
-    'Affiliate Banner Kits',
-  ];
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -169,274 +154,321 @@ const FoundersDashboard = () => {
   const nextRankProgress = nextRankTier
     ? Math.min((currentCoins / nextRankTier.requiredCoins) * 100, 100)
     : 100;
+  const referralLink = dashboardData.referralLink || '';
+
+  const getReferralReward = (referral) => {
+    if (typeof referral?.rewardAmount === 'number') {
+      return referral.rewardAmount;
+    }
+
+    return referral?.role === 'Founder' ? 50 : 15;
+  };
 
 
   return (
     <div className="fd-layout">
-      
-      {/* LEFT SIDEBAR */}
+
       <aside className="fd-sidebar">
         <div className="fd-sidebar-top">
           <Link to="/founders-dashboard">
-             <div className="fd-logo">HOORAFLIX</div>
+            <div className="fd-logo">Hooraflix</div>
+            <p className="fd-logo-sub">Admin Console</p>
           </Link>
 
-          <div className="fd-user-profile">
-            <div className="fd-avatar">{getInitial(user.name, user.email)}</div>
-            <div className="fd-user-info">
-              <div className="fd-user-status">Premium Member</div>
-              <div className="fd-user-rank">{user.rank} Level</div>
-            </div>
-          </div>
-
           <nav className="fd-nav">
-            <Link to="/founders-dashboard" className="fd-nav-item active"><FiHome /> Dashboard</Link>
+            <Link to="/founders-dashboard" className="fd-nav-item active"><FiGrid /> Dashboard</Link>
             <Link to="/founders-dashboard/training" className="fd-nav-item"><FiVideo /> Training</Link>
             <Link to="/founders-dashboard/materials" className="fd-nav-item"><FiDownload /> Assets</Link>
             <Link to="/settings" className="fd-nav-item"><FiSettings /> Settings</Link>
           </nav>
-
-          <button 
-            className="fd-claim-sidebar-btn" 
-            onClick={handleClaimCoin} 
-            disabled={claiming || isClaimedToday()}
-          >
-           {stats.coins}  {"  "}   {claiming ? '...' : isClaimedToday() ? 'Claimed ✅' : 'Claim Daily Coins'}
-          </button>
         </div>
 
         <div className="fd-sidebar-bottom">
+          <div className="fd-profile-card">
+            <div className="fd-avatar">{getInitial(user.name, user.email)}</div>
+            <div className="fd-user-info">
+              <div className="fd-user-status">{user.name || user.email}</div>
+              <div className="fd-user-rank">{user.rank} Level</div>
+            </div>
+          </div>
           <Link to="/support" className="fd-nav-item"><FiLifeBuoy /> Support</Link>
           <button className="fd-nav-item fd-logout-btn"><FiLogOut /> Logout</button>
         </div>
       </aside>
 
-      {/* MAIN CONTENT */}
       <main className="fd-main-content">
-        
-        {/* Header */}
-        <header className="fd-header">
+        <header className="fd-desktop-topbar">
           <div>
-            <h1 className="fd-welcome-title">Welcome Back, {user.name}.</h1>
-            <p className="fd-welcome-subtitle">Your {user.rank} Founder status is active. Continue your streak to level up.</p>
+            <h1 className="fd-welcome-title">Welcome Back, {user.name || 'Founder'}</h1>
           </div>
-            <div className="fd-promo-banners" style={{ marginBottom: '20px', position: 'relative' }}>
-              <div className="fd-promo-chip" style={{ position: 'absolute', top: '-15px', right: '-15px', background: '#ff4500', color: 'white', padding: '8px 20px', borderRadius: '30px', fontWeight: 'bold', fontSize: '14px', zIndex: 10, boxShadow: '0 4px 15px rgba(255, 69, 0, 0.6)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <FiBell size={18} /> NEW ANNOUNCEMENT
-              </div>
-              <Link to="/founders-dashboard/training" style={{ flex: 1, borderRadius: '16px', overflow: 'hidden', display: 'block', textDecoration: 'none', border: '1px solid rgba(255, 215, 0, 0.3)', transition: 'all 0.3s ease', cursor: 'pointer', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }} onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = '0 15px 40px rgba(255, 215, 0, 0.3)'; }} onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.5)'; }}>
-                <div style={{ position: 'relative', width: '100%', height: '270px' }}>
-                  <img src="/new-course.jpg" alt="New Courses Coming Soon" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} onError={(e) => { e.target.src = 'https://via.placeholder.com/1200x400/101010/ff4500?text=NEW+COURSES+COMING+SOON'; }} />
-                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 60%)', pointerEvents: 'none' }}></div>
-                 
-                </div>
-              </Link>
-            </div>
+          <div className="fd-topbar-actions">
+            <span className="fd-member-pill">Pro Member</span>
+            <span className="fd-coin-pill">Available Coins: {currentCoins.toLocaleString()}</span>
+            <button className="fd-icon-btn" type="button" aria-label="Notifications"><FiBell /></button>
+            <button className="fd-icon-btn" type="button" aria-label="Support"><FiHelpCircle /></button>
+          </div>
         </header>
-    
-        <section className="fd-stats-row">
-          <div className="fd-stat-card">
-            <div className="fd-stat-icon fd-icon-users"><FiUsers /></div>
-            <div className="fd-stat-data">
-              <p className="fd-stat-label">Total Referrals</p>
-              <h3>{stats.totalReferrals}</h3>
-              <span className="fd-stat-change positive">+12% this month</span>
+
+        <section className="fd-dashboard-desktop">
+          <div className="fd-content-layout">
+            <div className="fd-content-left">
+              <div className="fd-card fd-roadmap-desktop">
+                <div className="fd-card-header">
+                  <div>
+                    <p className="fd-eyebrow">Milestone Tracker</p>
+                    <h2>Founder Roadmap</h2>
+                  </div>
+                  <span className="fd-current-tier">Current: {user.rank || 'Starter'}</span>
+                </div>
+
+                <div className="fd-roadline">
+                  <div className="fd-roadline-progress" style={{ width: `${Math.max(10, nextRankProgress)}%` }} />
+                  {rankTiers.map((tier, index) => {
+                    const activeTier = currentCoins >= tier.requiredCoins;
+                    const currentTier = nextRankTier?.name === tier.name;
+                    const lockedTier = !activeTier && !currentTier;
+
+                    return (
+                      <div key={tier.name} className={`fd-road-node ${activeTier ? 'done' : ''} ${currentTier ? 'active' : ''} ${lockedTier ? 'locked' : ''}`}>
+                        <span className="fd-road-dot">{activeTier ? '✓' : index + 1}</span>
+                        <h4>{tier.name}</h4>
+                        <small>{activeTier ? 'Completed' : currentTier ? 'Active' : 'Next Goal'}</small>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="fd-card fd-referrals-card">
+                <div className="fd-card-header">
+                  <h2>Recent Referrals</h2>
+                  <button className="fd-view-all" onClick={() => { setShowAllReferrals(true); fetchAllReferrals(1); }}>View All</button>
+                </div>
+                <div className="fd-table-wrapper">
+                  <table className="fd-table">
+                    <thead>
+                      <tr>
+                        <th>User</th>
+                        <th>Date</th>
+                        <th>Tier</th>
+                        <th>Reward</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {referrals.length > 0 ? (
+                        referrals.map((r, i) => (
+                          <tr key={r.id || i}>
+                            <td>
+                              <div className="fd-member-cell">
+                                <div className="fd-member-avatar">{getInitial(r.name, r.email)}</div>
+                                <div className="fd-member-name">{r.name || r.email}</div>
+                              </div>
+                            </td>
+                            <td>{formatDate(r.joinedAt)}</td>
+                            <td>
+                              <span className={`fd-status-badge ${r.role === 'Founder' ? 'active' : 'pending'}`}>
+                                {(r.role || 'Starter').toUpperCase()}
+                              </span>
+                            </td>
+                            <td className="fd-reward-cell">+${getReferralReward(r).toFixed(2)}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr><td colSpan="4" style={{ textAlign: 'center', padding: '20px' }}>No referrals yet.</td></tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="fd-next-rank-card">
+                  <div className="fd-next-rank-head">
+                    <h4>Next Milestone</h4>
+                    {nextRankTier ? (
+                      <span className={`fd-next-rank-pill ${nextRankTier.theme}`}>{nextRankTier.name}</span>
+                    ) : (
+                      <span className="fd-next-rank-pill gold">Max Rank Reached</span>
+                    )}
+                  </div>
+
+                  {nextRankTier ? (
+                    <>
+                      <p>
+                        You need <strong>{coinsNeededForNextRank}</strong> more coins to unlock <strong>{nextRankTier.name}</strong>.
+                      </p>
+                      <div className="fd-next-rank-track">
+                        <div className="fd-next-rank-fill" style={{ width: `${nextRankProgress}%` }} />
+                      </div>
+                      <small>{currentCoins} / {nextRankTier.requiredCoins} coins</small>
+                    </>
+                  ) : (
+                    <p>All founder core ranks unlocked. Keep building for future elite tiers.</p>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="fd-stat-card">
-            <div className="fd-stat-icon fd-icon-active"><FiShield /></div>
-            <div className="fd-stat-data">
-              <p className="fd-stat-label">Active Members</p>
-              <h3>{stats.activeReferrals}</h3>
-              <span className="fd-stat-change">67% Retention Rate</span>
+
+            <div className="fd-content-right">
+              <div className="fd-card fd-rewards-hero">
+                <p className="fd-stat-label">Total Rewards</p>
+                <h3>${stats.earnings ? stats.earnings.toFixed(2) : '0.00'}</h3>
+                <span className="fd-stat-change positive">+{Math.min(25, 4 + currentRewardDay)}.5% this month</span>
+                <button className="fd-withdraw-action" onClick={() => setShowWithdrawModal(true)}>Withdraw Funds</button>
+              </div>
+
+              <div className="fd-mini-stats-row">
+                <div className="fd-card fd-mini-stat">
+                  <p>Total Referrals</p>
+                  <strong>{stats.totalReferrals}</strong>
+                </div>
+                <div className="fd-card fd-mini-stat">
+                  <p>Active Members</p>
+                  <strong>{stats.activeReferrals}</strong>
+                </div>
+              </div>
+
+              <div className="fd-card fd-daily-card">
+                <div className="fd-daily-header">
+                  <h3>Daily Streak</h3>
+                  <span className="fd-streak-count">Day {currentRewardDay || 1}/7</span>
+                </div>
+                <div className="fd-streak-dots">
+                  {Array.from({ length: 3 }).map((_, idx) => {
+                    const isLit = idx + 1 <= Math.min(currentRewardDay || 1, 3);
+                    return <span key={idx} className={`fd-dot ${isLit ? 'active' : ''}`}>{idx + 1}</span>;
+                  })}
+                </div>
+                <button
+                  className="fd-daily-claim-btn"
+                  onClick={handleClaimCoin}
+                  disabled={claiming || isClaimedToday()}
+                >
+                  {claiming ? '...' : isClaimedToday() ? 'Reward Claimed Today' : 'Claim Daily Reward'}
+                </button>
+              </div>
+
+              <div className="fd-card fd-invite-card">
+                <h3>Expand Your Circle</h3>
+                <p>Share your link to earn more rewards.</p>
+                <div className="fd-invite-row">
+                  <div className="fd-qr-box">
+                    <QRCode value={referralLink} bgColor="#0f1218" fgColor="#ffe8a1" level="H" size={84} />
+                  </div>
+                  <div className="fd-link-input">
+                    <input type="text" value={referralLink} readOnly />
+                    <button onClick={copyReferralLink} className={copied ? 'copied' : ''}>
+                      {copied ? 'Copied' : <FiCopy />}
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="fd-stat-card fd-rewards-stat">
-            <div className="fd-stat-icon fd-icon-money"><FiDollarSign /></div>
-            <div className="fd-stat-data">
-              <p className="fd-stat-label">Total Rewards</p>
-              <h3>${stats.earnings ? stats.earnings.toFixed(2) : "0.00"}</h3>
-              <span className="fd-stat-change">Lifetime Earnings</span>
-            </div>
-            <button className="fd-withdraw-btn" onClick={() => setShowWithdrawModal(true)}>Withdraw</button>
           </div>
         </section>
 
-        {/* Content Layout */}
-        <div className="fd-content-layout">
-          
-          <div className="fd-content-left">
-            
+        <section className="fd-dashboard-mobile">
+          <header className="fd-mobile-head">
+            <div className="fd-mobile-avatar">{getInitial(user.name, user.email)}</div>
+            <div className="fd-mobile-search">
+              <FiSearch />
+              <input type="text" value="Search Hooraflix..." readOnly />
+            </div>
+            <button className="fd-mobile-bell" type="button" aria-label="Notifications"><FiBell /></button>
+          </header>
 
-            {/* Recent Referrals */}
-            <div className="fd-card fd-referrals-card">
-              <div className="fd-card-header">
-                <h2>Recent Referrals</h2>
-                <button className="fd-view-all" onClick={() => { setShowAllReferrals(true); fetchAllReferrals(1); }}>View All</button>
-              </div>
-              <div className="fd-table-wrapper">
-                <table className="fd-table">
-                  <thead>
-                    <tr>
-                      <th>Member Name</th>
-                      <th>Date Joined</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {referrals.length > 0 ? (
-                      referrals.map((r, i) => (
-                        <tr key={r.id || i}>
-                          <td>
-                            <div className="fd-member-cell">
-                              <div className="fd-member-avatar">{getInitial(r.name, r.email)}</div>
-                              <div className="fd-member-name">{r.name || r.email}</div>
-                            </div>
-                          </td>
-                          <td>{formatDate(r.joinedAt)}</td>
-                          <td>
-                            <span className={`fd-status-badge ${r.role === "Founder" ? 'active' : 'pending'}`}>
-                              {r.role === "Founder" ? "Active" : "Pending"}
-                            </span>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr><td colSpan="3" style={{textAlign:'center', padding:'20px'}}>No referrals yet.</td></tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
+          <div className="fd-mobile-coin-banner">
+            <span>Available Coins</span>
+            <strong>{currentCoins.toLocaleString()}</strong>
+          </div>
 
-              <div className="fd-next-rank-card">
-                <div className="fd-next-rank-head">
-                  <h4>Next Milestone</h4>
-                  {nextRankTier ? (
-                    <span className={`fd-next-rank-pill ${nextRankTier.theme}`}>{nextRankTier.name}</span>
-                  ) : (
-                    <span className="fd-next-rank-pill gold">Max Rank Reached</span>
-                  )}
+          <div className="fd-card fd-mobile-claim">
+            <h2>Claim Daily Rewards</h2>
+            <p>Complete your admin tasks to earn ecosystem bonuses.</p>
+            <button
+              className="fd-mobile-claim-btn"
+              onClick={handleClaimCoin}
+              disabled={claiming || isClaimedToday()}
+            >
+              {claiming ? 'Claiming...' : isClaimedToday() ? 'Claimed' : 'Claim Now'}
+            </button>
+          </div>
+
+          <div className="fd-mobile-quick-actions">
+            <Link to="/founders-dashboard/training" className="fd-mobile-action"><FiBookOpen /><span>Training</span></Link>
+            <Link to="/founders-dashboard/materials" className="fd-mobile-action"><FiDownload /><span>Assets</span></Link>
+            <Link to="/support" className="fd-mobile-action"><FiLifeBuoy /><span>Support</span></Link>
+            <button className="fd-mobile-action" type="button" onClick={() => setShowWithdrawModal(true)}><FiGift /><span>Rewards</span></button>
+          </div>
+
+          <div className="fd-card fd-mobile-stat-card">
+            <div className="fd-mobile-stat-header">
+              <p><FiUsers /> Total Referrals</p>
+              <span>+12.5%</span>
+            </div>
+            <h3>{stats.totalReferrals}<small> users</small></h3>
+            <div className="fd-mobile-bars">
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+            </div>
+          </div>
+
+          <div className="fd-card fd-mobile-stat-card">
+            <div className="fd-mobile-stat-header">
+              <p><FiDollarSign /> Total Rewards Pool</p>
+            </div>
+            <h3>{currentCoins.toLocaleString()} <small>HFX</small></h3>
+            <p className="fd-mobile-sub">≈ ${stats.earnings ? stats.earnings.toFixed(2) : '0.00'} USD</p>
+            <div className="fd-mobile-countdown">
+              <span>Next distribution</span>
+              <strong>04:12:00</strong>
+            </div>
+          </div>
+
+          <div className="fd-card fd-mobile-roadmap">
+            <div className="fd-card-header">
+              <h2>Founder Roadmap</h2>
+              <button className="fd-view-all" onClick={() => { setShowAllReferrals(true); fetchAllReferrals(1); }}>View Details</button>
+            </div>
+            <div className="fd-mobile-timeline">
+              <div className="fd-mobile-phase done">
+                <span className="fd-phase-dot">✓</span>
+                <div>
+                  <h4>Phase 1: Seed Generation</h4>
+                  <p>Initial platform infrastructure and core team assembly completed.</p>
                 </div>
-
-                {nextRankTier ? (
-                  <>
-                    <p>
-                      You need <strong>{coinsNeededForNextRank}</strong> more coins to unlock <strong>{nextRankTier.name}</strong>.
-                    </p>
-                    <div className="fd-next-rank-track">
-                      <div className="fd-next-rank-fill" style={{ width: `${nextRankProgress}%` }} />
+              </div>
+              <div className="fd-mobile-phase active">
+                <span className="fd-phase-dot">•</span>
+                <div>
+                  <h4>Phase 2: Beta Launch</h4>
+                  <p>Onboarding initial user cohort and stress-testing reward distribution.</p>
+                  <div className="fd-mobile-progress-row">
+                    <div className="fd-mobile-progress-track">
+                      <div className="fd-mobile-progress-fill" style={{ width: `${Math.max(30, Math.min(95, nextRankProgress))}%` }} />
                     </div>
-                    <small>{currentCoins} / {nextRankTier.requiredCoins} coins</small>
-                  </>
-                ) : (
-                  <p>All founder core ranks unlocked. Keep building for future elite tiers.</p>
-                )}
-              </div>
-            </div>
-
-            <section className="fd-ranks-section">
-              <div className="fd-ranks-title-row">
-                <h2>Your Founder Roadmap</h2>
-                <span>Level up to unlock higher commissions</span>
-              </div>
-
-              <div className="fd-ranks-image-wrap">
-                <img
-                  src="/rank.jpg"
-                  alt="Affiliate ranks: Starter, Promoter, Gold"
-                  className="fd-ranks-image"
-                  onError={(e) => {
-                    e.target.src = 'https://via.placeholder.com/1000x450/101010/f0b90b?text=Rank+Roadmap';
-                    e.target.style.opacity = '0.5';
-                  }}
-                />
-              </div>
-
-              <div className="fd-rank-steps">
-                {rankTiers.map((tier) => (
-                  <div key={tier.name} className={`fd-rank-step ${tier.theme}`}>
-                    <h4>{tier.name}</h4>
-                    <p>{tier.requiredCoins.toLocaleString()} coins</p>
+                    <span>{Math.round(Math.max(30, Math.min(95, nextRankProgress)))}%</span>
                   </div>
-                ))}
+                </div>
               </div>
-            </section>
-
-           
-
-
-            {/* Growth Cards */}
-            <div className="fd-growth-cards">
-              <div className="fd-growth-card">
-                <h3><FiBookOpen /> Affiliate Training</h3>
-                <p>Inside your dashboard, learn how to sell better and convert followers into active members.</p>
-                <button onClick={() => navigate('/founders-dashboard/training')}>Open Training Center</button>
-              </div>
-              <div className="fd-growth-card">
-                <h3><FiDownload /> Marketing Library</h3>
-                <p>Download ready-made campaign assets and launch your promotions instantly.</p>
-                <button className="alt" onClick={() => navigate('/founders-dashboard/materials')}>Browse Assets</button>
+              <div className="fd-mobile-phase locked">
+                <span className="fd-phase-dot">🔒</span>
+                <div>
+                  <h4>Phase 3: Public Release</h4>
+                  <p>Full market availability and exchange listings.</p>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="fd-content-right">
-            {/* Daily Rewards Sidebar */}
-            <div className="fd-card fd-daily-card">
-              <div className="fd-daily-header">
-                <h3>Daily Rewards</h3>
-                <div className='fd-stats-section'>               
-                  <div className="fd-streak-badge">{stats.coins} Coins</div>
-                  <div className="fd-streak-badge-current">{currentRewardDay} Day  Streak</div>
-               </div>
-              </div>
-              <p className="fd-daily-desc">Stack coins every day and earn bonuses.</p>
-              
-              <div className="fd-timeline">
-                {rewardMilestones.slice(0, 5).map((amount, idx) => {
-                  const day = idx + 1;
-                  const isCompleted = day < currentRewardDay || (day === currentRewardDay && isClaimedToday());
-                  const isCurrent = day === currentRewardDay && !isClaimedToday();
-                  return (
-                    <div key={idx} className={`fd-timeline-step ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''}`}>
-                      <div className="fd-timeline-circle">{day}</div>
-                      <div className="fd-timeline-info">
-                        <span className="fd-timeline-amount">{amount} Coins</span>
-                        <span className="fd-timeline-label">Day {day}</span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <button 
-                className="fd-daily-claim-btn" 
-                onClick={handleClaimCoin} 
-                disabled={claiming || isClaimedToday()}
-              >
-                {claiming ? '...' : isClaimedToday() ? 'Reward Claimed Today' : 'Claim Daily Reward'}
-              </button>
-            </div>
-
-            {/* Expand Your Circle */}
-            <div className="fd-card fd-invite-card">
-              <h3>Expand Your Circle</h3>
-              <p>Share your unique founder link. Every referral earns you more rewards.</p>
-              
-              <div className="fd-qr-box">
-                <QRCode value={dashboardData.referralLink || ''} bgColor="#1a1a1a" fgColor="#ffd700" level="H" size={120} />
-              </div>
-
-              <div className="fd-link-input">
-                <input type="text" value={dashboardData.referralLink || ''} readOnly />
-                <button onClick={copyReferralLink} className={copied ? 'copied' : ''}>
-                  {copied ? 'Copied' : 'Copy'}
-                </button>
-              </div>
-            </div>
-          </div>
-
-        </div>
+          <nav className="fd-mobile-nav">
+            <Link to="/founders-dashboard" className="fd-mobile-nav-item active"><FiHome /><span>Home</span></Link>
+            <Link to="/founders-dashboard/training" className="fd-mobile-nav-item"><FiVideo /><span>Training</span></Link>
+            <Link to="/founders-dashboard/materials" className="fd-mobile-nav-item"><FiDownload /><span>Assets</span></Link>
+            <Link to="/settings" className="fd-mobile-nav-item"><FiShield /><span>Profile</span></Link>
+          </nav>
+        </section>
       </main>
 
       {/* Withdraw Modal */}
@@ -505,8 +537,8 @@ const FoundersDashboard = () => {
                         </td>
                         <td>{formatDate(r.joinedAt)}</td>
                         <td>
-                          <span className={`fd-status-badge ${r.role === "Founder" ? 'active' : 'pending'}`}>
-                            {r.role === "Founder" ? "Active" : "Pending"}
+                            <span className={`fd-status-badge ${r.role === 'Founder' ? 'active' : 'pending'}`}>
+                              {r.role === 'Founder' ? 'Active' : 'Pending'}
                           </span>
                         </td>
                       </tr>
