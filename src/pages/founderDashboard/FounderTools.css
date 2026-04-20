@@ -395,6 +395,11 @@
   color: #2a1c02;
 }
 
+.ml-type-poster {
+  background: rgba(242, 108, 96, 0.9);
+  color: #2d0905;
+}
+
 .ml-type-beginner,
 .ml-type-intermediate,
 .ml-type-advanced {
@@ -414,6 +419,41 @@
 
 .ml-asset-title {
   margin: 0 0 8px;
+}
+
+.ml-asset-desc {
+  margin: 0 0 10px;
+  color: #b8c5d8;
+  line-height: 1.45;
+  font-size: 13px;
+}
+
+.ml-featured-section {
+  margin-bottom: 16px;
+}
+
+.ml-featured-head {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ml-featured-head h2 {
+  margin: 0;
+  font-size: 24px;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.ml-featured-head span {
+  color: #98a9c2;
+  font-size: 13px;
+}
+
+.ml-featured-grid {
+  margin-bottom: 0;
 }
 
 .ml-asset-formats {

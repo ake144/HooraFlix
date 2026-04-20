@@ -83,6 +83,52 @@
   padding-top: 80px; /* Header height */
 }
 
+.founder-affiliate-promo-section {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 28px 20px 34px;
+}
+
+.founder-affiliate-promo-wrap {
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 26px 65px rgba(0, 0, 0, 0.48);
+  background: #0d0f16;
+}
+
+.founder-affiliate-promo-image {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  max-height: 680px;
+}
+
+.founder-affiliate-cta-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+.founder-affiliate-cta-btn {
+  border: 0;
+  border-radius: 14px;
+  padding: 14px 30px;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: #ffffff;
+  background: linear-gradient(130deg, #f11722, #b3070f);
+  box-shadow: 0 16px 38px rgba(229, 9, 20, 0.4);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.founder-affiliate-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 46px rgba(229, 9, 20, 0.5);
+}
+
 /* Modal */
 .modal-overlay {
   position: fixed;
@@ -624,6 +670,28 @@
 
 /* Responsive */
 @media (max-width: 900px) {
+  .founder-affiliate-promo-section {
+    padding: 14px 14px 24px;
+  }
+
+  .founder-affiliate-promo-wrap {
+    border-radius: 16px;
+  }
+
+  .founder-affiliate-promo-image {
+    max-height: none;
+  }
+
+  .founder-affiliate-cta-row {
+    margin-top: 14px;
+  }
+
+  .founder-affiliate-cta-btn {
+    width: 100%;
+    max-width: 320px;
+    padding: 13px 18px;
+  }
+
   .education-access-section .section-container,
   .summary-wrapper {
     flex-direction: column;

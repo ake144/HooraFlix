@@ -45,6 +45,33 @@ const marketingAssets = [
   },
 ];
 
+const featuredPosterMaterials = [
+  {
+    title: 'Denash Campaign Poster',
+    type: 'POSTER',
+    formats: ['JPG', '1080x1350'],
+    description: 'High-impact visual poster optimized for timeline and story promotion campaigns.',
+    file: '/denash.jpg',
+    thumbnail: '/denash.jpg',
+  },
+  {
+    title: 'Tila Campaign Poster',
+    type: 'POSTER',
+    formats: ['JPG', '1080x1350'],
+    description: 'Cinematic poster creative for conversion-focused awareness and trailer pushes.',
+    file: '/tila.jpg',
+    thumbnail: '/tila.jpg',
+  },
+  {
+    title: 'Tsehay Campaign Poster',
+    type: 'POSTER',
+    formats: ['JPG', '1080x1350'],
+    description: 'Ready-to-publish key art for founder referral pages and partner communities.',
+    file: '/tsehay.jpg',
+    thumbnail: '/tsehay.jpg',
+  },
+];
+
 const FounderMarketingLibrary = () => {
   const { logout } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -157,6 +184,7 @@ const FounderMarketingLibrary = () => {
             <div className="ml-dropdowns">
               <select className="ml-select">
                 <option>All Categories</option>
+                <option>Poster</option>
                 <option>Video</option>
                 <option>Design</option>
                 <option>Copy</option>
@@ -171,6 +199,36 @@ const FounderMarketingLibrary = () => {
               </button>
             </div>
           </div>
+
+          <section className="ml-featured-section">
+            <div className="ml-featured-head">
+              <h2>Featured Campaign Posters</h2>
+              <span>Promotion-ready key art for active campaigns</span>
+            </div>
+
+            <div className="ml-asset-grid ml-featured-grid">
+              {featuredPosterMaterials.map((asset, index) => (
+                <div key={`featured-${index}`} className="ml-asset-card">
+                  <div className="ml-asset-img-container">
+                    <span className="ml-type-badge ml-type-poster">{asset.type}</span>
+                    <img src={asset.thumbnail} alt={asset.title} className="ml-asset-img" />
+                  </div>
+                  <div className="ml-asset-content">
+                    <h3 className="ml-asset-title">{asset.title}</h3>
+                    <p className="ml-asset-desc">{asset.description}</p>
+                    <div className="ml-asset-formats">
+                      {asset.formats.map((fmt, i) => (
+                        <span key={i} className="ml-format-tag">{fmt}</span>
+                      ))}
+                    </div>
+                    <a className="ml-download-btn" href={asset.file} download>
+                      <FiDownload className="ml-btn-icon"/> Download Poster
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
 
           <div className="ml-asset-grid">
             {filteredAssets.map((asset, index) => (
