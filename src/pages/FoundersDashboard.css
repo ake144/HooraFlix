@@ -1121,6 +1121,110 @@
     font-size: 32px;
   }
 
+  .fd-mobile-invite-card,
+  .fd-mobile-referrals-card {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 0;
+    padding: 18px;
+  }
+
+  .fd-mobile-invite-card h3 {
+    margin: 0 0 6px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+  }
+
+  .fd-mobile-invite-card p {
+    margin: 0 0 14px;
+    color: #c7d0df;
+    line-height: 1.45;
+  }
+
+  .fd-mobile-invite-preview {
+    display: grid;
+    grid-template-columns: 132px 1fr;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .fd-mobile-qr-box {
+    border-radius: 14px;
+    border: 1px solid #2a3441;
+    background: #0f141d;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .fd-mobile-link-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #c9b998;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .fd-mobile-link-field {
+    width: 100%;
+  }
+
+  .fd-mobile-referrals-card {
+    margin-top: 12px;
+    padding-bottom: 16px;
+  }
+
+  .fd-mobile-referrals-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .fd-mobile-referral-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid #222c38;
+    border-radius: 12px;
+    background: #111821;
+  }
+
+  .fd-mobile-referral-date {
+    color: #92a0b4;
+    font-size: 12px;
+    margin-top: 2px;
+  }
+
+  .fd-mobile-referral-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  .fd-mobile-referral-meta strong {
+    color: #f2cb62;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .fd-mobile-empty-state {
+    color: #95a3b8;
+    text-align: center;
+    padding: 14px 4px 4px;
+    font-size: 14px;
+  }
+
+  .fd-mobile-nav {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
   .fd-mobile-timeline {
     display: flex;
     flex-direction: column;
@@ -1240,6 +1344,13 @@
     gap: 3px;
     font-size: 12px;
     font-weight: 600;
+  }
+
+  .fd-mobile-logout-btn {
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
   }
 
   .fd-mobile-nav-item svg {

@@ -464,6 +464,58 @@ const FoundersDashboard = () => {
             </div>
           </div>
 
+          <div className="fd-card fd-mobile-invite-card">
+            <h3>Expand Your Circle</h3>
+            <p>Share your founder link and let people join directly from the QR code or referral URL.</p>
+
+            <div className="fd-mobile-invite-preview">
+              <div className="fd-mobile-qr-box">
+                <QRCode value={referralLink} bgColor="#0f1218" fgColor="#ffe8a1" level="H" size={112} />
+              </div>
+
+              <div className="fd-mobile-link-input">
+                <span className="fd-mobile-link-label">Referral Link</span>
+                <div className="fd-link-input fd-mobile-link-field">
+                  <input type="text" value={referralLink} readOnly />
+                  <button onClick={copyReferralLink} className={copied ? 'copied' : ''}>
+                    {copied ? 'Copied' : <FiCopy />}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="fd-card fd-mobile-referrals-card">
+            <div className="fd-card-header">
+              <h2>Recent Referrals</h2>
+              <button className="fd-view-all" onClick={() => { setShowAllReferrals(true); fetchAllReferrals(1); }}>View All</button>
+            </div>
+
+            <div className="fd-mobile-referrals-list">
+              {referrals.length > 0 ? (
+                referrals.map((referral, index) => (
+                  <div key={referral.id || index} className="fd-mobile-referral-item">
+                    <div className="fd-member-cell">
+                      <div className="fd-member-avatar">{getInitial(referral.name, referral.email)}</div>
+                      <div>
+                        <div className="fd-member-name">{referral.name || referral.email}</div>
+                        <div className="fd-mobile-referral-date">{formatDate(referral.joinedAt)}</div>
+                      </div>
+                    </div>
+                    <div className="fd-mobile-referral-meta">
+                      <span className={`fd-status-badge ${referral.role === 'Founder' ? 'active' : 'pending'}`}>
+                        {(referral.role || 'Starter').toUpperCase()}
+                      </span>
+                      <strong>+${getReferralReward(referral).toFixed(2)}</strong>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="fd-mobile-empty-state">No referrals yet.</div>
+              )}
+            </div>
+          </div>
+
           <nav className="fd-mobile-nav">
             <Link to="/founders-dashboard" className="fd-mobile-nav-item active"><FiHome /><span>Home</span></Link>
             <Link to="/founders-dashboard/training" className="fd-mobile-nav-item"><FiVideo /><span>Training</span></Link>
