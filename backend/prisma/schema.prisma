@@ -44,6 +44,7 @@ model User {
   founder        Founder?
   referredBy     Referral? @relation("ReferredUser")
   refreshTokens  RefreshToken[]
+  passwordResetTokens PasswordResetToken[]
 
   @@map("User")
 }
@@ -103,4 +104,17 @@ model RefreshToken {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("RefreshToken")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("PasswordResetToken")
 }

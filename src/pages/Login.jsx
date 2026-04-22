@@ -76,6 +76,10 @@ const Login = () => {
               />
             </div>
 
+            <div className="auth-inline-link-wrap">
+              <Link to="/forgot-password" className="auth-link">Forgot password?</Link>
+            </div>
+
             <button type="submit" className="auth-button" disabled={loading}>
               {loading ? 'Signing In...' : 'Sign In'}
             </button>

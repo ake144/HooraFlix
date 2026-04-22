@@ -87,6 +87,24 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const forgotPassword = async (email) => {
+        try {
+            const response = await authAPI.forgotPassword(email);
+            return { success: response.success, message: response.message };
+        } catch (error) {
+            return { success: false, error: error.message };
+        }
+    };
+
+    const resetPassword = async (token, password) => {
+        try {
+            const response = await authAPI.resetPassword(token, password);
+            return { success: response.success, message: response.message };
+        } catch (error) {
+            return { success: false, error: error.message };
+        }
+    };
+
     const value = {
         user,
         loading,
@@ -94,6 +112,8 @@ export const AuthProvider = ({ children }) => {
         login,
         register,
         logout,
+        forgotPassword,
+        resetPassword,
         checkAuth,
     };
 

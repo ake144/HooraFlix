@@ -5,7 +5,9 @@ import {
     login,
     refreshAccessToken,
     logout,
-    getMe
+    getMe,
+    forgotPassword,
+    resetPassword
 } from '../controllers/auth.controller.js';
 import { authMiddleware } from '../middleware/auth.middleware.js';
 import { validate } from '../middleware/validation.middleware.js';
@@ -25,11 +27,23 @@ const loginValidation = [
     body('password').notEmpty().withMessage('Password is required')
 ];
 
+const forgotPasswordValidation = [
+    body('email').isEmail().withMessage('Valid email is required').normalizeEmail()
+];
+
+const resetPasswordValidation = [
+    body('token').trim().notEmpty().withMessage('Reset token is required'),
+    body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters')
+];
+
 // Routes
 router.post('/register', registerValidation, validate, register);
 router.post('/login', loginValidation, validate, login);
 router.post('/refresh', refreshAccessToken);
 router.post('/logout', logout);
 router.get('/me', authMiddleware, getMe);
+router.post('/forgot-password', forgotPasswordValidation, validate, forgotPassword);
+router.post('/reset-password', resetPasswordValidation, validate, resetPassword);
+
 
 export default router;

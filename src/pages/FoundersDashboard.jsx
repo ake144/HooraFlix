@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { FiUsers, FiDollarSign, FiCopy, FiBookOpen, FiDownload, FiBell, FiShield, FiHome, FiVideo, FiGift, FiSettings, FiLifeBuoy, FiLogOut, FiSearch, FiHelpCircle, FiGrid } from 'react-icons/fi';
 import { useNavigate, Link } from 'react-router-dom';
 import QRCode from 'react-qr-code';
+import { useAuth } from '../context/AuthContext';
 import { founderAPI } from '../utils/api';
 import './FoundersDashboard.css';
 
 const FoundersDashboard = () => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -192,7 +194,7 @@ const FoundersDashboard = () => {
             </div>
           </div>
           <Link to="/support" className="fd-nav-item"><FiLifeBuoy /> Support</Link>
-          <button className="fd-nav-item fd-logout-btn"><FiLogOut /> Logout</button>
+          <button className="fd-nav-item fd-logout-btn" onClick={logout}><FiLogOut /> Logout</button>
         </div>
       </aside>
 
@@ -467,6 +469,10 @@ const FoundersDashboard = () => {
             <Link to="/founders-dashboard/training" className="fd-mobile-nav-item"><FiVideo /><span>Training</span></Link>
             <Link to="/founders-dashboard/materials" className="fd-mobile-nav-item"><FiDownload /><span>Assets</span></Link>
             <Link to="/settings" className="fd-mobile-nav-item"><FiShield /><span>Profile</span></Link>
+            <button type="button" className="fd-mobile-nav-item fd-mobile-logout-btn" onClick={logout}>
+              <FiLogOut />
+              <span>Logout</span>
+            </button>
           </nav>
         </section>
       </main>

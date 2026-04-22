@@ -33,6 +33,36 @@
   gap: 1rem;
 }
 
+.auth-subtitle {
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 1rem;
+}
+
+.auth-alert {
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  padding: 0.75rem 0.85rem;
+  font-size: 0.92rem;
+}
+
+.auth-alert-error {
+  background: rgba(255, 72, 72, 0.14);
+  border: 1px solid rgba(255, 72, 72, 0.35);
+  color: #ffbaba;
+}
+
+.auth-alert-success {
+  background: rgba(84, 255, 170, 0.14);
+  border: 1px solid rgba(84, 255, 170, 0.35);
+  color: #b8ffd8;
+}
+
+.auth-inline-link-wrap {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -0.2rem;
+}
+
 .form-input {
   width: 100%;
   padding: 1rem;

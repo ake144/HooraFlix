@@ -6,6 +6,8 @@ import EpisodeDetail from './pages/EpisodeDetail';
 import LiveStream from './pages/LiveStream';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import FoundersPage from './pages/FoundersPage';
 import FoundersDashboard from './pages/FoundersDashboard';
 import FounderTrainingCenter from './pages/founderDashboard/FounderTrainingCenter';
@@ -26,6 +28,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route 
           path="/founders" 
           element={
@@ -59,14 +63,14 @@ function App() {
           }
         />
         <Route
-          path="/settings"
+          path="/founders-dashboard/settings"
           element={
             <ProtectedRoute requireFounder>
               <FounderSettings />
             </ProtectedRoute>
           }
         />        <Route
-          path="/support"
+          path="/founders-dashboard/support"
           element={
             <ProtectedRoute requireFounder>
               <FounderSupport />

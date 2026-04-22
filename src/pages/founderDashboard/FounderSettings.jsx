@@ -109,45 +109,39 @@ const FounderSettings = () => {
       {/* LEFT SIDEBAR */}
       <aside className="fd-sidebar">
         <div className="fd-sidebar-top">
-          <div className="fd-logo">HOORAFLIX</div>
-          
-          <div className="fd-user-profile">
-            <div className="fd-avatar">{getInitial(user.name, user.email)}</div>
-            <div className="fd-user-info">
-              <div className="fd-user-status">Premium Member</div>
-              <div className="fd-user-rank">{user.rank} Level</div>
-            </div>
-          </div>
+        <Link to="/founders-dashboard">
+          <div className="fd-logo">Hooraflix</div>
+          <p className="fd-logo-sub">Admin Console</p>
+        </Link>
 
           <nav className="fd-nav">
             <Link to="/founders-dashboard" className="fd-nav-item"><FiHome /> Dashboard</Link>
             <Link to="/founders-dashboard/training" className="fd-nav-item"><FiVideo /> Training</Link>
             <Link to="/founders-dashboard/materials" className="fd-nav-item"><FiDownload /> Assets</Link>
-            <Link to="/settings" className="fd-nav-item active"><FiSettings /> Settings</Link>
+            <Link to="/founders-dashboard/settings" className="fd-nav-item active"><FiSettings /> Settings</Link>
           </nav>
+          </div>
 
-          <button 
-            className="fd-claim-sidebar-btn" 
-            onClick={handleClaimCoin} 
-            disabled={claiming || isClaimedToday()}
-          >
-            {claiming ? '...' : isClaimedToday() ? 'Claimed ✅' : 'Claim Daily Coins'}
-          </button>
-        </div>
-
-        <div className="fd-sidebar-bottom">
-          <Link to="/support" className="fd-nav-item"><FiLifeBuoy /> Support</Link>
-          <button className="fd-nav-item fd-logout-btn" onClick={() => { logout(); navigate('/login'); }}><FiLogOut /> Logout</button>
-        </div>
+         <div className="fd-sidebar-bottom">
+            <div className="fd-profile-card">
+              <div className="fd-avatar">{getInitial(user.name, user.email)}</div>
+              <div className="fd-user-info">
+                <div className="fd-user-status">{user.name || user.email}</div>
+                <div className="fd-user-rank">{user.rank} Level</div>
+              </div>
+            </div>
+            <Link to="/support" className="fd-nav-item"><FiLifeBuoy /> Support</Link>
+            <button className="fd-nav-item fd-logout-btn" onClick={logout}><FiLogOut /> Logout</button>
+          </div>
       </aside>
 
       {/* MAIN CONTENT */}
       <main className="fd-main-content founder-tool-page-content">
         <div className="founder-tool-container">
           <div className="tool-page-topbar">
-            <Link to="/founders-dashboard" className="tool-back-link">
-              <FiArrowLeft /> Back to Dashboard
-            </Link>
+            {/* <Link to="/founders-dashboard" className="tool-back-link">
+              <FiArrowLeft /> 
+            </Link> */}
           </div>
 
           <section className="tool-hero">

@@ -155,9 +155,9 @@ const FounderTrainingCenter = () => {
 
         <div className="founder-tool-container">
           <div className="tool-page-topbar">
-            <Link to="/founders-dashboard" className="tool-back-link">
-              <FiArrowLeft /> Back to Dashboard
-            </Link>
+            <div>
+
+             </div>
             <button
               className="tool-claim-btn"
               onClick={handleClaimCoin}
