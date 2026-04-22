@@ -1197,8 +1197,63 @@
     margin-bottom: 0;
   }
 
+  .fd-mobile-roadmap-head {
+    align-items: flex-start;
+  }
+
   .fd-mobile-roadmap .fd-card-header h2 {
-    font-size: 32px;
+    font-size: 22px;
+    line-height: 1.1;
+  }
+
+  .fd-mobile-roadmap .fd-current-tier {
+    font-size: 11px;
+    padding: 6px 8px;
+  }
+
+  .fd-mobile-rank-roadline {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+    padding-top: 18px;
+  }
+
+  .fd-mobile-rank-roadline::before {
+    content: '';
+    position: absolute;
+    top: 29px;
+    left: 12px;
+    right: 12px;
+    height: 2px;
+    background: #3a4351;
+  }
+
+  .fd-mobile-rank-roadline .fd-roadline-progress {
+    top: 29px;
+    left: 12px;
+  }
+
+  .fd-mobile-rank-roadline .fd-road-dot {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+
+  .fd-mobile-rank-roadline .fd-road-node h4 {
+    font-size: 13px;
+  }
+
+  .fd-mobile-rank-roadline .fd-road-node small {
+    font-size: 11px;
+    line-height: 1.2;
+    display: block;
+  }
+
+  .fd-next-rank-card-mobile {
+    margin-top: 14px;
   }
 
   .fd-mobile-invite-card,

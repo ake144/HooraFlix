@@ -513,38 +513,57 @@ const FoundersDashboard = () => {
           </div>
 
           <div className="fd-card fd-mobile-roadmap">
-            <div className="fd-card-header">
-              <h2>Founder Roadmap</h2>
-              <button className="fd-view-all" onClick={() => { setShowAllReferrals(true); fetchAllReferrals(1); }}>View Details</button>
+            <div className="fd-card-header fd-mobile-roadmap-head">
+              <div>
+                <p className="fd-eyebrow">Milestone Tracker</p>
+                <h2>Founder Roadmap</h2>
+              </div>
+              <span className="fd-current-tier">Rank: {user.rank || 'Starter'}</span>
             </div>
-            <div className="fd-mobile-timeline">
-              <div className="fd-mobile-phase done">
-                <span className="fd-phase-dot">✓</span>
-                <div>
-                  <h4>Phase 1: Seed Generation</h4>
-                  <p>Initial platform infrastructure and core team assembly completed.</p>
-                </div>
-              </div>
-              <div className="fd-mobile-phase active">
-                <span className="fd-phase-dot">•</span>
-                <div>
-                  <h4>Phase 2: Beta Launch</h4>
-                  <p>Onboarding initial user cohort and stress-testing reward distribution.</p>
-                  <div className="fd-mobile-progress-row">
-                    <div className="fd-mobile-progress-track">
-                      <div className="fd-mobile-progress-fill" style={{ width: `${Math.max(30, Math.min(95, nextRankProgress))}%` }} />
-                    </div>
-                    <span>{Math.round(Math.max(30, Math.min(95, nextRankProgress)))}%</span>
+
+            <div className="fd-mobile-rank-roadline">
+              <div className="fd-roadline-progress" style={{ width: `${Math.max(10, nextRankProgress)}%` }} />
+              {rankTiers.map((tier, index) => {
+                const activeTier = currentCoins >= tier.requiredCoins;
+                const currentTier = nextRankTier?.name === tier.name;
+                const lockedTier = !activeTier && !currentTier;
+
+                return (
+                  <div
+                    key={`mobile-${tier.name}`}
+                    className={`fd-road-node ${activeTier ? 'done' : ''} ${currentTier ? 'active' : ''} ${lockedTier ? 'locked' : ''}`}
+                  >
+                    <span className="fd-road-dot">{activeTier ? '✓' : index + 1}</span>
+                    <h4>{tier.name}</h4>
+                    <small>{activeTier ? 'Completed' : currentTier ? 'Active' : 'Next Goal'}</small>
                   </div>
-                </div>
+                );
+              })}
+            </div>
+
+            <div className="fd-next-rank-card fd-next-rank-card-mobile">
+              <div className="fd-next-rank-head">
+                <h4>Next Milestone</h4>
+                {nextRankTier ? (
+                  <span className={`fd-next-rank-pill ${nextRankTier.theme}`}>{nextRankTier.name}</span>
+                ) : (
+                  <span className="fd-next-rank-pill gold">Max Rank Reached</span>
+                )}
               </div>
-              <div className="fd-mobile-phase locked">
-                <span className="fd-phase-dot">🔒</span>
-                <div>
-                  <h4>Phase 3: Public Release</h4>
-                  <p>Full market availability and exchange listings.</p>
-                </div>
-              </div>
+
+              {nextRankTier ? (
+                <>
+                  <p>
+                    You need <strong>{coinsNeededForNextRank}</strong> more coins to unlock <strong>{nextRankTier.name}</strong>.
+                  </p>
+                  <div className="fd-next-rank-track">
+                    <div className="fd-next-rank-fill" style={{ width: `${nextRankProgress}%` }} />
+                  </div>
+                  <small>{currentCoins} / {nextRankTier.requiredCoins} coins</small>
+                </>
+              ) : (
+                <p>All founder core ranks unlocked. Keep building for future elite tiers.</p>
+              )}
             </div>
           </div>
 
