@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { FiUsers, FiDollarSign, FiCopy, FiBookOpen, FiDownload, FiBell, FiShield, FiHome, FiVideo, FiGift, FiSettings, FiLifeBuoy, FiLogOut, FiSearch, FiHelpCircle, FiGrid } from 'react-icons/fi';
+import { FiUsers, FiDollarSign, FiCopy, FiBookOpen, FiDownload, FiBell, FiShield, FiHome, FiVideo, FiGift, FiSettings, FiLifeBuoy, FiLogOut, FiSearch, FiHelpCircle, FiGrid, FiShare2 } from 'react-icons/fi';
+import { SiFacebook, SiLinkedin, SiTelegram, SiWhatsapp, SiX } from 'react-icons/si';
 import { useNavigate, Link } from 'react-router-dom';
 import QRCode from 'react-qr-code';
 import { useAuth } from '../context/AuthContext';
 import { founderAPI } from '../utils/api';
 import './FoundersDashboard.css';
+import toast from 'react-hot-toast';
+
 
 const FoundersDashboard = () => {
   const navigate = useNavigate();
@@ -76,11 +79,11 @@ const FoundersDashboard = () => {
         setCoins(res.data.coins);
         setStreak(res.data.streak);
         setLastClaimDate(res.data.lastClaimDate);
-        alert(res.message);
+        toast(res.message);
       }
     } catch (err) {
       console.error(err);
-      alert(err.message || 'Failed to claim reward');
+      toast(err.message || 'Failed to claim reward');
     } finally {
       setClaiming(false);
     }
@@ -147,9 +150,9 @@ const FoundersDashboard = () => {
   const currentRewardDay = Math.min(Math.max(streak, 0), rewardMilestones.length);
   const currentCoins = Number(stats.coins || coins || 0);
   const rankTiers = [
-    { name: 'Starter', requiredCoins: 1000, theme: 'starter' },
-    { name: 'Promoter', requiredCoins: 2000, theme: 'promoter' },
-    { name: 'Gold', requiredCoins: 3000, theme: 'gold' },
+    { name: 'BRONZE', requiredCoins: 10, theme: 'bronze' },
+    { name: 'SILVER', requiredCoins: 1000, theme: 'silver' },
+    { name: 'GOLD', requiredCoins: 2000, theme: 'gold' },
   ];
   const nextRankTier = rankTiers.find((tier) => currentCoins < tier.requiredCoins) || null;
   const coinsNeededForNextRank = nextRankTier ? nextRankTier.requiredCoins - currentCoins : 0;
@@ -157,6 +160,7 @@ const FoundersDashboard = () => {
     ? Math.min((currentCoins / nextRankTier.requiredCoins) * 100, 100)
     : 100;
   const referralLink = dashboardData.referralLink || '';
+  const shareText = `Join my Hooraflix founder circle and grow with me. Scan my QR code or use this link to sign up:`;
 
   const getReferralReward = (referral) => {
     if (typeof referral?.rewardAmount === 'number') {
@@ -165,6 +169,63 @@ const FoundersDashboard = () => {
 
     return referral?.role === 'Founder' ? 50 : 15;
   };
+
+  const openShareWindow = (url) => {
+    window.open(url, '_blank', 'noopener,noreferrer,width=560,height=640');
+  };
+
+  const handleSocialShare = (platform) => {
+    if (!referralLink) {
+      return;
+    }
+
+    const encodedMessage = encodeURIComponent(`${shareText}\n${referralLink}`);
+    const encodedLink = encodeURIComponent(referralLink);
+
+    const shareMap = {
+      whatsapp: `https://wa.me/?text=${encodedMessage}`,
+      telegram: `https://t.me/share/url?url=${encodedLink}&text=${encodeURIComponent(shareText)}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedLink}&quote=${encodeURIComponent(shareText)}`,
+      x: `https://twitter.com/intent/tweet?text=${encodedMessage}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedLink}`,
+    };
+
+    const shareUrl = shareMap[platform];
+    if (shareUrl) {
+      openShareWindow(shareUrl);
+    }
+  };
+
+  const handleNativeShare = async () => {
+    if (!referralLink) {
+      return;
+    }
+
+    if (!navigator.share) {
+      copyReferralLink();
+      return;
+    }
+
+    try {
+      await navigator.share({
+        title: 'Hooraflix Founder Invite',
+        text: `${shareText} ${referralLink}`,
+        url: referralLink,
+      });
+    } catch (err) {
+      if (err?.name !== 'AbortError') {
+        console.error('Native sharing failed:', err);
+      }
+    }
+  };
+
+  const socialSharePlatforms = [
+    { key: 'whatsapp', label: 'WhatsApp', icon: <SiWhatsapp /> },
+    { key: 'telegram', label: 'Telegram', icon: <SiTelegram /> },
+    { key: 'facebook', label: 'Facebook', icon: <SiFacebook /> },
+    { key: 'x', label: 'X', icon: <SiX /> },
+    { key: 'linkedin', label: 'LinkedIn', icon: <SiLinkedin /> },
+  ];
 
 
   return (
@@ -181,7 +242,7 @@ const FoundersDashboard = () => {
             <Link to="/founders-dashboard" className="fd-nav-item active"><FiGrid /> Dashboard</Link>
             <Link to="/founders-dashboard/training" className="fd-nav-item"><FiVideo /> Training</Link>
             <Link to="/founders-dashboard/materials" className="fd-nav-item"><FiDownload /> Assets</Link>
-            <Link to="/settings" className="fd-nav-item"><FiSettings /> Settings</Link>
+            <Link to="/founders-dashboard/settings" className="fd-nav-item"><FiSettings /> Settings</Link>
           </nav>
         </div>
 
@@ -193,8 +254,8 @@ const FoundersDashboard = () => {
               <div className="fd-user-rank">{user.rank} Level</div>
             </div>
           </div>
-          <Link to="/support" className="fd-nav-item"><FiLifeBuoy /> Support</Link>
-          <button className="fd-nav-item fd-logout-btn" onClick={logout}><FiLogOut /> Logout</button>
+          <Link to="/founders-dashboard/support" className="fd-nav-item"><FiLifeBuoy /> Support</Link>
+          <button className="fd-nav-item " onClick={logout}><FiLogOut /> Logout</button>
         </div>
       </aside>
 
@@ -220,7 +281,7 @@ const FoundersDashboard = () => {
                     <p className="fd-eyebrow">Milestone Tracker</p>
                     <h2>Founder Roadmap</h2>
                   </div>
-                  <span className="fd-current-tier">Current: {user.rank || 'Starter'}</span>
+                  <span className="fd-current-tier">Rank: {user.rank || 'Starter'}</span>
                 </div>
 
                 <div className="fd-roadline">
@@ -252,8 +313,8 @@ const FoundersDashboard = () => {
                       <tr>
                         <th>User</th>
                         <th>Date</th>
-                        <th>Tier</th>
-                        <th>Reward</th>
+                        <th>Status</th>
+                        <th>Earnings</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -269,7 +330,7 @@ const FoundersDashboard = () => {
                             <td>{formatDate(r.joinedAt)}</td>
                             <td>
                               <span className={`fd-status-badge ${r.role === 'Founder' ? 'active' : 'pending'}`}>
-                                {(r.role || 'Starter').toUpperCase()}
+                                {r.role === 'Founder' ? 'Active Founder' : 'Pending'}
                               </span>
                             </td>
                             <td className="fd-reward-cell">+${getReferralReward(r).toFixed(2)}</td>
@@ -361,6 +422,29 @@ const FoundersDashboard = () => {
                       {copied ? 'Copied' : <FiCopy />}
                     </button>
                   </div>
+                </div>
+              </div>
+
+              <div className="fd-share-wrap">
+                <div className="fd-share-head">
+                  <h4>Share Across Social Media</h4>
+                  <button className="fd-native-share-btn" type="button" onClick={handleNativeShare}>
+                    <FiShare2 /> Share Link
+                  </button>
+                </div>
+                <p>Post your founder invite with a short pitch to reach more followers.</p>
+                <div className="fd-share-grid">
+                  {socialSharePlatforms.map((platform) => (
+                    <button
+                      key={platform.key}
+                      type="button"
+                      className="fd-share-btn"
+                      onClick={() => handleSocialShare(platform.key)}
+                    >
+                      {platform.icon}
+                      <span>{platform.label}</span>
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
@@ -483,6 +567,29 @@ const FoundersDashboard = () => {
                 </div>
               </div>
             </div>
+
+            <div className="fd-mobile-share-wrap">
+              <div className="fd-share-head">
+                <h4>Share Invite</h4>
+                <button className="fd-native-share-btn" type="button" onClick={handleNativeShare}>
+                  <FiShare2 /> Share
+                </button>
+              </div>
+              <p>Share a quick founder pitch plus your link on social apps.</p>
+              <div className="fd-share-grid fd-share-grid-mobile">
+                {socialSharePlatforms.map((platform) => (
+                  <button
+                    key={`mobile-${platform.key}`}
+                    type="button"
+                    className="fd-share-btn"
+                    onClick={() => handleSocialShare(platform.key)}
+                  >
+                    {platform.icon}
+                    <span>{platform.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
           <div className="fd-card fd-mobile-referrals-card">
@@ -520,7 +627,7 @@ const FoundersDashboard = () => {
             <Link to="/founders-dashboard" className="fd-mobile-nav-item active"><FiHome /><span>Home</span></Link>
             <Link to="/founders-dashboard/training" className="fd-mobile-nav-item"><FiVideo /><span>Training</span></Link>
             <Link to="/founders-dashboard/materials" className="fd-mobile-nav-item"><FiDownload /><span>Assets</span></Link>
-            <Link to="/settings" className="fd-mobile-nav-item"><FiShield /><span>Profile</span></Link>
+            <Link to="/founders-dashboard/settings" className="fd-mobile-nav-item"><FiShield /><span>Profile</span></Link>
             <button type="button" className="fd-mobile-nav-item fd-mobile-logout-btn" onClick={logout}>
               <FiLogOut />
               <span>Logout</span>

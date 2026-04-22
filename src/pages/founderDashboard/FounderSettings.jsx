@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { FiHome, FiVideo, FiDownload, FiGift, FiSettings, FiLifeBuoy, FiLogOut, FiArrowLeft, FiSave } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
+import { FiHome, FiVideo, FiDownload, FiSettings, FiLifeBuoy, FiLogOut, FiSave, FiShield, FiBell, FiSearch } from 'react-icons/fi';
 import { useAuth } from '../../context/AuthContext';
 import { founderAPI } from '../../utils/api';
 import '../FoundersDashboard.css';
 import './FounderTools.css';
+import toast from 'react-hot-toast';
 
 const FounderSettings = () => {
-  const navigate = useNavigate();
   const { logout } = useAuth();
   
   const [dashboardData, setDashboardData] = useState(null);
@@ -58,11 +58,11 @@ const FounderSettings = () => {
         setCoins(res.data.coins);
         setStreak(res.data.streak);
         setLastClaimDate(res.data.lastClaimDate);
-        alert(res.message);
+        toast(res.message);
       }
     } catch (err) {
       console.error(err);
-      alert(err.message || 'Failed to claim reward');
+      toast(err.message || 'Failed to claim reward');
     } finally {
       setClaiming(false);
     }
@@ -130,13 +130,24 @@ const FounderSettings = () => {
                 <div className="fd-user-rank">{user.rank} Level</div>
               </div>
             </div>
-            <Link to="/support" className="fd-nav-item"><FiLifeBuoy /> Support</Link>
-            <button className="fd-nav-item fd-logout-btn" onClick={logout}><FiLogOut /> Logout</button>
+            <Link to="/founders-dashboard/support" className="fd-nav-item"><FiLifeBuoy /> Support</Link>
+            <button className="fd-nav-item" onClick={logout}><FiLogOut /> Logout</button>
           </div>
       </aside>
 
       {/* MAIN CONTENT */}
       <main className="fd-main-content founder-tool-page-content">
+        <section className="founder-mobile-page-head">
+          <div className="fd-mobile-head">
+            <div className="fd-mobile-avatar">{getInitial(user.name, user.email)}</div>
+            <div className="fd-mobile-search">
+              <FiSearch />
+              <input type="text" value="Search settings..." readOnly />
+            </div>
+            <button className="fd-mobile-bell" type="button" aria-label="Notifications"><FiBell /></button>
+          </div>
+        </section>
+
         <div className="founder-tool-container">
           <div className="tool-page-topbar">
             {/* <Link to="/founders-dashboard" className="tool-back-link">
@@ -215,6 +226,17 @@ const FounderSettings = () => {
             </div>
           </section>
         </div>
+
+        <nav className="fd-mobile-nav founder-mobile-nav-only">
+          <Link to="/founders-dashboard" className="fd-mobile-nav-item"><FiHome /><span>Home</span></Link>
+          <Link to="/founders-dashboard/training" className="fd-mobile-nav-item"><FiVideo /><span>Training</span></Link>
+          <Link to="/founders-dashboard/materials" className="fd-mobile-nav-item"><FiDownload /><span>Assets</span></Link>
+          <Link to="/founders-dashboard/settings" className="fd-mobile-nav-item active"><FiShield /><span>Profile</span></Link>
+          <button type="button" className="fd-mobile-nav-item fd-mobile-logout-btn" onClick={logout}>
+            <FiLogOut />
+            <span>Logout</span>
+          </button>
+        </nav>
       </main>
     </div>
   );

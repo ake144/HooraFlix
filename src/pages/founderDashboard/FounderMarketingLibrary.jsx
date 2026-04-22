@@ -120,7 +120,7 @@ const FounderMarketingLibrary = () => {
             <Link to="/founders-dashboard" className="fd-nav-item"><FiGrid /> Dashboard</Link>
             <Link to="/founders-dashboard/training" className="fd-nav-item"><FiVideo /> Training</Link>
             <Link to="/founders-dashboard/materials" className="fd-nav-item active"><FiDownload /> Assets</Link>
-            <Link to="/settings" className="fd-nav-item"><FiSettings /> Settings</Link>
+            <Link to="/founders-dashboard/settings" className="fd-nav-item"><FiSettings /> Settings</Link>
           </nav>
         </div>
 
@@ -132,8 +132,8 @@ const FounderMarketingLibrary = () => {
               <div className="fd-user-rank">{user.rank} Level</div>
             </div>
           </div>
-          <Link to="/support" className="fd-nav-item"><FiLifeBuoy /> Support</Link>
-          <button className="fd-nav-item fd-logout-btn" onClick={logout}><FiLogOut /> Logout</button>
+          <Link to="/founders-dashboard/support" className="fd-nav-item"><FiLifeBuoy /> Support</Link>
+          <button className="fd-nav-item" onClick={logout}><FiLogOut /> Logout</button>
         </div>
       </aside>
 
@@ -283,7 +283,7 @@ const FounderMarketingLibrary = () => {
           <Link to="/founders-dashboard" className="fd-mobile-nav-item"><FiHome /><span>Home</span></Link>
           <Link to="/founders-dashboard/training" className="fd-mobile-nav-item"><FiVideo /><span>Training</span></Link>
           <Link to="/founders-dashboard/materials" className="fd-mobile-nav-item active"><FiDownload /><span>Assets</span></Link>
-          <Link to="/settings" className="fd-mobile-nav-item"><FiShield /><span>Profile</span></Link>
+          <Link to="/founders-dashboard/settings" className="fd-mobile-nav-item"><FiShield /><span>Profile</span></Link>
         </nav>
       </main>
     </div>

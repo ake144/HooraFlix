@@ -707,6 +707,86 @@
   background: #2f9f67;
 }
 
+.fd-share-wrap,
+.fd-mobile-share-wrap {
+  margin-top: 14px;
+  border: 1px solid #273242;
+  border-radius: 12px;
+  background: #111922;
+  padding: 12px;
+}
+
+.fd-share-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.fd-share-head h4 {
+  margin: 0;
+  font-size: 14px;
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: 0.01em;
+}
+
+.fd-native-share-btn {
+  border: 1px solid #2d3b4d;
+  background: #172130;
+  color: #dbe8f9;
+  border-radius: 999px;
+  padding: 7px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.fd-share-wrap p,
+.fd-mobile-share-wrap p {
+  margin: 0 0 10px;
+  color: #9eb0c6;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.fd-share-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.fd-share-btn {
+  border: 1px solid #2b3644;
+  border-radius: 10px;
+  background: linear-gradient(145deg, #172130 0%, #121b29 100%);
+  color: #d9e8fb;
+  min-height: 64px;
+  padding: 8px 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.fd-share-btn:hover {
+  border-color: rgba(241, 195, 61, 0.5);
+  transform: translateY(-1px);
+}
+
+.fd-share-btn svg {
+  font-size: 17px;
+  color: #f2cf72;
+}
+
 .fd-mobile-head,
 .fd-mobile-quick-actions,
 .fd-mobile-stat-card,
@@ -1177,6 +1257,14 @@
     padding-bottom: 16px;
   }
 
+  .fd-mobile-share-wrap {
+    margin-top: 12px;
+  }
+
+  .fd-share-grid-mobile {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .fd-mobile-referrals-list {
     display: flex;
     flex-direction: column;
@@ -1330,7 +1418,7 @@
     border-top: 1px solid #1f2731;
     height: 72px;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     align-items: center;
     padding: 0 8px;
   }
