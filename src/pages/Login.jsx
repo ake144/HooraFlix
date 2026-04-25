@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Auth.css';
@@ -12,6 +12,14 @@ const Login = () => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+   useEffect(() => {
+    const redirectMessage = sessionStorage.getItem('authRedirectMessage');
+    if (redirectMessage) {
+      setError(redirectMessage);
+      sessionStorage.removeItem('authRedirectMessage');
+    }
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -50,7 +58,7 @@ const Login = () => {
       <div className="auth-form-side">
         <div className="auth-box">
           <h1 className="auth-title">Sign In</h1>
-
+           {error && <div className="auth-alert auth-alert-error">{error}</div>}
           <form className="auth-form" onSubmit={handleSubmit}>
             <div className="form-group">
               <input
