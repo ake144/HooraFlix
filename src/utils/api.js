@@ -1,4 +1,6 @@
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://hoorafilx.com/api';
+const AUTH_REDIRECT_MESSAGE_KEY = 'authRedirectMessage';
+
 
 class ApiClient {
     constructor() {
@@ -68,6 +70,11 @@ class ApiClient {
                         // Retry original request with new token
                         return this.request(endpoint, options);
                     } else {
+                        sessionStorage.setItem(
+                            AUTH_REDIRECT_MESSAGE_KEY,
+                            'Your session expired. Please login again.'
+                        );
+                        
                         this.clearTokens();
                         window.location.href = '/login';
                     }
@@ -150,6 +157,9 @@ export const authAPI = {
     logout: (refreshToken) => api.post('/auth/logout', { refreshToken }),
     getMe: () => api.get('/auth/me'),
     refreshToken: (refreshToken) => api.post('/auth/refresh', { refreshToken }),
+    forgotPassword: (email) => api.post('/auth/forgot-password', { email }),
+    resetPassword: (token, password) => api.post('/auth/reset-password', { token, password }),
+
 };
 
 // User API
