@@ -191,8 +191,29 @@ export const refreshAccessToken = async (req, res, next) => {
             });
         }
 
-        // Verify refresh token
-        const decoded = verifyToken(refreshToken, process.env.JWT_REFRESH_SECRET);
+        try {
+            verifyToken(refreshToken, process.env.JWT_REFRESH_SECRET);
+        } catch (error) {
+            if (error.name === 'TokenExpiredError') {
+                await prisma.refreshToken.deleteMany({
+                    where: { token: refreshToken }
+                });
+
+                return res.status(401).json({
+                    success: false,
+                    message: 'Session expired. Please login again.'
+                });
+            }
+
+            if (error.name === 'JsonWebTokenError') {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Invalid refresh token'
+                });
+            }
+
+            throw error;
+        }
 
         // Check if refresh token exists in database
         const storedToken = await prisma.refreshToken.findUnique({
