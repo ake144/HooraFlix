@@ -19,6 +19,7 @@ import Casting from './pages/Casting';
 import Opportunity from './pages/Opportunity';
 import Revenue from './pages/Revenue';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminRoutes from './admin/AdminRoutes';
 import './App.css';
 
 function App() {
@@ -30,6 +31,14 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route
+          path="/admin/*"
+          element={
+            <ProtectedRoute requireAdmin>
+              <AdminRoutes />
+            </ProtectedRoute>
+          }
+        />
         <Route 
           path="/founders" 
           element={

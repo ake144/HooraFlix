@@ -1,0 +1,19 @@
+.admin-sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+.admin-sidebar li {
+  margin: 1rem 0;
+}
+.admin-sidebar a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  display: block;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+.admin-sidebar a:hover {
+  background: #353a45;
+}

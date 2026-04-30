@@ -1,0 +1,28 @@
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+}
+.admin-sidebar {
+  width: 220px;
+  background: #23272f;
+  color: #fff;
+  min-height: 100vh;
+  padding-top: 1rem;
+}
+.admin-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.admin-navbar {
+  background: #1a1d23;
+  color: #fff;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #23272f;
+}
+.admin-content {
+  flex: 1;
+  padding: 2rem;
+  background: #f7f8fa;
+}
