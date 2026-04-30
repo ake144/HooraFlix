@@ -229,7 +229,7 @@ export const refreshAccessToken = async (req, res, next) => {
         }
 
         // Check if token is expired
-        if (new Date() > storedToken.expiresAt) {
+        if (new Date() > storedToken.expiresAt) { 
             await prisma.refreshToken.delete({
                 where: { id: storedToken.id }
             });
@@ -246,9 +246,21 @@ export const refreshAccessToken = async (req, res, next) => {
             storedToken.user.role
         );
 
+        // Rotate refresh token: generate a new refresh token and update DB
+        const newRefreshToken = generateRefreshToken(storedToken.user.id);
+        try {
+            await prisma.refreshToken.update({
+                where: { id: storedToken.id },
+                data: { token: newRefreshToken, expiresAt: getRefreshTokenExpiry() }
+            });
+        } catch (err) {
+            // If update fails, log and continue returning at least the access token
+            console.error('Failed to rotate refresh token for user', storedToken.user.id, err);
+        }
+
         res.json({
             success: true,
-            data: { accessToken }
+            data: { accessToken, refreshToken: newRefreshToken }
         });
     } catch (error) {
         next(error);

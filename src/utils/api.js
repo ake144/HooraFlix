@@ -1,10 +1,12 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://hoorafilx.com/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 const AUTH_REDIRECT_MESSAGE_KEY = 'authRedirectMessage';
 
 
 class ApiClient {
     constructor() {
         this.baseURL = API_BASE_URL;
+        // Promise that represents an in-flight refresh request
+        this.refreshPromise = null;
     }
 
     /**
@@ -65,18 +67,29 @@ class ApiClient {
             if (!response.ok) {
                 // Handle token expiration
                 if (response.status === 401 && !endpoint.includes('/auth/refresh')) {
+                    // If we've already retried this request, don't try again
+                    if (options._retry) {
+                        sessionStorage.setItem(
+                            AUTH_REDIRECT_MESSAGE_KEY,
+                            'Your session expired. Please login again.'
+                        );
+                        this.clearTokens();
+                        window.location.href = '/login';
+                        throw new Error(data.message || 'Unauthorized');
+                    }
+
                     const refreshed = await this.refreshAccessToken();
                     if (refreshed) {
-                        // Retry original request with new token
-                        return this.request(endpoint, options);
+                        // Retry original request with new token, but mark as retried
+                        return this.request(endpoint, { ...options, _retry: true });
                     } else {
                         sessionStorage.setItem(
                             AUTH_REDIRECT_MESSAGE_KEY,
                             'Your session expired. Please login again.'
                         );
-                        
                         this.clearTokens();
                         window.location.href = '/login';
+                        throw new Error(data.message || 'Unauthorized');
                     }
                 }
 
@@ -95,25 +108,36 @@ class ApiClient {
      */
     async refreshAccessToken() {
         try {
-            const refreshToken = this.getRefreshToken();
-            if (!refreshToken) return false;
+            // If a refresh is already in progress, await it instead of starting a new one
+            if (this.refreshPromise) return await this.refreshPromise;
 
-            const response = await fetch(`${this.baseURL}/auth/refresh`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ refreshToken }),
-            });
+            this.refreshPromise = (async () => {
+                const refreshToken = this.getRefreshToken();
+                if (!refreshToken) return false;
 
-            if (!response.ok) return false;
+                const response = await fetch(`${this.baseURL}/auth/refresh`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ refreshToken }),
+                });
 
-            const data = await response.json();
-            if (data.success && data.data.accessToken) {
-                this.setTokens(data.data.accessToken, null);
-                return true;
-            }
+                if (!response.ok) return false;
 
-            return false;
+                const data = await response.json();
+                if (data.success && data.data.accessToken) {
+                    // Update access token; backend may also return a rotated refresh token
+                    this.setTokens(data.data.accessToken, data.data.refreshToken || null);
+                    return true;
+                }
+
+                return false;
+            })();
+
+            const result = await this.refreshPromise;
+            this.refreshPromise = null;
+            return result;
         } catch (error) {
+            this.refreshPromise = null;
             console.error('Token refresh failed:', error);
             return false;
         }
@@ -159,7 +183,6 @@ export const authAPI = {
     refreshToken: (refreshToken) => api.post('/auth/refresh', { refreshToken }),
     forgotPassword: (email) => api.post('/auth/forgot-password', { email }),
     resetPassword: (token, password) => api.post('/auth/reset-password', { token, password }),
-
 };
 
 // User API
