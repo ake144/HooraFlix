@@ -1,0 +1,55 @@
+/* AdminDashboard.css */
+.admin-dashboard-container {
+  padding: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.admin-dashboard-error {
+  color: red;
+  text-align: center;
+  margin-top: 2rem;
+}
+.admin-section {
+  margin-bottom: 2rem;
+}
+.admin-user-list, .admin-payment-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.admin-user-item, .admin-payment-item {
+  display: flex;
+  flex-direction: column;
+  background: #f9f9f9;
+  margin-bottom: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 4px;
+}
+.admin-user-item button {
+  align-self: flex-end;
+  margin-top: 0.5rem;
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+}
+.admin-user-item button:hover {
+  background: #c0392b;
+}
+@media (max-width: 600px) {
+  .admin-dashboard-container {
+    padding: 0.5rem;
+    max-width: 100vw;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .admin-user-item, .admin-payment-item {
+    padding: 0.5rem;
+    font-size: 0.95rem;
+  }
+}
