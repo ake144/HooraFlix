@@ -30,13 +30,6 @@ hooraflix/
 └── nginx.conf           # Nginx reverse proxy config
 ```
 
-## 🧪 Test Credentials
-
-After the first startup, use these credentials:
-
-- **Admin**: `admin@hooraflix.com` / `admin123456`
-- **Founder**: `founder@hooraflix.com` / `founder123`
-- **Founder Codes**: `HOORA2026`, `FOUNDER100`, `ELITE2026`
 
 ## 🔑 Key Features
 
