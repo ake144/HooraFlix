@@ -38,7 +38,7 @@ const Login = () => {
         console.log('Logged in user:', result.user);
         
      
-        if (result.user.isFounder) {
+        if (result.user.isFounder && result.user.role !== 'ADMIN') {
           navigate('/founders-dashboard');
         }  
         else if(result.user.role === 'ADMIN') {
