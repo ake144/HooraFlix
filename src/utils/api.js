@@ -66,7 +66,12 @@ class ApiClient {
 
             if (!response.ok) {
                 // Handle token expiration
-                if (response.status === 401 && !endpoint.includes('/auth/refresh')) {
+                // Do not attempt to refresh token for login, register, or refresh endpoints
+                const isAuthEndpoint = endpoint.includes('/auth/login') ||
+                    endpoint.includes('/auth/register') ||
+                    endpoint.includes('/auth/refresh');
+
+                if (response.status === 401 && !isAuthEndpoint) {
                     // If we've already retried this request, don't try again
                     if (options._retry) {
                         sessionStorage.setItem(
@@ -193,12 +198,32 @@ export const userAPI = {
 
 // Founder API
 export const founderAPI = {
-    verifyCode: (code) => api.post('/founders/verify-code', { code }),
+    verifyCode: (code, rank = null) => api.post('/founders/verify-code', {
+        code,
+        ...(rank ? { rank } : {}),
+    }),
     getDashboard: () => api.get('/founders/dashboard'),
     getReferrals: (page = 1, limit = 10) => api.get(`/founders/referrals?page=${page}&limit=${limit}`),
     getStats: () => api.get('/founders/stats'),
     claimCoin: () => api.post('/founders/claim-coin', {}),
     withdrawCoin: () => api.post('/founders/withdraw-coin', {}),
+};
+
+// Admin API
+export const adminAPI = {
+    getUsers: () => api.get('/admin/users'),
+    deleteUser: (userId) => api.delete(`/admin/users/${userId}`),
+    getCodeStats: () => api.get('/admin/code-stats'),
+    getPayments: () => api.get('/admin/payments'),
+    createFounderCode: (data) => api.post('/admin/founder-codes', data),
+    getFounderCodes: () => api.get('/admin/founder-codes'),
+};
+
+// Notification API
+export const notificationAPI = {
+    getNotifications: () => api.get('/notifications'),
+    markAsRead: (id) => api.put(`/notifications/${id}/read`),
+    markAllAsRead: () => api.put('/notifications/read-all'),
 };
 
 export default api;
