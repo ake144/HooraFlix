@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { FiUsers, FiDollarSign, FiCopy, FiBookOpen, FiDownload, FiBell, FiShield, FiHome, FiVideo, FiGift, FiSettings, FiLifeBuoy, FiLogOut, FiSearch, FiHelpCircle, FiGrid, FiShare2 } from 'react-icons/fi';
+import { FiUsers, FiDollarSign, FiCopy, FiBookOpen, FiDownload, FiBell, FiShield, FiHome, FiVideo, FiGift, FiSettings, FiLifeBuoy, FiLogOut, FiSearch, FiHelpCircle, FiGrid, FiShare2, FiPieChart, FiRepeat } from 'react-icons/fi';
 import { SiFacebook, SiLinkedin, SiTelegram, SiWhatsapp, SiX } from 'react-icons/si';
 import { useNavigate, Link } from 'react-router-dom';
 import QRCode from 'react-qr-code';
 import { useAuth } from '../context/AuthContext';
 import { founderAPI } from '../utils/api';
+import NotificationDropdown from '../components/NotificationDropdown';
 import './FoundersDashboard.css';
 import toast from 'react-hot-toast';
 
@@ -59,7 +60,7 @@ const FoundersDashboard = () => {
 
   const fetchAllReferrals = async (page = 1) => {
     try {
-      const data = await founderAPI.getReferrals(page, 10);
+      const data = await founderAPI.getReferrals(page, 15);
       if (data.success) {
         setAllReferrals(data.data.referrals || []);
         setAllPagination(data.data.pagination || {});
@@ -128,7 +129,7 @@ const FoundersDashboard = () => {
           <p>{error || 'Please try again later'}</p>
           <div className="fd-error-actions">
             <button onClick={() => window.location.reload()}>Retry</button>
-            <button onClick={() => navigate('/founders')}>Go to Founders Page</button>  
+            <button onClick={() => navigate('/founders')}>Go to Founders Page</button>
           </div>
         </div>
       </div>
@@ -150,8 +151,8 @@ const FoundersDashboard = () => {
   const currentRewardDay = Math.min(Math.max(streak, 0), rewardMilestones.length);
   const currentCoins = Number(stats.coins || coins || 0);
   const rankTiers = [
-    { name: 'BRONZE', requiredCoins: 10, theme: 'bronze' },
-    { name: 'SILVER', requiredCoins: 1000, theme: 'silver' },
+    { name: 'STARTER', requiredCoins: 0, theme: 'starter' },
+    { name: 'PROMOTER', requiredCoins: 1000, theme: 'promoter' },
     { name: 'GOLD', requiredCoins: 2000, theme: 'gold' },
   ];
   const nextRankTier = rankTiers.find((tier) => currentCoins < tier.requiredCoins) || null;
@@ -173,6 +174,10 @@ const FoundersDashboard = () => {
   const openShareWindow = (url) => {
     window.open(url, '_blank', 'noopener,noreferrer,width=560,height=640');
   };
+
+  const pushToAllReferrals = () => {
+    navigate('/founders-dashboard/referrals');
+  }
 
   const handleSocialShare = (platform) => {
     if (!referralLink) {
@@ -267,7 +272,7 @@ const FoundersDashboard = () => {
           <div className="fd-topbar-actions">
             <span className="fd-member-pill">Pro Member</span>
             <span className="fd-coin-pill">Available Coins: {currentCoins.toLocaleString()}</span>
-            <button className="fd-icon-btn" type="button" aria-label="Notifications"><FiBell /></button>
+            <NotificationDropdown />
             <button className="fd-icon-btn" type="button" aria-label="Support"><FiHelpCircle /></button>
           </div>
         </header>
@@ -305,7 +310,7 @@ const FoundersDashboard = () => {
               <div className="fd-card fd-referrals-card">
                 <div className="fd-card-header">
                   <h2>Recent Referrals</h2>
-                  <button className="fd-view-all" onClick={() => { setShowAllReferrals(true); fetchAllReferrals(1); }}>View All</button>
+                  <button className="fd-view-all" onClick={() => pushToAllReferrals()}>View All</button>
                 </div>
                 <div className="fd-table-wrapper">
                   <table className="fd-table">
@@ -371,6 +376,14 @@ const FoundersDashboard = () => {
             </div>
 
             <div className="fd-content-right">
+              <div className="fd-card fd-desktop-coin-card">
+                <div className="fd-desktop-coin-info">
+                  <p className="fd-stat-label">HOORAFILX COINS</p>
+                  <h3>{currentCoins.toLocaleString()}</h3>
+                </div>
+                <img src="/coin.png" alt="Coin" className="fd-desktop-coin-img" />
+              </div>
+
               <div className="fd-card fd-rewards-hero">
                 <p className="fd-stat-label">Total Rewards</p>
                 <h3>${stats.earnings ? stats.earnings.toFixed(2) : '0.00'}</h3>
@@ -458,32 +471,53 @@ const FoundersDashboard = () => {
               <FiSearch />
               <input type="text" value="Search Hooraflix..." readOnly />
             </div>
-            <button className="fd-mobile-bell" type="button" aria-label="Notifications"><FiBell /></button>
+            <NotificationDropdown />
           </header>
 
-          <div className="fd-mobile-coin-banner">
-            <span>Available Coins</span>
-            <strong>{currentCoins.toLocaleString()}</strong>
+          <div className="fd-mobile-welcome-section">
+            <h2>Welcome, {user.name || 'Founder'}!</h2>
+            <p>Let's grow together.</p>
           </div>
 
-          <div className="fd-card fd-mobile-claim">
-            <h2>Claim Daily Rewards</h2>
-            <p>Complete your admin tasks to earn ecosystem bonuses.</p>
+          <div className="fd-mobile-coin-claim-card">
+            <div className="fd-mobile-coin-card-top">
+              <div className="fd-mobile-coin-info">
+                <span className="fd-mobile-coin-label">HOORAFILX COINS</span>
+                <div className="fd-mobile-coin-amount">{currentCoins.toLocaleString()}</div>
+              </div>
+              <div className="fd-mobile-coin-img-wrap">
+                <img src="/coin.png" alt="Coin" className="fd-mobile-coin-img" />
+              </div>
+            </div>
             <button
-              className="fd-mobile-claim-btn"
+              className="fd-mobile-claim-btn-full"
               onClick={handleClaimCoin}
               disabled={claiming || isClaimedToday()}
             >
-              {claiming ? 'Claiming...' : isClaimedToday() ? 'Claimed' : 'Claim Now'}
+              {claiming ? 'Claiming...' : isClaimedToday() ? 'Claimed' : 'CLAIM COINS'}
+              <span className="fd-mobile-claim-arrow">→</span>
             </button>
           </div>
 
-          <div className="fd-mobile-quick-actions">
-            <Link to="/founders-dashboard/training" className="fd-mobile-action"><FiBookOpen /><span>Training</span></Link>
-            <Link to="/founders-dashboard/materials" className="fd-mobile-action"><FiDownload /><span>Assets</span></Link>
-            <Link to="/support" className="fd-mobile-action"><FiLifeBuoy /><span>Support</span></Link>
-            <button className="fd-mobile-action" type="button" onClick={() => setShowWithdrawModal(true)}><FiGift /><span>Rewards</span></button>
+          <div className="fd-mobile-dashboard-grid " >
+            <Link to="/founders-dashboard" className="fd-mobile-dashboard-card">
+              <span className="fd-mobile-dashboard-icon gold"><FiPieChart /></span>
+              <span className="fd-mobile-dashboard-label">Overview</span>
+            </Link>
+            <Link to="/founders-dashboard/earnings" className="fd-mobile-dashboard-card">
+              <span className="fd-mobile-dashboard-icon gold"><FiDollarSign /></span>
+              <span className="fd-mobile-dashboard-label">Earnings</span>
+            </Link>
+            <Link to="/founders-dashboard/referrals" className="fd-mobile-dashboard-card">
+              <span className="fd-mobile-dashboard-icon gold"><FiUsers /></span>
+              <span className="fd-mobile-dashboard-label">Referrals</span>
+            </Link>
+            <Link to="/founders-dashboard/training" className="fd-mobile-dashboard-card">
+              <span className="fd-mobile-dashboard-icon gold"><FiDownload /></span>
+              <span className="fd-mobile-dashboard-label">Training  Tools</span>
+            </Link>
           </div>
+
 
           <div className="fd-card fd-mobile-stat-card">
             <div className="fd-mobile-stat-header">
@@ -567,7 +601,7 @@ const FoundersDashboard = () => {
             </div>
           </div>
 
-          <div className="fd-card fd-mobile-invite-card">
+          {/* <div className="fd-card fd-mobile-invite-card">
             <h3>Expand Your Circle</h3>
             <p>Share your founder link and let people join directly from the QR code or referral URL.</p>
 
@@ -609,7 +643,7 @@ const FoundersDashboard = () => {
                 ))}
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className="fd-card fd-mobile-referrals-card">
             <div className="fd-card-header">
@@ -629,10 +663,21 @@ const FoundersDashboard = () => {
                       </div>
                     </div>
                     <div className="fd-mobile-referral-meta">
-                      <span className={`fd-status-badge ${referral.role === 'Founder' ? 'active' : 'pending'}`}>
-                        {(referral.role || 'Starter').toUpperCase()}
-                      </span>
-                      <strong>+${getReferralReward(referral).toFixed(2)}</strong>
+                      {referral.role === 'Founder' ? (
+                        <>
+
+                          <span className={`fd-status-badge ${referral.role === 'Founder' ? 'active' : 'pending'}`}>
+                            {(referral.role || 'Starter').toUpperCase()}
+                          </span>
+                          <strong>+${getReferralReward(referral).toFixed(2)}</strong>
+                        </>
+                      )
+                        : (
+                          <span className={`fd-status-badge pending`}>
+                            INACTIVE
+                          </span>
+                        )
+                      }
                     </div>
                   </div>
                 ))
@@ -644,8 +689,8 @@ const FoundersDashboard = () => {
 
           <nav className="fd-mobile-nav">
             <Link to="/founders-dashboard" className="fd-mobile-nav-item active"><FiHome /><span>Home</span></Link>
-            <Link to="/founders-dashboard/training" className="fd-mobile-nav-item"><FiVideo /><span>Training</span></Link>
-            <Link to="/founders-dashboard/materials" className="fd-mobile-nav-item"><FiDownload /><span>Assets</span></Link>
+            <Link to="/founders-dashboard/referrals" className="fd-mobile-nav-item"><FiUsers /><span>Referrals</span></Link>
+            <Link to="/founders-dashboard/earnings" className="fd-mobile-nav-item"><FiDollarSign /><span>Earnings</span></Link>
             <Link to="/founders-dashboard/settings" className="fd-mobile-nav-item"><FiShield /><span>Profile</span></Link>
             <button type="button" className="fd-mobile-nav-item fd-mobile-logout-btn" onClick={logout}>
               <FiLogOut />
@@ -668,11 +713,11 @@ const FoundersDashboard = () => {
               <div className="fd-withdraw-options">
                 {['Bank Transfer', 'Mobile Money', 'Crypto', 'PayPal'].map(method => (
                   <label key={method} className={`fd-option ${withdrawMethod === method ? 'selected' : ''}`}>
-                    <input 
-                      type="radio" 
-                      name="withdrawMethod" 
-                      value={method} 
-                      onChange={(e) => setWithdrawMethod(e.target.value)} 
+                    <input
+                      type="radio"
+                      name="withdrawMethod"
+                      value={method}
+                      onChange={(e) => setWithdrawMethod(e.target.value)}
                     />
                     {method}
                   </label>
@@ -721,14 +766,14 @@ const FoundersDashboard = () => {
                         </td>
                         <td>{formatDate(r.joinedAt)}</td>
                         <td>
-                            <span className={`fd-status-badge ${r.role === 'Founder' ? 'active' : 'pending'}`}>
-                              {r.role === 'Founder' ? 'Active' : 'Pending'}
+                          <span className={`fd-status-badge ${r.role === 'Founder' ? 'active' : 'pending'}`}>
+                            {r.role === 'Founder' ? 'Active' : 'Pending'}
                           </span>
                         </td>
                       </tr>
                     ))
                   ) : (
-                    <tr><td colSpan="3" style={{textAlign:'center', padding:'20px'}}>No referrals inside network.</td></tr>
+                    <tr><td colSpan="3" style={{ textAlign: 'center', padding: '20px' }}>No referrals inside network.</td></tr>
                   )}
                 </tbody>
               </table>

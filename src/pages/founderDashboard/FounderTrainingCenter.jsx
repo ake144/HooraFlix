@@ -232,12 +232,24 @@ const FounderTrainingCenter = () => {
           </section>
         </div>
 
-        <nav className="fd-mobile-nav founder-mobile-nav-only">
-          <Link to="/founders-dashboard" className="fd-mobile-nav-item"><FiHome /><span>Home</span></Link>
-          <Link to="/founders-dashboard/training" className="fd-mobile-nav-item active"><FiVideo /><span>Training</span></Link>
-          <Link to="/founders-dashboard/materials" className="fd-mobile-nav-item"><FiDownload /><span>Assets</span></Link>
-          <Link to="/founders-dashboard/settings" className="fd-mobile-nav-item"><FiShield /><span>Profile</span></Link>
-        </nav>
+         <div className="fd-mobile-dashboard-grid " >
+          <Link to="/founders-dashboard" className="fd-mobile-dashboard-card">
+            <span className="fd-mobile-dashboard-icon gold"><FiPieChart /></span>
+            <span className="fd-mobile-dashboard-label">Overview</span>
+          </Link>
+          <Link to="/founders-dashboard/earnings" className="fd-mobile-dashboard-card">
+            <span className="fd-mobile-dashboard-icon gold"><FiDollarSign /></span>
+            <span className="fd-mobile-dashboard-label">Earnings</span>
+          </Link>
+          <Link to="/founders-dashboard/referrals" className="fd-mobile-dashboard-card">
+            <span className="fd-mobile-dashboard-icon gold"><FiUsers /></span>
+            <span className="fd-mobile-dashboard-label">Referrals</span>
+          </Link>
+          <Link to="/founders-dashboard/training" className="fd-mobile-dashboard-card">
+            <span className="fd-mobile-dashboard-icon gold"><FiDownload /></span>
+            <span className="fd-mobile-dashboard-label">Training  Tools</span>
+          </Link>
+        </div>
       </main>
     </div>
   );

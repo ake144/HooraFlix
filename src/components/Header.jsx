@@ -86,10 +86,16 @@ const Header = () => {
                       <span>Founders Area</span>
                     </Link>
                     {user?.isFounder && (
-                        <Link to="/founders-dashboard" className="dropdown-item" onClick={() => setShowProfileMenu(false)}>
-                        <FiUser className="dropdown-icon" />
-                        <span>Dashboard</span>
-                        </Link>
+                      <Link to="/founders-dashboard" className="dropdown-item" onClick={() => setShowProfileMenu(false)}>
+                      <FiUser className="dropdown-icon" />
+                      <span>Dashboard</span>
+                      </Link>
+                    )}
+                    {user?.role === 'admin' && (
+                      <Link to="/admin-dashboard" className="dropdown-item" onClick={() => setShowProfileMenu(false)}>
+                      <FiUser className="dropdown-icon" />
+                      <span>Admin Dashboard</span>
+                      </Link>
                     )}
                     <button onClick={handleLogout} className="dropdown-item" style={{background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer'}}>
                       <FiLogOut className="dropdown-icon" />

@@ -15,7 +15,8 @@ const router = Router();
 
 // Validation rules
 const codeValidation = [
-    body('code').trim().notEmpty().withMessage('Founder code is required')
+    body('code').trim().notEmpty().withMessage('Founder code is required'),
+    body('rank').optional().isString().withMessage('Rank must be a string')
 ];
 
 // Routes

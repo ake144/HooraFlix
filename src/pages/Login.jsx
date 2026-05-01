@@ -37,10 +37,14 @@ const Login = () => {
       if (result.success) {
         console.log('Logged in user:', result.user);
         
-        // Redirect based on user role
+     
         if (result.user.isFounder) {
           navigate('/founders-dashboard');
-        } else {
+        }  
+        else if(result.user.role === 'ADMIN') {
+          navigate('/admin');
+        } 
+        else {
           navigate('/founders');
         }
       } else {

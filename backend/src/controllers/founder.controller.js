@@ -12,8 +12,11 @@ import {
  */
 export const verifyFounderCode = async (req, res, next) => {
     try {
-        const { code } = req.body;
+        const { code, rank } = req.body;
         let userId = req.user?.userId;
+        const normalizedRank = typeof rank === 'string' && rank.trim()
+            ? rank.trim().toUpperCase()
+            : 'STARTER';
 
         // Manually parse token if middleware didn't populate req.user
         if (!userId && req.headers.authorization?.startsWith('Bearer ')) {
@@ -30,6 +33,8 @@ export const verifyFounderCode = async (req, res, next) => {
         const founderCode = await prisma.founderCode.findUnique({
             where: { code: code.toUpperCase() }
         });
+
+
 
         if (!founderCode) {
             return res.status(404).json({
@@ -79,7 +84,7 @@ export const verifyFounderCode = async (req, res, next) => {
                         userId: user.id,
                         founderCode: code.toUpperCase(),
                         referralLink,
-                        rank: 'GOLD'
+                        rank: normalizedRank
                     }
                 });
             } catch (error) {
@@ -209,9 +214,11 @@ export const getFounderDashboard = async (req, res, next) => {
 
         // Calculate next milestone
         const milestones = {
-            BRONZE: { next: 'SILVER', threshold: 50 },
-            SILVER: { next: 'GOLD', threshold: 100 },
-            GOLD: { next: 'PLATINUM', threshold: 150 },
+            STARTER: { next: 'PROMOTER', threshold: 0 },
+            PROMOTER: { next: 'GOLD', threshold: 100 },
+            GOLD: { next: 'SILVER', threshold: 150 },
+            BRONZE: { next: 'SILVER', threshold: 200 },
+            SILVER: { next: 'PLATINUM', threshold: 250 },
             PLATINUM: { next: null, threshold: null }
         };
 

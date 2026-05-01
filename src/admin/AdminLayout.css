@@ -1,28 +1,225 @@
 .admin-layout {
   display: flex;
   min-height: 100vh;
+  background: #060b13;
+  color: #f3f5f7;
+  font-family: 'Inter', sans-serif;
 }
+
 .admin-sidebar {
-  width: 220px;
-  background: #23272f;
-  color: #fff;
-  min-height: 100vh;
-  padding-top: 1rem;
+  width: 250px;
+  background: linear-gradient(180deg, #070d15 0%, #060b12 100%);
+  border-right: 1px solid #1a202a;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
 }
+
+.admin-sidebar-logo {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid #1a202a;
+  margin-bottom: 20px;
+}
+
+.admin-sidebar-logo h2 {
+  margin: 0;
+  color: #f1c33d;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 24px;
+}
+
+.admin-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  color: #97a3b6;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s;
+  border-right: 3px solid transparent;
+}
+
+.admin-nav-link:hover,
+.admin-nav-link.active {
+  background: rgba(241, 195, 61, 0.1);
+  color: #f1c33d;
+  border-right: 3px solid #f1c33d;
+}
+
 .admin-main {
   flex: 1;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
+
 .admin-navbar {
-  background: #1a1d23;
-  color: #fff;
-  padding: 1rem 2rem;
-  font-size: 1.2rem;
-  border-bottom: 1px solid #23272f;
+  background: #0a1018;
+  padding: 16px 30px;
+  border-bottom: 1px solid #1a202a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
+.admin-navbar h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
 .admin-content {
+  padding: 30px;
   flex: 1;
-  padding: 2rem;
-  background: #f7f8fa;
+}
+
+/* cPanel Grid Styles */
+.cpanel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.cpanel-card {
+  background: linear-gradient(135deg, #171d26 0%, #111821 100%);
+  border: 1px solid #232b36;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-decoration: none;
+  color: #f3f5f7;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.cpanel-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  border-color: #f1c33d;
+}
+
+.cpanel-icon {
+  font-size: 32px;
+  color: #f1c33d;
+  margin-bottom: 16px;
+  background: rgba(241, 195, 61, 0.1);
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.cpanel-card h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.cpanel-card p {
+  margin: 0;
+  font-size: 14px;
+  color: #97a3b6;
+  line-height: 1.5;
+}
+
+/* Admin Tables */
+.admin-table-wrapper {
+  background: #121820;
+  border: 1px solid #1a202a;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th {
+  background: #0a1018;
+  padding: 16px;
+  text-align: left;
+  font-size: 13px;
+  color: #97a3b6;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #1a202a;
+}
+
+.admin-table td {
+  padding: 16px;
+  border-bottom: 1px solid #1a202a;
+  font-size: 14px;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.admin-badge.active {
+  background: rgba(49, 214, 137, 0.1);
+  color: #31d689;
+}
+
+.admin-badge.inactive {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+/* Admin Forms */
+.admin-form-card {
+  background: linear-gradient(135deg, #171d26 0%, #111821 100%);
+  border: 1px solid #232b36;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.admin-form-group {
+  margin-bottom: 16px;
+}
+
+.admin-form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #97a3b6;
+}
+
+.admin-form-group input {
+  width: 100%;
+  padding: 12px;
+  background: #0a1018;
+  border: 1px solid #1a202a;
+  border-radius: 8px;
+  color: #fff;
+  font-family: inherit;
+}
+
+.admin-form-group input:focus {
+  outline: none;
+  border-color: #f1c33d;
+}
+
+.admin-btn {
+  background: #f1c33d;
+  color: #171202;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.admin-btn:hover {
+  opacity: 0.9;
 }

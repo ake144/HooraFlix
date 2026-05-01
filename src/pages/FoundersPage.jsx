@@ -1,6 +1,7 @@
 import  { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
+import CommissionTierSection from '../components/CommissionTierSection';
 import { useAuth } from '../context/AuthContext';
 import { founderAPI } from '../utils/api';
 import './FoundersPage.css';
@@ -13,7 +14,7 @@ const FoundersPage = () => {
   const [code, setCode] = useState('');
   const [verificationStatus, setVerificationStatus] = useState('idle'); // idle, verifying, success, error
   const [message, setMessage] = useState('');
-
+  const [selectedTier, setSelectedTier] = useState(null);
 
   useEffect(() => {
     if (user?.isFounder) {
@@ -21,8 +22,11 @@ const FoundersPage = () => {
     }
   }, [user, navigate]);
 
-  const handleJoinClick = (e) => {
-    e.preventDefault();
+
+  // Accepts optional tierName
+  const handleJoinClick = (e, tierName) => {
+    if (e && e.preventDefault) e.preventDefault();
+    if (tierName) setSelectedTier(tierName);
     setShowModal(true);
     setVerificationStatus('idle');
     setCode('');
@@ -43,7 +47,7 @@ const FoundersPage = () => {
     setVerificationStatus('verifying');
 
     try {
-      const data = await founderAPI.verifyCode(code.trim());
+      const data = await founderAPI.verifyCode(code.trim(), selectedTier);
 
       if (data.success) {
         setVerificationStatus('success');
@@ -186,6 +190,9 @@ const FoundersPage = () => {
             </div>
           </div>
         </section>
+
+        {/* Commission Tier Section */}
+        <CommissionTierSection onJoin={handleJoinClick} />
 
         <section className="founder-affiliate-promo-section">
           <div className="founder-affiliate-promo-wrap">

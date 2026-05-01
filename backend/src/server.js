@@ -7,6 +7,8 @@ import morgan from 'morgan';
 import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
 import founderRoutes from './routes/founder.routes.js';
+import notificationRoutes from './routes/notification.routes.js';
+import adminRoutes from './routes/admin.routes.js';
 import { errorHandler } from './middleware/error.middleware.js';
 import prisma from './config/database.js';
 
@@ -20,13 +22,13 @@ const PORT = process.env.PORT || 5000;
 app.use(morgan('combined'));
 app.use(helmet());
 app.use(cors({
-     origin: [process.env.FRONTEND_URL, 'http://localhost:3001', "https://hooraflix.esperanza.et/", 'https://hoorafilx.com/'],
+    origin: [process.env.FRONTEND_URL, 'http://localhost:3001', "https://hooraflix.esperanza.et/", 'https://hoorafilx.com/'],
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Health check endpoint
+
 app.get('/api/health', (req, res) => {
     res.json({
         success: true,
@@ -35,10 +37,12 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-// API Routes
+
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/founders', founderRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/admin', adminRoutes);
 
 // 404 handler
 app.use((req, res) => {

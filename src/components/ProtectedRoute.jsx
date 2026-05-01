@@ -3,12 +3,10 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './ProtectedRoute.css';
 
-const ProtectedRoute = ({ children, requireFounder = false }) => {
+
+const ProtectedRoute = ({ children, requireFounder = false, requireAdmin = false }) => {
   const { isAuthenticated, loading, user } = useAuth();
   const location = useLocation();
-
-
-  console.log('ProtectedRoute - isAuthenticated:', isAuthenticated, 'loading:', loading);
 
   if (loading) {
     return (
@@ -24,6 +22,10 @@ const ProtectedRoute = ({ children, requireFounder = false }) => {
 
   if (requireFounder && !user?.isFounder) {
     return <Navigate to="/founders" replace />;
+  }
+
+  if (requireAdmin && user?.role !== 'admin') {
+    return <Navigate to="/" replace />;
   }
 
   return children;

@@ -73,6 +73,16 @@ export const register = async (req, res, next) => {
                             status: 'ACTIVE'
                         }
                     });
+
+                    // Create notification for the founder
+                    await prisma.notification.create({
+                        data: {
+                            userId: founder.userId,
+                            type: 'REFERRAL',
+                            title: 'New Referral Signup!',
+                            message: `🎉 New user ${user.name} joined using your referral link!`
+                        }
+                    });
                 }
             } catch (error) {
                 console.error('Error creating referral:', error);
@@ -229,7 +239,7 @@ export const refreshAccessToken = async (req, res, next) => {
         }
 
         // Check if token is expired
-        if (new Date() > storedToken.expiresAt) { 
+        if (new Date() > storedToken.expiresAt) {
             await prisma.refreshToken.delete({
                 where: { id: storedToken.id }
             });
@@ -378,8 +388,8 @@ export const forgotPassword = async (req, res, next) => {
 };
 
 
-export const resetPassword = async (req, res, next)=>{
-    try{
+export const resetPassword = async (req, res, next) => {
+    try {
         const { token, password } = req.body;
         const tokenHash = hashResetToken(token);
 
@@ -388,7 +398,7 @@ export const resetPassword = async (req, res, next)=>{
             include: { user: true }
         });
 
-        if(!resetToken || new Date() > resetToken.expiresAt){
+        if (!resetToken || new Date() > resetToken.expiresAt) {
             if (resetToken) {
                 await prisma.passwordResetToken.delete({
                     where: { id: resetToken.id }
@@ -422,7 +432,7 @@ export const resetPassword = async (req, res, next)=>{
         });
 
     }
-    catch(error){
+    catch (error) {
         next(error);
     }
 };

@@ -1,4 +1,188 @@
+@media (max-width: 900px) {
+  .fd-mobile-dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 14px;
+    margin-bottom: 18px;
+  }
+}
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+
+
+/* --- Custom Mobile Coin Claim Card --- */
+  .fd-mobile-welcome-section {
+    margin-bottom: 20px;
+    padding: 0 4px;
+  }
+  .fd-mobile-welcome-section h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 4px 0;
+  }
+  .fd-mobile-welcome-section p {
+    font-size: 15px;
+    color: #f1c339;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .fd-mobile-coin-claim-card {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, #181c23 60%, #23272e 100%);
+    border: 1px solid #333842;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  }
+  .fd-mobile-coin-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  .fd-mobile-coin-info {
+    display: flex;
+    flex-direction: column;
+  }
+  .fd-mobile-coin-label {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .fd-mobile-coin-amount {
+    color: #f1c339;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    line-height: 1;
+  }
+  .fd-mobile-coin-img-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .fd-mobile-coin-img {
+    width: 84px;
+    height: 84px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(241,195,57,0.3));
+  }
+  .fd-mobile-claim-btn-full {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 0;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #f1c339, #ebb428);
+    color: #231803;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 14px;
+    width: 100%;
+    box-shadow: 0 2px 8px rgba(241,195,57,0.2);
+    transition: background 0.18s;
+  }
+  .fd-mobile-claim-btn-full:disabled {
+    opacity: 0.6;
+  }
+
+
+/* --- Desktop Coin Card --- */
+.fd-desktop-coin-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #181c23 60%, #23272e 100%);
+  border: 1px solid #333842;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+.fd-desktop-coin-info {
+  display: flex;
+  flex-direction: column;
+}
+.fd-desktop-coin-info .fd-stat-label {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.fd-desktop-coin-info h3 {
+  color: #f1c339;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  margin: 0;
+}
+.fd-desktop-coin-img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(241,195,57,0.3));
+}
+
+:root {
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  .fd-mobile-dashboard-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    background: linear-gradient(135deg, #181c23 60%, #23272e 100%);
+    border: 1.5px solid #2a2d33;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px 0 rgba(0,0,0,0.13);
+    padding: 18px 16px 16px 18px;
+    min-height: 92px;
+    color: #ffe08a;
+    text-decoration: none;
+    transition: box-shadow 0.18s, border-color 0.18s;
+    position: relative;
+  }
+  .fd-mobile-dashboard-card:active,
+  .fd-mobile-dashboard-card:focus {
+    box-shadow: 0 4px 18px 0 #f1c33944;
+    border-color: #f1c339;
+  }
+  .fd-mobile-dashboard-icon {
+    font-size: 2.1rem;
+    color: #f1c339;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    background: rgba(241,195,57,0.08);
+    border-radius: 10px;
+  }
+  .fd-mobile-dashboard-label {
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: #ffe08a;
+    letter-spacing: 0.01em;
+    margin-top: 2px;
+    text-shadow: 0 1px 2px #00000022;
+  }
+
 
 :root {
   --fd-bg: #060b13;
@@ -1507,4 +1691,188 @@
   .fd-withdraw-options {
     grid-template-columns: 1fr;
   }
+}
+
+/* --- Settings Page Styles --- */
+.fd-settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fd-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fd-form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #a9b3c3;
+}
+
+.fd-muted-text {
+  color: #6b7a90;
+  font-size: 11px;
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+.fd-form-group input,
+.fd-form-group textarea {
+  background: #121822;
+  border: 1px solid #232c39;
+  border-radius: 8px;
+  padding: 12px 14px;
+  color: #f3f5f7;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.fd-form-group input:focus,
+.fd-form-group textarea:focus {
+  outline: none;
+  border-color: #f1c33d;
+}
+
+.fd-input-disabled {
+  background: #0d121a !important;
+  color: #6b7a90 !important;
+  cursor: not-allowed;
+}
+
+.fd-btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(90deg, #f1c33d, #d9a71e);
+  color: #171202;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  margin-top: 8px;
+}
+
+.fd-btn-primary:hover {
+  opacity: 0.9;
+}
+
+.fd-btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.fd-settings-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fd-toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #1b222e;
+}
+
+.fd-toggle-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.fd-toggle-row h4 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  color: #f3f5f7;
+}
+
+.fd-toggle-row p {
+  margin: 0;
+  font-size: 13px;
+  color: #a9b3c3;
+}
+
+/* Toggle Switch */
+.fd-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.fd-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.fd-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #232c39;
+  transition: .3s;
+}
+
+.fd-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #f3f5f7;
+  transition: .3s;
+}
+
+input:checked + .fd-slider {
+  background-color: #f1c33d;
+}
+
+input:checked + .fd-slider:before {
+  transform: translateX(20px);
+  background-color: #171202;
+}
+
+.fd-slider.round {
+  border-radius: 24px;
+}
+
+.fd-slider.round:before {
+  border-radius: 50%;
+}
+
+.fd-danger-zone {
+  border: 1px solid #4a1a1a;
+  background: linear-gradient(145deg, #1f1212, #140b0b);
+}
+
+.fd-btn-danger {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.fd-btn-danger:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.5);
 }
