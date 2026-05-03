@@ -1,14 +1,34 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FiUsers, FiKey, FiDollarSign, FiSettings, FiActivity } from 'react-icons/fi';
+import { FiUsers, FiKey, FiDollarSign, FiActivity, FiShield, FiClock } from 'react-icons/fi';
 import AdminLayout from './AdminLayout';
 
 const AdminDashboard = () => {
+    const overviewStats = [
+        { label: 'Live Monitoring', value: '24/7', icon: <FiActivity /> },
+        { label: 'Admin Security', value: 'High', icon: <FiShield /> },
+        { label: 'Avg. Review Time', value: '2h', icon: <FiClock /> },
+    ];
+
     return (
         <AdminLayout>
-            <div className="admin-header-section" style={{ marginBottom: '30px' }}>
-                <h2 style={{ margin: 0, fontSize: '28px', color: '#f3f5f7' }}>Admin Control Panel</h2>
-                <p style={{ margin: '8px 0 0', color: '#97a3b6' }}>Manage users, founder codes, and platform settings.</p>
+            <div className="admin-header-section admin-dashboard-hero">
+                <div>
+                    <p className="admin-hero-kicker">Back office</p>
+                    <h2>Admin Control Panel</h2>
+                    <p>Manage users, founder codes, payouts, and growth operations from one control center.</p>
+                </div>
+                <div className="admin-hero-badges">
+                    {overviewStats.map((stat) => (
+                        <div key={stat.label} className="admin-hero-badge">
+                            <span>{stat.icon}</span>
+                            <div>
+                                <small>{stat.label}</small>
+                                <strong>{stat.value}</strong>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
 
             <div className="cpanel-grid">
@@ -34,12 +54,6 @@ const AdminDashboard = () => {
                     <div className="cpanel-icon"><FiActivity /></div>
                     <h3>Platform Statistics</h3>
                     <p>View analytics, growth metrics, and code usage stats.</p>
-                </Link>
-
-                <Link to="/admin/settings" className="cpanel-card">
-                    <div className="cpanel-icon"><FiSettings /></div>
-                    <h3>System Settings</h3>
-                    <p>Configure global platform settings and integrations.</p>
                 </Link>
             </div>
         </AdminLayout>

@@ -1,10 +1,19 @@
 import React from 'react';
-import './AdminSidebar.css';
 import { Link, useLocation } from 'react-router-dom';
-import { FiHome, FiUsers, FiKey, FiDollarSign, FiActivity, FiSettings } from 'react-icons/fi';
+import { FiHome, FiUsers, FiKey, FiDollarSign, FiActivity, FiLogOut } from 'react-icons/fi';
+import { useAuth } from '../context/AuthContext';
 
 const AdminSidebar = () => {
   const location = useLocation();
+  const { logout } = useAuth();
+
+  const navItems = [
+    { to: '/admin', label: 'Dashboard', shortLabel: 'Home', icon: <FiHome /> },
+    { to: '/admin/users', label: 'Users', shortLabel: 'Users', icon: <FiUsers /> },
+    { to: '/admin/founder-codes', label: 'Founder Codes', shortLabel: 'Codes', icon: <FiKey /> },
+    { to: '/admin/payments', label: 'Payments', shortLabel: 'Pay', icon: <FiDollarSign /> },
+    { to: '/admin/stats', label: 'Stats', shortLabel: 'Stats', icon: <FiActivity /> },
+  ];
 
   const isActive = (path) => {
     if (path === '/admin' && location.pathname === '/admin') return true;
@@ -13,31 +22,33 @@ const AdminSidebar = () => {
   };
 
   return (
-    <aside className="admin-sidebar">
-      <div className="admin-sidebar-logo">
-        <h2>Hooraflix Admin</h2>
-      </div>
-      <nav>
-        <Link to="/admin" className={`admin-nav-link ${isActive('/admin') ? 'active' : ''}`}>
-          <FiHome /> Dashboard
-        </Link>
-        <Link to="/admin/users" className={`admin-nav-link ${isActive('/admin/users') ? 'active' : ''}`}>
-          <FiUsers /> Users
-        </Link>
-        <Link to="/admin/founder-codes" className={`admin-nav-link ${isActive('/admin/founder-codes') ? 'active' : ''}`}>
-          <FiKey /> Founder Codes
-        </Link>
-        <Link to="/admin/payments" className={`admin-nav-link ${isActive('/admin/payments') ? 'active' : ''}`}>
-          <FiDollarSign /> Payments
-        </Link>
-        <Link to="/admin/stats" className={`admin-nav-link ${isActive('/admin/stats') ? 'active' : ''}`}>
-          <FiActivity /> Stats
-        </Link>
-        <Link to="/admin/settings" className={`admin-nav-link ${isActive('/admin/settings') ? 'active' : ''}`}>
-          <FiSettings /> Settings
-        </Link>
+    <>
+      <aside className="admin-sidebar">
+        <div className="admin-sidebar-logo">
+          <h2>Hooraflix Admin</h2>
+        </div>
+        <nav>
+          {navItems.map((item) => (
+            <Link key={item.to} to={item.to} className={`admin-nav-link ${isActive(item.to) ? 'active' : ''}`}>
+              {item.icon} {item.label}
+            </Link>
+          ))}
+        </nav>
+      </aside>
+
+      <nav className="admin-mobile-nav" aria-label="Admin mobile navigation">
+        {navItems.map((item) => (
+          <Link key={`mobile-${item.to}`} to={item.to} className={`admin-mobile-nav-item ${isActive(item.to) ? 'active' : ''}`}>
+            {item.icon}
+            <span>{item.shortLabel}</span>
+          </Link>
+        ))}
+        <button type="button" className="admin-mobile-nav-item admin-mobile-logout-btn" onClick={logout}>
+          <FiLogOut />
+          <span>Out</span>
+        </button>
       </nav>
-    </aside>
+    </>
   );
 };
 
