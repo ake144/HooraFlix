@@ -500,10 +500,6 @@ const FoundersDashboard = () => {
           </div>
 
           <div className="fd-mobile-dashboard-grid " >
-            <Link to="/founders-dashboard" className="fd-mobile-dashboard-card">
-              <span className="fd-mobile-dashboard-icon gold"><FiPieChart /></span>
-              <span className="fd-mobile-dashboard-label">Overview</span>
-            </Link>
             <Link to="/founders-dashboard/earnings" className="fd-mobile-dashboard-card">
               <span className="fd-mobile-dashboard-icon gold"><FiDollarSign /></span>
               <span className="fd-mobile-dashboard-label">Earnings</span>
@@ -515,6 +511,11 @@ const FoundersDashboard = () => {
             <Link to="/founders-dashboard/training" className="fd-mobile-dashboard-card">
               <span className="fd-mobile-dashboard-icon gold"><FiDownload /></span>
               <span className="fd-mobile-dashboard-label">Training  Tools</span>
+            </Link>
+
+            <Link to="/founders-dashboard/materials"  className="fd-mobile-dashboard-card">
+              <span className="fd-mobile-dashboard-icon gold"><FiPieChart /></span>
+              <span className="fd-mobile-dashboard-label">Materials</span>
             </Link>
           </div>
 
@@ -667,9 +668,9 @@ const FoundersDashboard = () => {
                         <>
 
                           <span className={`fd-status-badge ${referral.role === 'Founder' ? 'active' : 'pending'}`}>
-                            {(referral.role || 'Starter').toUpperCase()}
+                              ACTIVE
                           </span>
-                          <strong>+${getReferralReward(referral).toFixed(2)}</strong>
+                          {/* <strong>+${getReferralReward(referral).toFixed(2)}</strong> */}
                         </>
                       )
                         : (
@@ -767,7 +768,7 @@ const FoundersDashboard = () => {
                         <td>{formatDate(r.joinedAt)}</td>
                         <td>
                           <span className={`fd-status-badge ${r.role === 'Founder' ? 'active' : 'pending'}`}>
-                            {r.role === 'Founder' ? 'Active' : 'Pending'}
+                            {r.role === 'Founder' ? 'Active' : 'Inactive'}
                           </span>
                         </td>
                       </tr>

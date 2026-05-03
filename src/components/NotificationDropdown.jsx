@@ -10,6 +10,30 @@ const NotificationDropdown = () => {
     const [loading, setLoading] = useState(true);
     const dropdownRef = useRef(null);
     const latestNotificationIdRef = useRef(null);
+    const notificationsRef = useRef([]);
+    const audioContextRef = useRef(null);
+    const hasUserInteractedRef = useRef(false);
+
+    useEffect(() => {
+        notificationsRef.current = notifications;
+    }, [notifications]);
+
+    useEffect(() => {
+        const markInteracted = () => {
+            hasUserInteractedRef.current = true;
+        };
+
+        window.addEventListener('pointerdown', markInteracted, { passive: true });
+        window.addEventListener('keydown', markInteracted);
+
+        return () => {
+            window.removeEventListener('pointerdown', markInteracted);
+            window.removeEventListener('keydown', markInteracted);
+            if (audioContextRef.current) {
+                audioContextRef.current.close().catch(() => {});
+            }
+        };
+    }, []);
 
     useEffect(() => {
         fetchNotifications();
@@ -34,6 +58,65 @@ const NotificationDropdown = () => {
         };
     }, []);
 
+    const playNotificationTone = async () => {
+        if (!hasUserInteractedRef.current) return;
+
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+
+        try {
+            if (!audioContextRef.current) {
+                audioContextRef.current = new AudioContextClass();
+            }
+
+            const ctx = audioContextRef.current;
+            if (ctx.state === 'suspended') {
+                await ctx.resume();
+            }
+
+            const now = ctx.currentTime;
+            const gainNode = ctx.createGain();
+            const oscillator = ctx.createOscillator();
+
+            gainNode.gain.setValueAtTime(0.0001, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.05, now + 0.015);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.28);
+
+            oscillator.type = 'triangle';
+            oscillator.frequency.setValueAtTime(740, now);
+            oscillator.frequency.exponentialRampToValueAtTime(980, now + 0.12);
+            oscillator.frequency.exponentialRampToValueAtTime(870, now + 0.26);
+
+            oscillator.connect(gainNode);
+            gainNode.connect(ctx.destination);
+
+            oscillator.start(now);
+            oscillator.stop(now + 0.3);
+        } catch {
+            // Best effort only: browsers can block playback based on autoplay policy.
+        }
+    };
+
+    const showNotificationToast = (item) => {
+        toast.custom(
+            (t) => (
+                <div className={`nd-toast ${t.visible ? 'nd-toast-enter' : 'nd-toast-exit'}`}>
+                    <div className="nd-toast-icon-wrap">{getIcon(item.type)}</div>
+                    <div className="nd-toast-content">
+                        <p className="nd-toast-eyebrow">New notification</p>
+                        <h4>{item.title}</h4>
+                        {item.message ? <p>{item.message}</p> : null}
+                    </div>
+                </div>
+            ),
+            {
+                id: `notification-${item.id}`,
+                duration: 5000,
+                position: 'top-right',
+            }
+        );
+    };
+
     const fetchNotifications = async (isPolling = false) => {
         try {
             const res = await notificationAPI.getNotifications();
@@ -44,22 +127,31 @@ const NotificationDropdown = () => {
                 if (isPolling && newNotifications.length > 0) {
                     const latestId = newNotifications[0].id;
                     if (latestNotificationIdRef.current && latestNotificationIdRef.current !== latestId) {
-                        // Find the new notifications
-                        const newItems = newNotifications.filter(n =>
-                            !notifications.find(old => old.id === n.id)
-                        );
+                        const existingIds = new Set(notificationsRef.current.map((old) => old.id));
+                        const newItems = newNotifications.filter((n) => !existingIds.has(n.id));
 
-                        newItems.forEach(item => {
-                            toast.success(item.title, {
-                                icon: '🔔',
-                                style: {
-                                    borderRadius: '10px',
-                                    background: '#171d26',
-                                    color: '#f3f5f7',
-                                    border: '1px solid #232b36'
-                                },
+                        if (newItems.length > 0) {
+                            playNotificationTone();
+
+                            const visibleItems = [...newItems].slice(0, 3).reverse();
+                            visibleItems.forEach((item, index) => {
+                                setTimeout(() => showNotificationToast(item), index * 180);
                             });
-                        });
+
+                            if (newItems.length > 3) {
+                                toast(`+${newItems.length - 3} more updates`, {
+                                    icon: '🔔',
+                                    duration: 3500,
+                                    style: {
+                                        borderRadius: '12px',
+                                        background: '#10161f',
+                                        color: '#d8e1ee',
+                                        border: '1px solid #2a3442',
+                                        boxShadow: '0 12px 28px rgba(0,0,0,0.35)',
+                                    },
+                                });
+                            }
+                        }
                     }
                     latestNotificationIdRef.current = latestId;
                 } else if (!isPolling && newNotifications.length > 0) {

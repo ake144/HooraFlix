@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FiHome, FiVideo, FiDownload, FiSettings, FiLifeBuoy, FiLogOut, FiSearch, FiFilter, FiImage, FiFileText, FiBell, FiHelpCircle, FiGrid, FiShield } from 'react-icons/fi';
+import { FiHome,FiUsers, FiDollarSign, FiVideo, FiDownload, FiSettings, FiLifeBuoy, FiLogOut, FiSearch, FiFilter, FiImage, FiFileText, FiBell, FiHelpCircle, FiGrid, FiShield } from 'react-icons/fi';
 import { useAuth } from '../../context/AuthContext';
 import { founderAPI } from '../../utils/api';
 import '../FoundersDashboard.css';
@@ -281,9 +281,13 @@ const FounderMarketingLibrary = () => {
 
         <nav className="fd-mobile-nav founder-mobile-nav-only">
           <Link to="/founders-dashboard" className="fd-mobile-nav-item"><FiHome /><span>Home</span></Link>
-          <Link to="/founders-dashboard/training" className="fd-mobile-nav-item"><FiVideo /><span>Training</span></Link>
-          <Link to="/founders-dashboard/materials" className="fd-mobile-nav-item active"><FiDownload /><span>Assets</span></Link>
+          <Link to="/founders-dashboard/training" className="fd-mobile-nav-item"><FiUsers /><span>Referrals</span></Link>
+          <Link to="/founders-dashboard/materials" className="fd-mobile-nav-item active"><FiDollarSign /><span>Earnings</span></Link>
           <Link to="/founders-dashboard/settings" className="fd-mobile-nav-item"><FiShield /><span>Profile</span></Link>
+           <button type="button" className="fd-mobile-nav-item fd-mobile-logout-btn" onClick={logout}>
+                    <FiLogOut />
+                    <span>Logout</span>
+             </button>
         </nav>
       </main>
     </div>

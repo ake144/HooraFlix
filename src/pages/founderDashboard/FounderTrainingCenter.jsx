@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiPlayCircle, FiClock, FiTrendingUp, FiArrowLeft, FiHome, FiVideo, FiDownload, FiSettings, FiLifeBuoy, FiLogOut, FiPlay, FiBell, FiHelpCircle, FiGrid, FiSearch, FiShield } from 'react-icons/fi';
+import { FiPlayCircle, FiClock, FiTrendingUp, FiArrowLeft, FiHome,FiUsers, FiDollarSign,  FiVideo, FiDownload, FiSettings, FiLifeBuoy, FiLogOut, FiPlay, FiBell, FiHelpCircle, FiGrid, FiSearch, FiShield, FiPieChart } from 'react-icons/fi';
 import { useAuth } from '../../context/AuthContext';
 import { founderAPI } from '../../utils/api';
 import '../FoundersDashboard.css';
@@ -235,7 +235,7 @@ const FounderTrainingCenter = () => {
          <div className="fd-mobile-dashboard-grid " >
           <Link to="/founders-dashboard" className="fd-mobile-dashboard-card">
             <span className="fd-mobile-dashboard-icon gold"><FiPieChart /></span>
-            <span className="fd-mobile-dashboard-label">Overview</span>
+            <span className="fd-mobile-dashboard-label">Home</span>
           </Link>
           <Link to="/founders-dashboard/earnings" className="fd-mobile-dashboard-card">
             <span className="fd-mobile-dashboard-icon gold"><FiDollarSign /></span>
@@ -245,9 +245,9 @@ const FounderTrainingCenter = () => {
             <span className="fd-mobile-dashboard-icon gold"><FiUsers /></span>
             <span className="fd-mobile-dashboard-label">Referrals</span>
           </Link>
-          <Link to="/founders-dashboard/training" className="fd-mobile-dashboard-card">
-            <span className="fd-mobile-dashboard-icon gold"><FiDownload /></span>
-            <span className="fd-mobile-dashboard-label">Training  Tools</span>
+          <Link to="/founders-dashboard/settings" className="fd-mobile-dashboard-card">
+            <span className="fd-mobile-dashboard-icon gold"><FiSettings /></span>
+            <span className="fd-mobile-dashboard-label">Settings</span>
           </Link>
         </div>
       </main>
