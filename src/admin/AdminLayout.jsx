@@ -2,6 +2,7 @@ import React from 'react';
 import AdminSidebar from './AdminSidebar';
 import AdminNavbar from './AdminNavbar';
 import './AdminLayout.css';
+import './AdminShell.css';
 
 const AdminLayout = ({ children }) => (
   <div className="admin-layout">

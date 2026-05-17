@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FiHome, FiUsers, FiKey, FiDollarSign, FiActivity, FiLogOut } from 'react-icons/fi';
+import { FiActivity, FiDatabase, FiDollarSign, FiHome, FiKey, FiLayers, FiLogOut, FiShield, FiUsers } from 'react-icons/fi';
 import { useAuth } from '../context/AuthContext';
 
 const AdminSidebar = () => {
@@ -24,9 +24,16 @@ const AdminSidebar = () => {
   return (
     <>
       <aside className="admin-sidebar">
-        <div className="admin-sidebar-logo">
-          <h2>Hooraflix Admin</h2>
+        <div className="admin-sidebar-brand">
+          <div className="admin-sidebar-mark">
+            <span>H</span>
+          </div>
+          <div>
+            <h2>Hooraflix</h2>
+            <p>Stream Control</p>
+          </div>
         </div>
+        <div className="admin-sidebar-section-label">Main menu</div>
         <nav>
           {navItems.map((item) => (
             <Link key={item.to} to={item.to} className={`admin-nav-link ${isActive(item.to) ? 'active' : ''}`}>
@@ -34,6 +41,37 @@ const AdminSidebar = () => {
             </Link>
           ))}
         </nav>
+
+        <div className="admin-sidebar-section-label admin-sidebar-section-label-spaced">Platform status</div>
+        <div className="admin-sidebar-status-card">
+          <div className="admin-sidebar-status-row">
+            <span><FiShield /></span>
+            <div>
+              <strong>All systems operational</strong>
+              <small>Streaming, payments, and database are stable</small>
+            </div>
+          </div>
+          <div className="admin-sidebar-status-metrics">
+            <div>
+              <FiActivity />
+              <span>Live</span>
+            </div>
+            <div>
+              <FiDatabase />
+              <span>Synced</span>
+            </div>
+            <div>
+              <FiLayers />
+              <span>Backups</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="admin-sidebar-promo-card">
+          <p className="admin-sidebar-promo-kicker">Hooraflix coming soon</p>
+          <h3>Create, stream &amp; earn</h3>
+          <button type="button">View Campaign</button>
+        </div>
       </aside>
 
       <nav className="admin-mobile-nav" aria-label="Admin mobile navigation">
