@@ -74,6 +74,23 @@ export const getUsers = async (req, res, next) => {
             coins: true,
           },
         },
+        referredBy: {
+          select: {
+            status: true,
+            joinedAt: true,
+            founder: {
+              select: {
+                rank: true,
+                user: {
+                  select: {
+                    name: true,
+                    email: true,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
       orderBy: { createdAt: 'desc' },
     });
