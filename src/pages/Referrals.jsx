@@ -16,11 +16,28 @@ const Referrals = () => {
   const [referralLink, setReferralLink] = useState('');
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [referralCommissionMap, setReferralCommissionMap] = useState({});
 
   useEffect(() => {
     fetchStatsAndLink();
     fetchReferrals(1);
+    fetchEarningsBreakdown();
   }, []);
+
+  const fetchEarningsBreakdown = async () => {
+    try {
+      const res = await founderAPI.getEarningsBreakdown();
+      if (res.success && Array.isArray(res.data.breakdown)) {
+        const map = {};
+        res.data.breakdown.forEach(b => {
+          if (b && b.referralId) map[b.referralId] = Number(b.amount || 0);
+        });
+        setReferralCommissionMap(map);
+      }
+    } catch (err) {
+      console.error('Failed to load earnings breakdown', err);
+    }
+  };
 
   const fetchStatsAndLink = async () => {
     try {
@@ -93,6 +110,9 @@ const Referrals = () => {
   };
 
   const getReferralReward = (referral) => {
+    if (referral && referralCommissionMap[referral.id] != null) {
+      return referralCommissionMap[referral.id];
+    }
     if (typeof referral?.rewardAmount === 'number') {
       return referral.rewardAmount;
     }

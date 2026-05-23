@@ -48,6 +48,18 @@ const FoundersDashboard = () => {
         } catch (refError) {
           console.error('Failed to fetch referrals:', refError);
         }
+        // also fetch earnings breakdown so we can show per-referral commission amounts
+        try {
+          const eb = await founderAPI.getEarningsBreakdown();
+          if (eb.success && Array.isArray(eb.data.breakdown)) {
+            const map = {};
+            eb.data.breakdown.forEach(b => { if (b && b.referralId) map[b.referralId] = Number(b.amount || 0); });
+            // attach to dashboardData for local use
+            setDashboardData(prev => ({ ...prev, referralCommissionMap: map }));
+          }
+        } catch (err) {
+          console.error('Failed to load earnings breakdown', err);
+        }
       } catch (err) {
         setError(err.message);
         console.error('Dashboard error:', err);
@@ -164,10 +176,9 @@ const FoundersDashboard = () => {
   const shareText = `Join my Hooraflix founder circle and grow with me. Scan my QR code or use this link to sign up:`;
 
   const getReferralReward = (referral) => {
-    if (typeof referral?.rewardAmount === 'number') {
-      return referral.rewardAmount;
-    }
-
+    const map = dashboardData?.referralCommissionMap || {};
+    if (referral && map[referral.id] != null) return map[referral.id];
+    if (typeof referral?.rewardAmount === 'number') return referral.rewardAmount;
     return referral?.role === 'Founder' ? 50 : 15;
   };
 

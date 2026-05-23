@@ -6,6 +6,12 @@ import {
 	getFounderCodes,
 	getPayments,
 	getUsers,
+    getCommissionRules,
+	createCommissionRule,
+	toggleCommissionRule,
+	getPayouts,
+	updatePayoutStatus
+    ,getCoinClaims
 } from '../controllers/admin.controller.js';
 import { authMiddleware, isAdmin } from '../middleware/auth.middleware.js';
 
@@ -21,5 +27,9 @@ router.get('/users', getUsers);
 router.delete('/users/:id', deleteUser);
 router.get('/code-stats', getCodeStats);
 router.get('/payments', getPayments);
-
-export default router;
+router.get('/commission-rules', getCommissionRules);
+router.post('/commission-rules', createCommissionRule);
+router.patch('/commission-rules/:id/toggle', toggleCommissionRule);
+router.get('/payouts', getPayouts);
+router.patch('/payouts/:id/status', updatePayoutStatus);
+router.get('/coin-claims', getCoinClaims);

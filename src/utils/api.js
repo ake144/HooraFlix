@@ -207,6 +207,7 @@ export const founderAPI = {
     getStats: () => api.get('/founders/stats'),
     claimCoin: () => api.post('/founders/claim-coin', {}),
     withdrawCoin: () => api.post('/founders/withdraw-coin', {}),
+    getEarningsBreakdown: () => api.get('/founders/earnings/breakdown'),
 };
 
 // Admin API
@@ -217,6 +218,12 @@ export const adminAPI = {
     getPayments: () => api.get('/admin/payments'),
     createFounderCode: (data) => api.post('/admin/founder-codes', data),
     getFounderCodes: () => api.get('/admin/founder-codes'),
+    getCommissionRules: () => api.get('/admin/commission-rules'),
+    createCommissionRule: (data) => api.post('/admin/commission-rules', data),
+    toggleCommissionRule: (id, status) => api.patch(`/admin/commission-rules/${id}/toggle`, { status }),
+    getPayouts: () => api.get('/admin/payouts'),
+    updatePayoutStatus: (id, status) => api.patch(`/admin/payouts/${id}/status`, { status }),
+    getCoinClaims: (date) => api.get(`/admin/coin-claims${date ? `?date=${encodeURIComponent(date)}` : ''}`),
 };
 
 // Notification API

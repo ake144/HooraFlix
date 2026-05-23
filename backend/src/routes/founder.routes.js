@@ -3,6 +3,7 @@ import { body } from 'express-validator';
 import {
     verifyFounderCode,
     getFounderDashboard,
+    getEarningsBreakdown,
     getReferrals,
     getStats,
     claimCoin,
@@ -22,6 +23,7 @@ const codeValidation = [
 // Routes
 router.post('/verify-code', codeValidation, validate, verifyFounderCode);
 router.get('/dashboard', authMiddleware, isFounder, getFounderDashboard);
+router.get('/earnings/breakdown', authMiddleware, isFounder, getEarningsBreakdown);
 router.get('/referrals', authMiddleware, isFounder, getReferrals);
 router.get('/stats', authMiddleware, isFounder, getStats);
 router.post('/claim-coin', authMiddleware, isFounder, claimCoin);

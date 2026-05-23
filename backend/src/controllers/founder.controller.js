@@ -1,4 +1,5 @@
 import prisma from '../config/database.js';
+import { calculateCommission, findCommissionRuleForReferral, computeFounderCommissionSummary } from '../utils/commission.helper.js';
 import crypto from 'crypto';
 import { 
     generateAccessToken, 
@@ -254,6 +255,64 @@ export const getFounderDashboard = async (req, res, next) => {
 };
 
 /**
+ * Get earnings breakdown for founder: commissions + coin value + per-referral details
+ */
+export const getEarningsBreakdown = async (req, res, next) => {
+    try {
+        const userId = req.user.userId;
+        const founder = await prisma.founder.findUnique({ where: { userId }, include: { referrals: { include: { referredUser: true } } } });
+        if (!founder) return res.status(404).json({ success: false, message: 'Founder not found' });
+
+        const breakdown = [];
+        let commissionTotal = 0;
+
+        // For each referral, determine commission and amount
+        for (const ref of founder.referrals) {
+            // find an applicable rule
+            const rule = await findCommissionRuleForReferral({ founder, referral: ref });
+            // baseAmount: we consider fixed referral reward as the base (legacy) — default map: Founder -> 50, User -> 15
+            const baseAmount = ref.role === 'FOUNDER' ? 50 : 15;
+            const amount = calculateCommission(rule, baseAmount) || baseAmount;
+
+            breakdown.push({
+                referralId: ref.id,
+                referredUserId: ref.referredUser?.id || null,
+                referredName: ref.referredUser?.name || ref.referredUser?.email || null,
+                status: ref.status,
+                commissionRuleId: rule?.id || null,
+                commissionRuleName: rule?.name || null,
+                amount
+            });
+
+            commissionTotal += Number(amount || 0);
+        }
+
+        // include existing CommissionEarning records not tied to referrals
+        const extraSum = await prisma.commissionEarning.aggregate({ _sum: { amount: true }, where: { founderId: founder.id } });
+        const recordedTotal = Number(extraSum._sum.amount || 0);
+
+        // compute coin value
+        const coinValue = Number(process.env.COIN_TO_MONEY_RATE || 0.01) * Number(founder.coins || 0);
+
+        const total = commissionTotal + coinValue;
+
+        res.json({
+            success: true,
+            data: {
+                breakdown,
+                commissionTotal,
+                recordedTotal,
+                coinValue,
+                coins: founder.coins || 0,
+                totalEarnings: total
+            }
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+/**
  * Get paginated list of referrals
  */
 export const getReferrals = async (req, res, next) => {
@@ -447,6 +506,18 @@ export const claimCoin = async (req, res, next) => {
                 claimStreak: streak
             }
         });
+
+                // Record claim event for admin aggregation
+                try {
+                    await prisma.coinClaim.create({
+                        data: {
+                            founderId: updatedFounder.id,
+                            amount: reward
+                        }
+                    });
+                } catch (e) {
+                    console.error('Failed to record coin claim:', e);
+                }
 
         res.json({ 
             success: true, 

@@ -16,7 +16,7 @@ const AdminNavbar = () => {
     '/admin': 'Admin Control Panel',
     '/admin/users': 'User Management',
     '/admin/founder-codes': 'Founder Codes',
-    '/admin/payments': 'Payments and Withdrawals',
+    '/admin/payments': 'Commission & Payouts',
     '/admin/stats': 'Platform Statistics',
   };
 

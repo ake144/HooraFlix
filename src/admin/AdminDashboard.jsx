@@ -42,6 +42,13 @@ const AdminDashboard = () => {
         })
         .join(' ');
 
+
+    const today = new Intl.DateTimeFormat('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+    }).format(new Date());
+
     const activityItems = [
         { title: 'New user registered', meta: 'Selam Bekele', time: '2 min ago', icon: <FiUser /> },
         { title: 'New movie uploaded', meta: 'Beyond the Mountains', time: '15 min ago', icon: <FiUpload /> },
@@ -101,7 +108,7 @@ const AdminDashboard = () => {
                             <span className="admin-summary-icon"><FiClock /></span>
                             <div>
                                 <small>Today</small>
-                                <strong>May 22, 2025</strong>
+                                <strong>{today}</strong>
                             </div>
                         </div>
                         <div className="admin-summary-card">

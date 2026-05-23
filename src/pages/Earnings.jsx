@@ -15,11 +15,24 @@ const Earnings = () => {
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [withdrawMethod, setWithdrawMethod] = useState('');
   const [loading, setLoading] = useState(true);
+  const [earningsBreakdown, setEarningsBreakdown] = useState({ commissionTotal: 0, coinValue: 0, coins: 0, totalEarnings: 0, breakdown: [] });
 
   useEffect(() => {
     fetchStats();
+    fetchEarningsBreakdown();
     fetchTransactions(1);
   }, []);
+
+  const fetchEarningsBreakdown = async () => {
+    try {
+      const res = await founderAPI.getEarningsBreakdown();
+      if (res.success) {
+        setEarningsBreakdown(res.data || {});
+      }
+    } catch (err) {
+      console.error('Failed to fetch earnings breakdown', err);
+    }
+  };
 
   const fetchStats = async () => {
     try {
@@ -163,7 +176,7 @@ const Earnings = () => {
             <div className="fd-content-right">
               <div className="fd-card fd-rewards-hero">
                 <p className="fd-stat-label">Total Earnings</p>
-                <h3>${stats.earnings?.toFixed(2) || '0.00'}</h3>
+                <h3>${(earningsBreakdown.totalEarnings || stats.earnings || 0).toFixed(2)}</h3>
                 <span className="fd-stat-change positive">Available: ${stats.available?.toFixed(2) || '0.00'}</span>
                 <button className="fd-withdraw-action" onClick={() => setShowWithdrawModal(true)}>Withdraw Funds</button>
               </div>
@@ -177,6 +190,12 @@ const Earnings = () => {
                   <p>Available Coins</p>
                   <strong>{stats.coins?.toLocaleString() || '0'}</strong>
                 </div>
+              </div>
+
+              <div className="fd-card fd-mini-stat" style={{ marginTop: 12 }}>
+                <p>Commission Earnings</p>
+                <strong>${(earningsBreakdown.commissionTotal || 0).toFixed(2)}</strong>
+                <p style={{ fontSize: 12, color: '#94a3b8' }}>Coins value: ${(earningsBreakdown.coinValue || 0).toFixed(2)} ({earningsBreakdown.coins || 0} coins)</p>
               </div>
 
               <div className="fd-card fd-daily-card">

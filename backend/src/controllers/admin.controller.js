@@ -181,3 +181,216 @@ export const getPayments = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getCommissionRules = async (req, res, next) => {
+  try {
+    const rules = await prisma.commissionRule.findMany({
+      orderBy: { createdAt: 'desc' }
+    });
+    
+    res.json({
+      success: true,
+      data: rules
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const createCommissionRule = async (req, res, next) => {
+  try {
+    const { name, scopeMode, role, rank, offer, level, rewardType, value, stackable, note } = req.body;
+
+    if (!name || !scopeMode || !rewardType) {
+      return res.status(400).json({
+        success: false,
+        message: 'Name, scope mode, and reward type are required.',
+      });
+    }
+    
+    const newRule = await prisma.commissionRule.create({
+      data: {
+        name,
+        scopeMode: scopeMode.toUpperCase(),
+        role: role ? role.toUpperCase() : null,
+        rank: rank ? rank.toUpperCase() : null,
+        offer,
+        level: level ? String(level) : null,
+        rewardType: rewardType.toUpperCase(),
+        value: parseFloat(value),
+        stackable: Boolean(stackable),
+        note
+      }
+    });
+
+    res.status(201).json({
+      success: true,
+      data: newRule
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const toggleCommissionRule = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!status) {
+      return res.status(400).json({
+        success: false,
+        message: 'Rule status is required.',
+      });
+    }
+    
+    const updated = await prisma.commissionRule.update({
+      where: { id },
+      data: { status: status.toUpperCase() }
+    });
+
+    res.json({
+      success: true,
+      data: updated
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getPayouts = async (req, res, next) => {
+  try {
+    const payouts = await prisma.payoutRequest.findMany({
+      include: {
+        founder: {
+          include: {
+            user: true
+          }
+        },
+        commissionRule: {
+          select: {
+            name: true,
+            scopeMode: true,
+            role: true,
+            rank: true,
+            rewardType: true,
+            value: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+    
+    const formattedPayouts = payouts.map(p => ({
+      id: p.id,
+      founderEmail: p.founder.user.email,
+      amount: p.amount,
+      status: p.status,
+      date: p.createdAt,
+      notes: p.notes,
+      scope: p.commissionRule
+        ? p.commissionRule.rank
+          ? `Founder / ${p.commissionRule.rank}`
+          : p.commissionRule.role
+            ? `Role: ${p.commissionRule.role}`
+            : p.commissionRule.scopeMode
+        : 'Founder / GOLD',
+      role: p.commissionRule?.role || 'FOUNDER',
+      rank: p.commissionRule?.rank || 'GOLD',
+      commissionRuleName: p.commissionRule?.name || null,
+    }));
+
+    res.json({
+      success: true,
+      data: formattedPayouts
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updatePayoutStatus = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!status) {
+      return res.status(400).json({
+        success: false,
+        message: 'Payout status is required.',
+      });
+    }
+
+    const updated = await prisma.payoutRequest.update({
+      where: { id },
+      data: { status: status.toUpperCase() }
+    });
+
+    res.json({
+      success: true,
+      data: updated
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Get coin claim stats. Query param `date=YYYY-MM-DD` returns totals for that day.
+ * If no date provided, returns last 7 days series and recent claims.
+ */
+export const getCoinClaims = async (req, res, next) => {
+  try {
+    const { date } = req.query;
+
+    if (date) {
+      const start = new Date(date + 'T00:00:00');
+      const end = new Date(start);
+      end.setDate(end.getDate() + 1);
+
+      const claims = await prisma.coinClaim.findMany({
+        where: { createdAt: { gte: start, lt: end } },
+        include: { founder: { include: { user: true } } },
+        orderBy: { createdAt: 'desc' }
+      });
+
+      const total = claims.reduce((s, c) => s + (c.amount || 0), 0);
+
+      return res.json({ success: true, data: { date, total, claims } });
+    }
+
+    // last 7 days
+    const days = 7;
+    const start = new Date();
+    start.setDate(start.getDate() - (days - 1));
+    start.setHours(0,0,0,0);
+
+    const claims = await prisma.coinClaim.findMany({
+      where: { createdAt: { gte: start } },
+      include: { founder: { include: { user: true } } },
+      orderBy: { createdAt: 'desc' },
+      take: 1000
+    });
+
+    // group by date
+    const seriesMap = {};
+    for (let i = 0; i < days; i++) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const key = d.toISOString().slice(0,10);
+      seriesMap[key] = 0;
+    }
+
+    claims.forEach(c => {
+      const key = c.createdAt.toISOString().slice(0,10);
+      if (!seriesMap[key]) seriesMap[key] = 0;
+      seriesMap[key] += c.amount || 0;
+    });
+
+    const series = Object.keys(seriesMap).sort().map(dateKey => ({ date: dateKey, total: seriesMap[dateKey] }));
+
+    res.json({ success: true, data: { series, recentClaims: claims.slice(0, 50) } });
+  } catch (error) {
+    next(error);
+  }
+};
