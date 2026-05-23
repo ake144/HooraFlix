@@ -86,6 +86,7 @@ model Founder {
   referrals    Referral[]
   payouts      PayoutRequest[]
   commissionEarnings CommissionEarning[]
+  coinClaims    CoinClaim[]
 
   @@map("Founder")
 }
@@ -100,6 +101,7 @@ model Referral {
   // Relations
   founder      Founder @relation(fields: [founderId], references: [id], onDelete: Cascade)
   referredUser User    @relation("ReferredUser", fields: [referredUserId], references: [id], onDelete: Cascade)
+  commissionEarnings CommissionEarning[]
 
   @@map("Referral")
 }
@@ -175,6 +177,7 @@ model CommissionRule {
   updatedAt  DateTime    @updatedAt
 
   payouts    PayoutRequest[]
+  commissionEarnings CommissionEarning[]
 
   @@map("CommissionRule")
 }
