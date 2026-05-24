@@ -7,7 +7,8 @@ import {
     getReferrals,
     getStats,
     claimCoin,
-    withdrawCoin
+    withdrawCoin,
+    getTransactions
 } from '../controllers/founder.controller.js';
 import { authMiddleware, isFounder } from '../middleware/auth.middleware.js';
 import { validate } from '../middleware/validation.middleware.js';
@@ -24,6 +25,7 @@ const codeValidation = [
 router.post('/verify-code', codeValidation, validate, verifyFounderCode);
 router.get('/dashboard', authMiddleware, isFounder, getFounderDashboard);
 router.get('/earnings/breakdown', authMiddleware, isFounder, getEarningsBreakdown);
+router.get('/transactions', authMiddleware, isFounder, getTransactions);
 router.get('/referrals', authMiddleware, isFounder, getReferrals);
 router.get('/stats', authMiddleware, isFounder, getStats);
 router.post('/claim-coin', authMiddleware, isFounder, claimCoin);

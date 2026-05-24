@@ -41,11 +41,13 @@ const Earnings = () => {
         setStats({
           coins: dashData.data.stats.coins || 0,
           earnings: dashData.data.stats.earnings || 0,
-          withdrawn: dashData.data.stats.withdrawn || 0,
-          available: dashData.data.stats.available || 0,
+          withdrawn: 0,
+          available: dashData.data.stats.earnings || 0,
         });
       }
-    } catch (e) { }
+    } catch (e) {
+      console.error('Error fetching dashboard stats:', e);
+    }
   };
 
   const fetchTransactions = async (page = 1) => {
@@ -176,26 +178,26 @@ const Earnings = () => {
             <div className="fd-content-right">
               <div className="fd-card fd-rewards-hero">
                 <p className="fd-stat-label">Total Earnings</p>
-                <h3>${(earningsBreakdown.totalEarnings || stats.earnings || 0).toFixed(2)}</h3>
-                <span className="fd-stat-change positive">Available: ${stats.available?.toFixed(2) || '0.00'}</span>
+                <h3>${(earningsBreakdown?.totalEarnings !== undefined ? earningsBreakdown.totalEarnings : stats.earnings || 0).toFixed(2)}</h3>
+                <span className="fd-stat-change positive">Commission: ${(earningsBreakdown?.commissionTotal || 0).toFixed(2)}</span>
                 <button className="fd-withdraw-action" onClick={() => setShowWithdrawModal(true)}>Withdraw Funds</button>
               </div>
 
               <div className="fd-mini-stats-row">
                 <div className="fd-card fd-mini-stat">
-                  <p>Withdrawn</p>
-                  <strong>${stats.withdrawn?.toFixed(2) || '0.00'}</strong>
+                  <p>Commission Total</p>
+                  <strong>${(earningsBreakdown?.commissionTotal || 0).toFixed(2)}</strong>
                 </div>
                 <div className="fd-card fd-mini-stat">
                   <p>Available Coins</p>
-                  <strong>{stats.coins?.toLocaleString() || '0'}</strong>
+                  <strong>{(earningsBreakdown?.coins || stats.coins || 0).toLocaleString()}</strong>
                 </div>
               </div>
 
               <div className="fd-card fd-mini-stat" style={{ marginTop: 12 }}>
-                <p>Commission Earnings</p>
-                <strong>${(earningsBreakdown.commissionTotal || 0).toFixed(2)}</strong>
-                <p style={{ fontSize: 12, color: '#94a3b8' }}>Coins value: ${(earningsBreakdown.coinValue || 0).toFixed(2)} ({earningsBreakdown.coins || 0} coins)</p>
+                <p>Coin Value</p>
+                <strong>${(earningsBreakdown?.coinValue || 0).toFixed(2)}</strong>
+                <p style={{ fontSize: 12, color: '#94a3b8' }}>{(earningsBreakdown?.coins || 0)} coins @ ${(Number(process.env.VITE_COIN_RATE || 0.01)).toFixed(2)}/coin</p>
               </div>
 
               <div className="fd-card fd-daily-card">
@@ -248,16 +250,17 @@ const Earnings = () => {
             <div className="fd-mobile-stat-header">
               <p><FiDollarSign /> Total Earnings</p>
             </div>
-            <h3>${stats.earnings?.toFixed(2) || '0.00'}</h3>
-            <p className="fd-mobile-sub">Available: ${stats.available?.toFixed(2) || '0.00'}</p>
+            <h3>${(earningsBreakdown?.totalEarnings !== undefined ? earningsBreakdown.totalEarnings : stats.earnings || 0).toFixed(2)}</h3>
+            <p className="fd-mobile-sub">Commission: ${(earningsBreakdown?.commissionTotal || 0).toFixed(2)}</p>
             <button className="fd-withdraw-action" style={{ marginTop: '15px', width: '100%' }} onClick={() => setShowWithdrawModal(true)}>Withdraw Funds</button>
           </div>
 
           <div className="fd-card fd-mobile-stat-card">
             <div className="fd-mobile-stat-header">
-              <p><FiRepeat /> Withdrawn</p>
+              <p><FiRepeat /> Coin Value</p>
             </div>
-            <h3>${stats.withdrawn?.toFixed(2) || '0.00'}</h3>
+            <h3>${(earningsBreakdown?.coinValue || 0).toFixed(2)}</h3>
+            <p className="fd-mobile-sub">{(earningsBreakdown?.coins || 0) || 0} coins</p>
           </div>
 
           <div className="fd-card fd-mobile-referrals-card">

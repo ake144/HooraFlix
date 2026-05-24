@@ -5,6 +5,7 @@ import StatsPage from './StatsPage';
 import PaymentsPage from './PaymentsPage';
 import AdminDashboard from './AdminDashboard';
 import FounderCodesPage from './FounderCodesPage';
+import AdminSettings from './AdminSettings';
 
 const AdminRoutes = () => (
   <Routes>
@@ -13,6 +14,7 @@ const AdminRoutes = () => (
     <Route path="/stats" element={<StatsPage />} />
     <Route path="/payments" element={<PaymentsPage />} />
     <Route path="/founder-codes" element={<FounderCodesPage />} />
+    <Route path="/settings" element={<AdminSettings />} />
     <Route path="*" element={<Navigate to="/admin" replace />} />
   </Routes>
 );

@@ -8,6 +8,7 @@ import {
     verifyToken,
     getRefreshTokenExpiry
 } from '../utils/jwt.util.js';
+import { logActivity } from '../utils/activity.logger.js';
 
 const PASSWORD_RESET_EXPIRY_MINUTES = 30;
 const RESET_PASSWORD_RESPONSE_MESSAGE = 'If an account exists with that email, a password reset link has been sent.';
@@ -52,6 +53,9 @@ export const register = async (req, res, next) => {
             }
         });
 
+        // Record activity: new user registered
+        logActivity('NEW_USER', user.email).catch?.(() => {});
+
         // If there's a referral ID, create referral relationship
         if (refId) {
             try {
@@ -83,6 +87,8 @@ export const register = async (req, res, next) => {
                             message: `🎉 New user ${user.name} joined using your referral link!`
                         }
                     });
+                    // Record referral activity
+                    logActivity('REFERRAL', `${user.email}`).catch?.(() => {});
                 }
             } catch (error) {
                 console.error('Error creating referral:', error);

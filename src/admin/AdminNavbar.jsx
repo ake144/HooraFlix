@@ -1,11 +1,11 @@
 import React from 'react';
 import { FiBell, FiCalendar, FiChevronDown, FiLogOut, FiSearch } from 'react-icons/fi';
-import { useAuth } from '../context/AuthContext';
 import { useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const AdminNavbar = () => {
-  const { logout } = useAuth();
   const location = useLocation();
+  const { logout } = useAuth();
   const today = new Intl.DateTimeFormat('en-US', {
     month: 'short',
     day: 'numeric',
@@ -18,6 +18,7 @@ const AdminNavbar = () => {
     '/admin/founder-codes': 'Founder Codes',
     '/admin/payments': 'Commission & Payouts',
     '/admin/stats': 'Platform Statistics',
+    '/admin/settings': 'Account Settings',
   };
 
   const title = titles[location.pathname] || 'Admin Control Panel';

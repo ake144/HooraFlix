@@ -7,6 +7,7 @@ import {
     getRefreshTokenExpiry,
     verifyToken
 } from '../utils/jwt.util.js';
+import { logActivity } from '../utils/activity.logger.js';
 
 /**
  * Verify founder code and activate founder status
@@ -88,6 +89,8 @@ export const verifyFounderCode = async (req, res, next) => {
                         rank: normalizedRank
                     }
                 });
+                // Log affiliate/founder join
+                logActivity('AFFILIATE_JOIN', user.email).catch?.(() => {});
             } catch (error) {
                 if (error.code === 'P2002' && error.meta?.target?.includes('founderCode')) {
                     return res.status(400).json({
@@ -555,4 +558,89 @@ export const withdrawCoin = async (req, res, next) => {
         success: false,
         message: 'Withdrawal feature is currently disabled.'
     });
+};
+
+/**
+ * Get transaction history (commission, coins, payouts)
+ */
+export const getTransactions = async (req, res, next) => {
+    try {
+        const userId = req.user.userId;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+
+        // Find founder
+        const founder = await prisma.founder.findUnique({ where: { userId } });
+        if (!founder) {
+            return res.status(404).json({ success: false, message: 'Founder not found' });
+        }
+
+        // Fetch all transaction types
+        const commissions = await prisma.commissionEarning.findMany({
+            where: { founderId: founder.id },
+            select: { id: true, amount: true, createdAt: true },
+            orderBy: { createdAt: 'desc' }
+        });
+
+        const coinClaims = await prisma.coinClaim.findMany({
+            where: { founderId: founder.id },
+            select: { id: true, amount: true, createdAt: true },
+            orderBy: { createdAt: 'desc' }
+        });
+
+        const payouts = await prisma.payoutRequest.findMany({
+            where: { founderId: founder.id },
+            select: { id: true, amount: true, status: true, createdAt: true },
+            orderBy: { createdAt: 'desc' }
+        });
+
+        // Combine and format transactions
+        const transactions = [
+            ...commissions.map(c => ({
+                id: c.id,
+                date: c.createdAt,
+                type: 'Commission',
+                amount: c.amount,
+                status: 'Completed'
+            })),
+            ...coinClaims.map(c => ({
+                id: c.id,
+                date: c.createdAt,
+                type: 'Coin Claim',
+                amount: c.amount * (Number(process.env.COIN_TO_MONEY_RATE || 0.01)),
+                status: 'Completed'
+            })),
+            ...payouts.map(p => ({
+                id: p.id,
+                date: p.createdAt,
+                type: 'Withdrawal',
+                amount: -p.amount,
+                status: p.status === 'PAID' ? 'Completed' : p.status === 'PENDING' ? 'Pending' : p.status === 'APPROVED' ? 'Approved' : 'On Hold'
+            }))
+        ];
+
+        // Sort by date descending
+        transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        // Paginate
+        const totalCount = transactions.length;
+        const totalPages = Math.ceil(totalCount / limit);
+        const paginatedTransactions = transactions.slice(skip, skip + limit);
+
+        res.json({
+            success: true,
+            data: {
+                transactions: paginatedTransactions,
+                pagination: {
+                    currentPage: page,
+                    totalPages,
+                    totalCount,
+                    limit
+                }
+            }
+        });
+    } catch (error) {
+        next(error);
+    }
 };

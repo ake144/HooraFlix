@@ -326,6 +326,14 @@ export const updatePayoutStatus = async (req, res, next) => {
       data: { status: status.toUpperCase() }
     });
 
+    // Log payout status change
+    try {
+      const { logActivity } = await import('../utils/activity.logger.js');
+      logActivity('PAYOUT_UPDATE', `Payout ${id} -> ${status.toUpperCase()}`);
+    } catch (e) {
+      console.error('Failed to log payout update', e);
+    }
+
     res.json({
       success: true,
       data: updated
@@ -419,6 +427,77 @@ export const getFounderStats = async (req, res, next) => {
                 totalCodes,
                 payoutRequests
             }
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
+/**
+ * Update admin password
+ */
+export const updatePassword = async (req, res, next) => {
+    try {
+        const { currentPassword, newPassword } = req.body;
+        const adminId = req.user?.userId;
+
+        if (!adminId) {
+            return res.status(401).json({
+                success: false,
+                message: 'Unauthorized: No user ID found'
+            });
+        }
+
+        if (!currentPassword || !newPassword) {
+            return res.status(400).json({
+                success: false,
+                message: 'Current password and new password are required'
+            });
+        }
+
+        if (newPassword.length < 8) {
+            return res.status(400).json({
+                success: false,
+                message: 'New password must be at least 8 characters'
+            });
+        }
+
+        // Find admin user
+        const user = await prisma.user.findUnique({
+            where: { id: adminId }
+        });
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'Admin user not found'
+            });
+        }
+
+        // Verify current password
+        const { comparePassword } = await import('../utils/password.util.js');
+        const isPasswordValid = await comparePassword(currentPassword, user.password);
+
+        if (!isPasswordValid) {
+            return res.status(401).json({
+                success: false,
+                message: 'Current password is incorrect'
+            });
+        }
+
+        // Hash new password
+        const { hashPassword } = await import('../utils/password.util.js');
+        const hashedPassword = await hashPassword(newPassword);
+
+        // Update password
+        await prisma.user.update({
+            where: { id: adminId },
+            data: { password: hashedPassword }
+        });
+
+        res.json({
+            success: true,
+            message: 'Password updated successfully'
         });
     } catch (error) {
         next(error);

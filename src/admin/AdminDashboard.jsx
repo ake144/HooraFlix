@@ -66,14 +66,45 @@ const AdminDashboard = () => {
         year: 'numeric',
     }).format(new Date());
 
-    const activityItems = [
-        { title: 'New user registered', meta: 'Selam Bekele', time: '2 min ago', icon: <FiUser /> },
-        { title: 'New movie uploaded', meta: 'Beyond the Mountains', time: '15 min ago', icon: <FiUpload /> },
-        { title: 'Affiliate joined', meta: 'Dawit Alemu', time: '32 min ago', icon: <FiZap /> },
-        { title: 'Payment received', meta: '$4,999', time: '1 hour ago', icon: <FiDollarSign /> },
-        { title: 'Withdrawal request', meta: 'Kidus Yohannes', time: '3 hours ago', icon: <FiClock /> },
-        { title: 'New student enrolled', meta: 'Natnael Girma', time: '5 hours ago', icon: <FiStar /> },
-    ];
+    const [activityLogs, setActivityLogs] = React.useState([]);
+
+    // Fetch recent activity logs for admin feed
+    useEffect(() => {
+        let mounted = true;
+        adminAPI.getActivityLogs()
+            .then((res) => {
+                if (!mounted) return;
+                const data = res?.data ?? res ?? [];
+                setActivityLogs(Array.isArray(data) ? data : []);
+            })
+            .catch((err) => {
+                console.error('Failed to load activity logs', err);
+            });
+
+        return () => { mounted = false; };
+    }, []);
+
+    const timeAgo = (iso) => {
+        if (!iso) return '';
+        const then = new Date(iso).getTime();
+        const diff = Math.floor((Date.now() - then) / 1000);
+        if (diff < 60) return `${diff} sec ago`;
+        if (diff < 3600) return `${Math.floor(diff / 60)} min ago`;
+        if (diff < 86400) return `${Math.floor(diff / 3600)} hour${Math.floor(diff / 3600) > 1 ? 's' : ''} ago`;
+        return `${Math.floor(diff / 86400)} day${Math.floor(diff / 86400) > 1 ? 's' : ''} ago`;
+    };
+
+    const typeToIcon = (type) => {
+        switch ((type || '').toUpperCase()) {
+            case 'NEW_USER': return <FiUser />;
+            case 'UPLOAD': return <FiUpload />;
+            case 'AFFILIATE_JOIN': return <FiZap />;
+            case 'PAYMENT': return <FiDollarSign />;
+            case 'WITHDRAWAL': return <FiClock />;
+            case 'ENROLL': return <FiStar />;
+            default: return <FiActivity />;
+        }
+    };
 
     const quickActions = [
         { label: 'Add Movie', icon: <FiFilm />, to: '/admin/users' },
@@ -207,16 +238,19 @@ const AdminDashboard = () => {
                             </div>
 
                             <div className="admin-activity-list">
-                                {activityItems.map((item) => (
-                                    <div key={item.title} className="admin-activity-item">
-                                        <span className="admin-activity-icon">{item.icon}</span>
-                                        <div>
-                                            <strong>{item.title}</strong>
-                                            <p>{item.meta}</p>
+                                {activityLogs && activityLogs.length > 0 ? (
+                                    activityLogs.map((item) => (
+                                        <div key={item.id} className="admin-activity-item">
+                                            <span className="admin-activity-icon">{typeToIcon(item.type)}</span>
+                                            <div>
+                                                <strong>{item.meta || item.type}</strong>
+                                            </div>
+                                            <time>{timeAgo(item.createdAt)}</time>
                                         </div>
-                                        <time>{item.time}</time>
-                                    </div>
-                                ))}
+                                    ))
+                                ) : (
+                                    <div className="admin-activity-item admin-activity-empty">No recent activity</div>
+                                )}
                             </div>
                         </article>
 
@@ -291,7 +325,7 @@ const AdminDashboard = () => {
                                 </div>
                             </div>
                         </article>
-
+{/* 
                         <article className="admin-panel admin-sources-panel">
                             <div className="admin-panel-header">
                                 <div>
@@ -308,7 +342,7 @@ const AdminDashboard = () => {
                                     </div>
                                 ))}
                             </div>
-                        </article>
+                        </article> */}
                     </aside>
                 </section>
             </div>

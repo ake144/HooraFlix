@@ -1,11 +1,9 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FiActivity, FiDatabase, FiDollarSign, FiHome, FiKey, FiLayers, FiLogOut, FiShield, FiUsers } from 'react-icons/fi';
-import { useAuth } from '../context/AuthContext';
+import { FiActivity, FiDatabase, FiDollarSign, FiHome, FiKey, FiLayers, FiShield, FiUsers, FiSettings } from 'react-icons/fi';
 
 const AdminSidebar = () => {
   const location = useLocation();
-  const { logout } = useAuth();
 
   const navItems = [
     { to: '/admin', label: 'Dashboard', shortLabel: 'Home', icon: <FiHome /> },
@@ -13,6 +11,7 @@ const AdminSidebar = () => {
     { to: '/admin/founder-codes', label: 'Founder Codes', shortLabel: 'Codes', icon: <FiKey /> },
     { to: '/admin/payments', label: 'Payments', shortLabel: 'Pay', icon: <FiDollarSign /> },
     { to: '/admin/stats', label: 'Stats', shortLabel: 'Stats', icon: <FiActivity /> },
+    { to: '/admin/settings', label: 'Settings', shortLabel: 'Settings', icon: <FiSettings /> },
   ];
 
   const isActive = (path) => {
@@ -81,10 +80,6 @@ const AdminSidebar = () => {
             <span>{item.shortLabel}</span>
           </Link>
         ))}
-        <button type="button" className="admin-mobile-nav-item admin-mobile-logout-btn" onClick={logout}>
-          <FiLogOut />
-          <span>Out</span>
-        </button>
       </nav>
     </>
   );
