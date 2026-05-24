@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
     FiActivity,
@@ -18,15 +18,32 @@ import {
     FiZap,
 } from 'react-icons/fi';
 import AdminLayout from './AdminLayout';
+import { adminAPI } from '../utils/api';
+
 
 const AdminDashboard = () => {
+    const [stats, setStats] = React.useState(null);
+
+
+
+    useEffect(() => {
+         adminAPI.getDashboardStats()
+         .then((response)=>{
+            setStats(response?.data ?? response ?? null);
+         })
+         .catch(()=>{
+            console.error('Error fetching dashboard stats:');
+           throw new Error('Unable to load dashboard statistics right now.');
+         })
+    }, []);
+
     const overviewStats = [
-        { label: 'Total Users', value: '125,680', change: '+12.5%', icon: <FiUsers />, tone: 'violet' },
-        { label: 'Active Subscribers', value: '32,456', change: '+8.7%', icon: <FiActivity />, tone: 'emerald' },
-        { label: 'Total Movies / Series', value: '2,345', change: '+5.3%', icon: <FiFilm />, tone: 'blue' },
-        { label: 'Daily Revenue', value: '$12,540', change: '+15.8%', icon: <FiDollarSign />, tone: 'amber' },
-        { label: 'Founder Coins', value: '78,540', change: '+11.3%', icon: <FiKey />, tone: 'rose' },
-        { label: 'Academy Students', value: '5,432', change: '+9.5%', icon: <FiUsers />, tone: 'cyan' },
+        { label: 'Total Users', value: stats?.totalUsers, change: '+12.5%', icon: <FiUsers />, tone: 'violet' },
+        { label: 'Total Founders', value: stats?.totalFounders, change: '+8.7%', icon: <FiActivity />, tone: 'emerald' },
+        { label: 'Total Codes', value: stats?.totalCodes, change: '+5.3%', icon: <FiFilm />, tone: 'blue' },
+        { label: 'Total Payout Requests', value: stats?.totalPayoutRequests, change: '+15.8%', icon: <FiDollarSign />, tone: 'amber' },
+        { label: 'Active Coins', value: stats?.activeCodes, change: '+11.3%', icon: <FiKey />, tone: 'rose' },
+        { label: 'Total Admins', value: stats?.totalAdmins, change: '+9.5%', icon: <FiUsers />, tone: 'cyan' },
     ];
 
     const signupSeries = [420, 860, 610, 1200, 1490, 980, 1560];

@@ -11,7 +11,8 @@ import {
 	toggleCommissionRule,
 	getPayouts,
 	updatePayoutStatus
-    ,getCoinClaims
+    ,getCoinClaims,
+	getFounderStats
 } from '../controllers/admin.controller.js';
 import { authMiddleware, isAdmin } from '../middleware/auth.middleware.js';
 
@@ -21,6 +22,8 @@ const router = express.Router();
 router.use(authMiddleware);
 router.use(isAdmin);
 
+
+router.get('/dashboard-stats', getFounderStats),
 router.post('/founder-codes', createFounderCode);
 router.get('/founder-codes', getFounderCodes);
 router.get('/users', getUsers);
@@ -33,3 +36,6 @@ router.patch('/commission-rules/:id/toggle', toggleCommissionRule);
 router.get('/payouts', getPayouts);
 router.patch('/payouts/:id/status', updatePayoutStatus);
 router.get('/coin-claims', getCoinClaims);
+
+
+export default router;

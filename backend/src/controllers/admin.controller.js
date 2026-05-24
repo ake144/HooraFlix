@@ -394,3 +394,33 @@ export const getCoinClaims = async (req, res, next) => {
     next(error);
   }
 };
+
+
+export const getFounderStats = async (req, res, next) => {
+    try {
+         const [totalUsers,pendingUsers, totalAdmin, totalFounders, activeCodes,  totalCodes, payoutRequests] = await Promise.all([
+              prisma.user.count(),
+              prisma.user.count({ where: { referredBy: { status: 'PENDING' } } }),
+              prisma.user.count({ where: { role: 'ADMIN' } }),
+              prisma.user.count({ where: { role: 'FOUNDER' } }),
+              prisma.founderCode.count({ where: { isActive: true } }),
+              prisma.founderCode.count(),
+              prisma.payoutRequest.count()
+            ]);
+
+        res.json({
+            success: true,
+            data: {
+                totalUsers,
+                pendingUsers,
+                totalAdmin,
+                totalFounders,
+                activeCodes,
+                totalCodes,
+                payoutRequests
+            }
+        });
+    } catch (error) {
+        next(error);
+    }
+}

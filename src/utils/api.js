@@ -224,6 +224,7 @@ export const adminAPI = {
     getPayouts: () => api.get('/admin/payouts'),
     updatePayoutStatus: (id, status) => api.patch(`/admin/payouts/${id}/status`, { status }),
     getCoinClaims: (date) => api.get(`/admin/coin-claims${date ? `?date=${encodeURIComponent(date)}` : ''}`),
+    getDashboardStats: () => api.get('/admin/dashboard-stats'),
 };
 
 // Notification API
