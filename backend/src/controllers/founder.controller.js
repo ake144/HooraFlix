@@ -224,6 +224,19 @@ export const getFounderDashboard = async (req, res, next) => {
         };
 
         const currentMilestone = milestones[founder.rank];
+        
+        let commissionTotal = 0;
+        for (const ref of founder.referrals) {
+            const rule = await findCommissionRuleForReferral({ founder, referral: ref });
+            const baseAmount = ref.role === 'FOUNDER' ? 50 : 15;
+            commissionTotal += calculateCommission(rule, baseAmount) || baseAmount;
+        }
+
+        // Include any additional earnings not tied to referrals
+        const extraSum = await prisma.commissionEarning.aggregate({ _sum: { amount: true }, where: { founderId: founder.id } });
+        commissionTotal += Number(extraSum._sum.amount || 0);
+
+    
 
         res.json({
             success: true,
@@ -238,7 +251,7 @@ export const getFounderDashboard = async (req, res, next) => {
                     totalReferrals,
                     activeReferrals,
                     pendingReferrals,
-                    earnings: founder.totalEarnings,
+                    earnings:  commissionTotal,
                     coins: founder.coins,
                     lastClaimDate: founder.lastClaimDate,
                     claimStreak: founder.claimStreak,

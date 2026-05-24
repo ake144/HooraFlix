@@ -41,9 +41,9 @@ const AdminDashboard = () => {
         { label: 'Total Users', value: stats?.totalUsers, change: '+12.5%', icon: <FiUsers />, tone: 'violet' },
         { label: 'Total Founders', value: stats?.totalFounders, change: '+8.7%', icon: <FiActivity />, tone: 'emerald' },
         { label: 'Total Codes', value: stats?.totalCodes, change: '+5.3%', icon: <FiFilm />, tone: 'blue' },
-        { label: 'Total Payout Requests', value: stats?.totalPayoutRequests, change: '+15.8%', icon: <FiDollarSign />, tone: 'amber' },
+        { label: 'Total Payout Requests', value: stats?.totalPayoutRequests || 0, change: '+15.8%', icon: <FiDollarSign />, tone: 'amber' },
         { label: 'Active Coins', value: stats?.activeCodes, change: '+11.3%', icon: <FiKey />, tone: 'rose' },
-        { label: 'Total Admins', value: stats?.totalAdmins, change: '+9.5%', icon: <FiUsers />, tone: 'cyan' },
+        { label: 'Total Admins', value: stats?.totalAdmins || 0, change: '+9.5%', icon: <FiUsers />, tone: 'cyan' },
     ];
 
     const signupSeries = [420, 860, 610, 1200, 1490, 980, 1560];
@@ -94,7 +94,7 @@ const AdminDashboard = () => {
     };
 
     const topAffiliate = {
-        name: 'Abel Tesfaye',
+        name: 'Jhon Doe',
         tier: 'Gold Leader',
         earnings: '$5,432',
         referrals: '1,245',

@@ -551,7 +551,7 @@ const FoundersDashboard = () => {
               <p><FiDollarSign /> Total Rewards Pool</p>
             </div>
             <h3>{currentCoins.toLocaleString()} <small>HFX</small></h3>
-            <p className="fd-mobile-sub">≈ ${stats.earnings ? stats.earnings.toFixed(2) : '0.00'} USD</p>
+            <p className="fd-mobile-sub">≈ ${stats.earnings ? stats.earnings.toFixed(4) : '0.00'} USD</p>
             <div className="fd-mobile-countdown">
               <span>Next distribution</span>
               <strong>04:12:00</strong>

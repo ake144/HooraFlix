@@ -15,41 +15,41 @@ import {
   FiUsers,
 } from 'react-icons/fi';
 
-const initialRules = [
-  {
-    id: 'rule-founder-launch',
-    name: 'Gold founder bonus',
-    scopeMode: 'role',
-    target: 'Founder / Gold',
-    rewardType: 'percentage',
-    value: 12,
-    stackable: true,
-    status: 'Active',
-    note: 'Rewards founders at Gold rank during launch campaigns.',
-  },
-  {
-    id: 'rule-rank-climb',
-    name: 'Rank climb reward',
-    scopeMode: 'rank',
-    target: 'Founder / Gold',
-    rewardType: 'flat',
-    value: 150,
-    stackable: false,
-    status: 'Active',
-    note: 'Fixed bonus for verified rank progression.',
-  },
-  {
-    id: 'rule-unilevel-depth',
-    name: 'Unilevel depth reward',
-    scopeMode: 'unilevel',
-    target: 'Tier 3',
-    rewardType: 'percentage',
-    value: 4,
-    stackable: true,
-    status: 'Paused',
-    note: 'Distributes earnings through the network tree.',
-  },
-];
+// const initialRules = [
+//   {
+//     id: 'rule-founder-launch',
+//     name: 'Gold founder bonus',
+//     scopeMode: 'role',
+//     target: 'Founder / Gold',
+//     rewardType: 'percentage',
+//     value: 12,
+//     stackable: true,
+//     status: 'Active',
+//     note: 'Rewards founders at Gold rank during launch campaigns.',
+//   },
+//   {
+//     id: 'rule-rank-climb',
+//     name: 'Rank climb reward',
+//     scopeMode: 'rank',
+//     target: 'Founder / Gold',
+//     rewardType: 'flat',
+//     value: 150,
+//     stackable: false,
+//     status: 'Active',
+//     note: 'Fixed bonus for verified rank progression.',
+//   },
+//   {
+//     id: 'rule-unilevel-depth',
+//     name: 'Unilevel depth reward',
+//     scopeMode: 'unilevel',
+//     target: 'Tier 3',
+//     rewardType: 'percentage',
+//     value: 4,
+//     stackable: true,
+//     status: 'Paused',
+//     note: 'Distributes earnings through the network tree.',
+//   },
+// ];
 
 const initialFormData = {
   name: 'Gold founder commission',
@@ -58,8 +58,8 @@ const initialFormData = {
   rank: 'GOLD',
   offer: 'Launch Pack',
   level: '1',
-  rewardType: 'percentage',
-  value: '10',
+  rewardType: 'flat',
+  value: '20',
   stackable: true,
   note: 'Set a commission for Gold founder members based on the current model.',
 };
@@ -165,7 +165,7 @@ const getScopeTarget = (formData) => {
 
 const PaymentsPage = () => {
   const [payoutRequests, setPayoutRequests] = useState([]);
-  const [commissionRules, setCommissionRules] = useState(initialRules);
+  const [commissionRules, setCommissionRules] = useState([]);
   const [formData, setFormData] = useState(initialFormData);
   const [requestFilter, setRequestFilter] = useState('all');
   const [requestStatusMap, setRequestStatusMap] = useState({});
@@ -207,7 +207,7 @@ const PaymentsPage = () => {
           status: formatApiStatus(rule.status),
           note: rule.note,
         }));
-        setCommissionRules(backendRules.length > 0 ? backendRules : initialRules);
+        setCommissionRules(backendRules.length > 0 ? backendRules : []);
       }
 
       // fetch coin claims summary for default date (today) and last 7 days
@@ -443,7 +443,7 @@ const PaymentsPage = () => {
               }}>Filter</button>
             </div>
 
-            <div className="admin-payments-coin-summary">
+            <div className="admin-payments-coin-summary flex justify-between items-center gap-3">
               <small>Coins claimed for {coinStats.date || 'selected date'}</small>
               <strong>{formatCoins(coinStats.total || 0)}</strong>
             </div>
@@ -489,7 +489,6 @@ const PaymentsPage = () => {
                     <p className="admin-panel-kicker">Rule generator</p>
                     <h3>Commission settings</h3>
                   </div>
-                  <span className="admin-panel-chip">Code generator style</span>
                 </div>
 
                 <form className="admin-payments-builder-form" onSubmit={handleAddRule}>
