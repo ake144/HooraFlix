@@ -2,46 +2,39 @@ import { useEffect, useMemo, useState } from 'react'
 import './ComingSoon.css'
 
 const ComingSoon = () => {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
+  // FIXED UNIVERSAL RELEASE TIME — all users count down to this same moment
+  // Change this ISO string to your actual app release date/time
+  const RELEASE_TIME = '2026-06-20T12:00:00Z'
+  
+  const targetDate = useMemo(() => {
+    return new Date(RELEASE_TIME)
+  }, [])
+
+  // single source of truth: remaining seconds until target date
+  const [remainingSeconds, setRemainingSeconds] = useState(() => {
+    const diff = Math.ceil((targetDate.getTime() - Date.now()) / 1000)
+    return Math.max(0, diff)
   })
 
- 
-  const targetDate = useMemo(() => {
-    const date = new Date()
-    date.setDate(date.getDate() + 60)
-    return date
-  }, [])
-
+  // update countdown every second — all devices see the same countdown
   useEffect(() => {
-    const calculateTimeLeft = () => {
-      const now = new Date().getTime()
-      const difference = targetDate.getTime() - now
-
-      if (difference > 0) {
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24))
-        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
-        const seconds = Math.floor((difference % (1000 * 60)) / 1000)
-
-        setTimeLeft({ days, hours, minutes, seconds })
-      } else {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 })
-      }
+    const tick = () => {
+      const diff = Math.ceil((targetDate.getTime() - Date.now()) / 1000)
+      setRemainingSeconds(Math.max(0, diff))
     }
 
-    calculateTimeLeft()
-    const timer = setInterval(calculateTimeLeft, 1000)
-
+    tick()
+    const timer = setInterval(tick, 1000)
     return () => clearInterval(timer)
-  }, [])
+  }, [targetDate])
 
-  const formatTime = (value) => {
-    return value.toString().padStart(2, '0')
-  }
+  const formatTime = (value) => value.toString().padStart(2, '0')
+
+  // derive days/hours/minutes/seconds from remainingSeconds
+  const days = Math.floor(remainingSeconds / (24 * 3600))
+  const hours = Math.floor((remainingSeconds % (24 * 3600)) / 3600)
+  const minutes = Math.floor((remainingSeconds % 3600) / 60)
+  const seconds = remainingSeconds % 60
 
   return (
     <div className="coming-soon-section">
@@ -50,28 +43,28 @@ const ComingSoon = () => {
       <div className="coming-soon-content">
         <div className="timer-strip" aria-label="Launch countdown">
           <div className="timer-cell">
-            <div className="timer-value">{formatTime(timeLeft.days)}</div>
+            <div className="timer-value">{formatTime(days)}</div>
             <div className="timer-label">DAYS</div>
           </div>
 
           <div className="timer-separator" aria-hidden="true">:</div>
 
           <div className="timer-cell">
-            <div className="timer-value">{formatTime(timeLeft.hours)}</div>
+            <div className="timer-value">{formatTime(hours)}</div>
             <div className="timer-label">HOURS</div>
           </div>
 
           <div className="timer-separator" aria-hidden="true">:</div>
 
           <div className="timer-cell">
-            <div className="timer-value">{formatTime(timeLeft.minutes)}</div>
+            <div className="timer-value">{formatTime(minutes)}</div>
             <div className="timer-label">MINUTES</div>
           </div>
 
           <div className="timer-separator" aria-hidden="true">:</div>
 
           <div className="timer-cell">
-            <div className="timer-value">{formatTime(timeLeft.seconds)}</div>
+            <div className="timer-value">{formatTime(seconds)}</div>
             <div className="timer-label">SECONDS</div>
           </div>
         </div>
