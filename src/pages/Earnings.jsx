@@ -325,7 +325,7 @@ const Earnings = () => {
             <div className="fd-modal-body">
               <p>Select your preferred withdrawal method:</p>
               <div className="fd-withdraw-options">
-                {['Bank Transfer', 'Mobile Money', 'Crypto', 'PayPal'].map(method => (
+                {['Bank Transfer', 'Mobile Money', 'Voucher', 'PayPal'].map(method => (
                   <label key={method} className={`fd-option ${withdrawMethod === method ? 'selected' : ''}`}>
                     <input
                       type="radio"

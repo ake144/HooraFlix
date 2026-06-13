@@ -1,11 +1,11 @@
 import React from 'react';
-import { FiBell, FiCalendar, FiChevronDown, FiLogOut, FiSearch } from 'react-icons/fi';
+import { FiBell, FiCalendar, FiChevronDown, FiLogOut, FiSearch, FiMenu } from 'react-icons/fi';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-const AdminNavbar = () => {
+const AdminNavbar = ({ toggleSidebar }) => {
   const location = useLocation();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const today = new Intl.DateTimeFormat('en-US', {
     month: 'short',
     day: 'numeric',
@@ -23,21 +23,30 @@ const AdminNavbar = () => {
 
   const title = titles[location.pathname] || 'Admin Control Panel';
 
+  const getInitials = (name) => {
+    if (!name) return 'AD';
+    return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+  };
+
   return (
     <header className="admin-navbar">
       <div className="admin-navbar-title-group">
-        <div>
+        <button className="admin-mobile-menu-btn" onClick={toggleSidebar} aria-label="Toggle menu">
+          <FiMenu size={24} />
+        </button>
+        <div className="admin-navbar-title-text">
           <p className="admin-navbar-kicker">Operations</p>
           <h1>{title}</h1>
-        </div>
-        <div className="admin-navbar-date-pill">
-          <FiCalendar />
-          <span>{today}</span>
         </div>
       </div>
 
       <div className="admin-navbar-actions">
-        <label className="admin-navbar-search" aria-label="Search admin data">
+        <div className="admin-navbar-date-pill desktop-only">
+          <FiCalendar />
+          <span>{today}</span>
+        </div>
+
+        <label className="admin-navbar-search desktop-only" aria-label="Search admin data">
           <FiSearch />
           <input type="search" placeholder="Search anything..." />
         </label>
@@ -48,15 +57,15 @@ const AdminNavbar = () => {
         </button>
 
         <button type="button" className="admin-profile-chip" aria-label="Admin profile">
-          <span className="admin-profile-avatar">AD</span>
-          <div>
-            <strong>Admin</strong>
-            <small>Super Admin</small>
+          <span className="admin-profile-avatar">{getInitials(user?.name)}</span>
+          <div className="desktop-only">
+            <strong>{user?.name || 'Admin'}</strong>
+            <small>{user?.role === 'ADMIN' ? 'Super Admin' : 'Admin'}</small>
           </div>
-          <FiChevronDown />
+          {/* <FiChevronDown className="desktop-only" /> */}
         </button>
 
-        <button className="admin-btn admin-logout-btn" onClick={logout}>
+        <button className="admin-btn admin-logout-btn desktop-only" onClick={logout}>
           <FiLogOut />
           Logout
         </button>
@@ -66,3 +75,4 @@ const AdminNavbar = () => {
 };
 
 export default AdminNavbar;
+

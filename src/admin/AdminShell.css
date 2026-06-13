@@ -28,9 +28,15 @@
 .admin-sidebar-brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
   padding: 2px 6px 14px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.admin-sidebar-brand-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .admin-sidebar-mark {
@@ -121,7 +127,7 @@
   gap: 12px;
 }
 
-.admin-sidebar-status-row > span {
+.admin-sidebar-status-row>span {
   width: 34px;
   height: 34px;
   border-radius: 12px;
@@ -153,7 +159,7 @@
   margin-top: 14px;
 }
 
-.admin-sidebar-status-metrics > div {
+.admin-sidebar-status-metrics>div {
   min-height: 72px;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.03);
@@ -236,6 +242,48 @@
   align-items: center;
   gap: 16px;
   min-width: 0;
+}
+
+.admin-mobile-menu-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #eef2f7;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.admin-mobile-menu-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.admin-sidebar-close-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #eef2f7;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.admin-sidebar-close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.admin-sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 30;
 }
 
 .admin-navbar h1 {
@@ -1055,7 +1103,7 @@
   box-shadow: inset 0 0 0 18px rgba(7, 11, 18, 0.95);
 }
 
-.admin-stats-donut > div {
+.admin-stats-donut>div {
   width: 150px;
   height: 150px;
   border-radius: 50%;
@@ -1087,7 +1135,7 @@
   gap: 12px;
 }
 
-.admin-stats-legend > div {
+.admin-stats-legend>div {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -1097,7 +1145,7 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.admin-stats-legend > div > span {
+.admin-stats-legend>div>span {
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -1106,12 +1154,12 @@
   flex: 0 0 auto;
 }
 
-.admin-stats-legend > div:nth-child(2) > span {
+.admin-stats-legend>div:nth-child(2)>span {
   background: #8b5cf6;
   box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.12);
 }
 
-.admin-stats-legend > div:nth-child(3) > span {
+.admin-stats-legend>div:nth-child(3)>span {
   background: #22c55e;
   box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12);
 }
@@ -1583,22 +1631,56 @@
 
 @media (max-width: 900px) {
   .admin-sidebar {
-    display: none;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    bottom: 0;
+    z-index: 40;
+    width: 280px;
+    transition: left 0.3s ease;
+    background: linear-gradient(180deg, rgba(8, 12, 20, 1) 0%, rgba(5, 9, 16, 1) 100%);
+  }
+
+  .admin-sidebar.open {
+    left: 0;
+  }
+
+  .admin-sidebar-overlay {
+    display: block;
+  }
+
+  .admin-mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .admin-sidebar-close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .desktop-only {
+    display: none !important;
   }
 
   .admin-navbar {
     padding: 14px 16px;
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
   }
 
-  .admin-navbar-title-group,
-  .admin-navbar-actions {
-    width: 100%;
+  .admin-navbar-title-group {
+    width: auto;
+    flex: 1;
   }
 
   .admin-navbar-actions {
-    justify-content: space-between;
+    width: auto;
+    justify-content: flex-end;
   }
 
   .admin-navbar-search {
@@ -1606,6 +1688,8 @@
     min-width: 0;
     flex: 1 1 100%;
     order: 3;
+    display: none;
+    /* Hide search on mobile by default, or keep it if needed */
   }
 
   .admin-navbar-date-pill {
@@ -1613,7 +1697,11 @@
   }
 
   .admin-navbar h1 {
-    font-size: 20px;
+    font-size: 18px;
+  }
+
+  .admin-navbar-kicker {
+    font-size: 10px;
   }
 
   .admin-content {
@@ -1638,7 +1726,7 @@
     margin: 0 auto;
   }
 
-  .admin-stats-donut > div {
+  .admin-stats-donut>div {
     width: 132px;
     height: 132px;
   }

@@ -193,7 +193,7 @@ const Referrals = () => {
                             <td>{formatDate(r.joinedAt)}</td>
                             <td>
                               <span className={`fd-status-badge ${r.role === 'Founder' ? 'active' : 'pending'}`}>
-                                {r.role === 'Founder' ? 'Active Founder' : 'Pending'}
+                                {r.role === 'Founder' ? 'Active' : 'INACTIVE'}
                               </span>
                             </td>
                             <td className="fd-reward-cell">+${getReferralReward(r).toFixed(2)}</td>

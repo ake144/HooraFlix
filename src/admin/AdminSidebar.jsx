@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FiActivity, FiDatabase, FiDollarSign, FiHome, FiKey, FiLayers, FiShield, FiUsers, FiSettings, FiDownload, FiVideo } from 'react-icons/fi';
+import { FiActivity, FiDatabase, FiDollarSign, FiHome, FiKey, FiLayers, FiShield, FiUsers, FiSettings, FiDownload, FiVideo, FiX } from 'react-icons/fi';
 
-const AdminSidebar = () => {
+const AdminSidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
 
   const navItems = [
@@ -26,20 +26,25 @@ const AdminSidebar = () => {
 
   return (
     <>
-      <aside className="admin-sidebar">
+      <aside className={`admin-sidebar ${isOpen ? 'open' : ''}`}>
         <div className="admin-sidebar-brand">
-          <div className="admin-sidebar-mark">
-            <span>H</span>
+          <div className="admin-sidebar-brand-inner">
+            <div className="admin-sidebar-mark">
+              <span>H</span>
+            </div>
+            <div>
+              <h2>Hooraflix</h2>
+              <p>Stream Control</p>
+            </div>
           </div>
-          <div>
-            <h2>Hooraflix</h2>
-            <p>Stream Control</p>
-          </div>
+          <button className="admin-sidebar-close-btn" onClick={onClose} aria-label="Close menu">
+            <FiX size={24} />
+          </button>
         </div>
         <div className="admin-sidebar-section-label">Main menu</div>
         <nav>
           {navItems.map((item) => (
-            <Link key={item.to} to={item.to} className={`admin-nav-link ${isActive(item.to) ? 'active' : ''}`}>
+            <Link key={item.to} to={item.to} className={`admin-nav-link ${isActive(item.to) ? 'active' : ''}`} onClick={onClose}>
               {item.icon} {item.label}
             </Link>
           ))}
@@ -77,8 +82,9 @@ const AdminSidebar = () => {
         </div>
       </aside>
 
+      {/* Bottom mobile nav is kept for quick access on very small screens, but sidebar is the main menu */}
       <nav className="admin-mobile-nav" aria-label="Admin mobile navigation">
-        {navItems.map((item) => (
+        {navItems.slice(0, 5).map((item) => (
           <Link key={`mobile-${item.to}`} to={item.to} className={`admin-mobile-nav-item ${isActive(item.to) ? 'active' : ''}`}>
             {item.icon}
             <span>{item.shortLabel}</span>
@@ -90,3 +96,4 @@ const AdminSidebar = () => {
 };
 
 export default AdminSidebar;
+

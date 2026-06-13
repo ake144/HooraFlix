@@ -19,30 +19,28 @@ import {
 } from 'react-icons/fi';
 import AdminLayout from './AdminLayout';
 import { adminAPI } from '../utils/api';
-
+import { useAuth } from '../context/AuthContext';
 
 const AdminDashboard = () => {
     const [stats, setStats] = React.useState(null);
-
-
+    const { user } = useAuth();
 
     useEffect(() => {
-         adminAPI.getDashboardStats()
-         .then((response)=>{
-            setStats(response?.data ?? response ?? null);
-         })
-         .catch(()=>{
-            console.error('Error fetching dashboard stats:');
-           throw new Error('Unable to load dashboard statistics right now.');
-         })
+        adminAPI.getDashboardStats()
+            .then((response) => {
+                setStats(response?.data ?? response ?? null);
+            })
+            .catch(() => {
+                console.error('Error fetching dashboard stats:');
+            })
     }, []);
 
     const overviewStats = [
-        { label: 'Total Users', value: stats?.totalUsers, change: '+12.5%', icon: <FiUsers />, tone: 'violet' },
-        { label: 'Total Founders', value: stats?.totalFounders, change: '+8.7%', icon: <FiActivity />, tone: 'emerald' },
-        { label: 'Total Codes', value: stats?.totalCodes, change: '+5.3%', icon: <FiFilm />, tone: 'blue' },
+        { label: 'Total Users', value: stats?.totalUsers || 0, change: '+12.5%', icon: <FiUsers />, tone: 'violet' },
+        { label: 'Total Founders', value: stats?.totalFounders || 0, change: '+8.7%', icon: <FiActivity />, tone: 'emerald' },
+        { label: 'Total Codes', value: stats?.totalCodes || 0, change: '+5.3%', icon: <FiFilm />, tone: 'blue' },
         { label: 'Total Payout Requests', value: stats?.totalPayoutRequests || 0, change: '+15.8%', icon: <FiDollarSign />, tone: 'amber' },
-        { label: 'Active Coins', value: stats?.activeCodes, change: '+11.3%', icon: <FiKey />, tone: 'rose' },
+        { label: 'Active Coins', value: stats?.activeCodes || 0, change: '+11.3%', icon: <FiKey />, tone: 'rose' },
         { label: 'Total Admins', value: stats?.totalAdmins || 0, change: '+9.5%', icon: <FiUsers />, tone: 'cyan' },
     ];
 
@@ -137,7 +135,7 @@ const AdminDashboard = () => {
                 <section className="admin-hero-panel">
                     <div className="admin-hero-copy">
                         <p className="admin-hero-kicker">Operations hub</p>
-                        <h2>Welcome back, Admin</h2>
+                        <h2>Welcome back, {user?.name?.split(' ')[0] || 'Admin'}</h2>
                         <p>
                             Manage users, founder codes, payouts, academy activity, and platform growth from a single command center.
                         </p>
@@ -325,7 +323,7 @@ const AdminDashboard = () => {
                                 </div>
                             </div>
                         </article>
-{/* 
+                        {/* 
                         <article className="admin-panel admin-sources-panel">
                             <div className="admin-panel-header">
                                 <div>

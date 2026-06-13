@@ -28,6 +28,7 @@ const FoundersDashboard = () => {
   const [claiming, setClaiming] = useState(false);
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [withdrawMethod, setWithdrawMethod] = useState('');
+  const [earningsBreakdown, setEarningsBreakdown] = useState({ commissionTotal: 0, coinValue: 0, coins: 0, totalEarnings: 0, breakdown: [] });
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -68,7 +69,20 @@ const FoundersDashboard = () => {
       }
     };
     fetchDashboardData();
+    fetchEarningsBreakdown();
   }, []);
+
+   const fetchEarningsBreakdown = async () => {
+      try {
+        const res = await founderAPI.getEarningsBreakdown();
+        if (res.success) {
+          setEarningsBreakdown(res.data || {});
+        }
+      } catch (err) {
+        console.error('Failed to fetch earnings breakdown', err);
+      }
+    };
+
 
   const fetchAllReferrals = async (page = 1) => {
     try {
@@ -163,10 +177,10 @@ const FoundersDashboard = () => {
   const currentRewardDay = Math.min(Math.max(streak, 0), rewardMilestones.length);
   const currentCoins = Number(stats.coins || coins || 0);
   const rankTiers = [
-    { name: 'GOLD', requiredCoins: 0, theme: 'gold' },
-    { name: 'PLATINUM', requiredCoins: 500, theme: 'platinum' },
-    { name:"BRONZE",  requiredCoins: 'SILVER', theme: 200 },
-    { name:"SILVER",  requiredCoins: 1000, theme: 250 }, 
+    { name: 'GOLD', requiredCoins: 100, theme: 'gold' },
+    { name: 'PLATINUM', requiredCoins: 200, theme: 'platinum' },
+    { name:"BRONZE",  requiredCoins: 500, theme: 'bronze' },
+    { name:"SILVER",  requiredCoins: 1000, theme: 'silver' }, 
   ];
   const nextRankTier = rankTiers.find((tier) => currentCoins < tier.requiredCoins) || null;
   const coinsNeededForNextRank = nextRankTier ? nextRankTier.requiredCoins - currentCoins : 0;
@@ -398,7 +412,7 @@ const FoundersDashboard = () => {
 
               <div className="fd-card fd-rewards-hero">
                 <p className="fd-stat-label">Total Rewards</p>
-                <h3>${stats.earnings ? stats.earnings.toFixed(2) : '0.00'}</h3>
+                <h3>${earningsBreakdown.totalEarnings ? earningsBreakdown.totalEarnings.toFixed(2) : '0.00'}</h3>
                 <span className="fd-stat-change positive">+{Math.min(25, 4 + currentRewardDay)}.5% this month</span>
                 <button className="fd-withdraw-action" onClick={() => setShowWithdrawModal(true)}>Withdraw Funds</button>
               </div>
@@ -551,12 +565,12 @@ const FoundersDashboard = () => {
             <div className="fd-mobile-stat-header">
               <p><FiDollarSign /> Total Rewards Pool</p>
             </div>
-            <h3>{currentCoins.toLocaleString()} <small>HFX</small></h3>
-            <p className="fd-mobile-sub">≈ ${stats.earnings ? stats.earnings.toFixed(4) : '0.00'} USD</p>
-            <div className="fd-mobile-countdown">
+            <h3>{earningsBreakdown.totalEarnings ? earningsBreakdown.totalEarnings.toLocaleString() : '0.00'}</h3>
+            {/* <p className="fd-mobile-sub">≈ ${earningsBreakdown.totalEarnings ? earningsBreakdown.totalEarnings  .toFixed(2) : '0.00'} BIRR</p> */}
+            {/* <div className="fd-mobile-countdown">
               <span>Next distribution</span>
               <strong>04:12:00</strong>
-            </div>
+            </div> */}
           </div>
 
           <div className="fd-card fd-mobile-roadmap">
