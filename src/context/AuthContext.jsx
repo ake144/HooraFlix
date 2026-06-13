@@ -51,9 +51,9 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const register = async (name, email, password, refId) => {
+    const register = async (name, email, phone, password, refId) => {
         try {
-            const response = await authAPI.register({ name, email, password, refId });
+            const response = await authAPI.register({ name, email, phone, password, refId });
             if (response.success) {
                 localStorage.setItem('accessToken', response.data.accessToken);
                 localStorage.setItem('refreshToken', response.data.refreshToken);

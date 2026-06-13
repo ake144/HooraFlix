@@ -1,76 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FiHome,FiUsers, FiDollarSign, FiVideo, FiDownload, FiSettings, FiLifeBuoy, FiLogOut, FiSearch, FiFilter, FiImage, FiFileText, FiBell, FiHelpCircle, FiGrid, FiShield } from 'react-icons/fi';
+import { FiHome, FiUsers, FiDollarSign, FiVideo, FiDownload, FiSettings, FiLifeBuoy, FiLogOut, FiSearch, FiFilter, FiImage, FiFileText, FiBell, FiHelpCircle, FiGrid, FiShield } from 'react-icons/fi';
 import { useAuth } from '../../context/AuthContext';
 import { founderAPI } from '../../utils/api';
 import '../FoundersDashboard.css';
 import './FounderTools.css';
 
-const marketingAssets = [
-  {
-    title: 'Poster Pack',
-    type: 'DESIGN',
-    icon: <FiImage />,
-    formats: ['PSD', 'PNG'],
-    description: 'Ready-to-share posters for WhatsApp, Telegram, Instagram, and Facebook.',
-    file: '/landing.jpg',
-    thumbnail: '/landing.jpg',
-  },
-  {
-    title: 'Film Trailer Clips',
-    type: 'VIDEO',
-    icon: <FiVideo />,
-    formats: ['4K', 'MP4'],
-    description: 'Short teasers optimized for Reels and Shorts with pre-cut hooks.',
-    file: '/hooraflix-logo.mp4',
-    thumbnail: '/landing5.jpg',
-  },
-  {
-    title: 'Course Promo Videos',
-    type: 'VIDEO',
-    icon: <FiVideo />,
-    formats: ['HD', 'MP4'],
-    description: 'Promotional cuts to announce new course availability to your audience.',
-    file: '/DANASH ADVERT CINI.mp4',
-    thumbnail: '/hoora1.jpg',
-  },
-  {
-    title: 'Social Media Captions',
-    type: 'COPY',
-    icon: <FiFileText />,
-    formats: ['DOCX', 'TXT'],
-    description: 'Caption bank and CTAs crafted for referral conversion.',
-    file: '/hoora1.jpg',
-    thumbnail: '/landing2.jpg',
-  },
-];
-
-const featuredPosterMaterials = [
-  {
-    title: 'Denash Campaign Poster',
-    type: 'POSTER',
-    formats: ['JPG', '1080x1350'],
-    description: 'High-impact visual poster optimized for timeline and story promotion campaigns.',
-    file: '/denash.jpg',
-    thumbnail: '/denash.jpg',
-  },
-  {
-    title: 'Tila Campaign Poster',
-    type: 'POSTER',
-    formats: ['JPG', '1080x1350'],
-    description: 'Cinematic poster creative for conversion-focused awareness and trailer pushes.',
-    file: '/tila.jpg',
-    thumbnail: '/tila.jpg',
-  },
-  {
-    title: 'Tsehay Campaign Poster',
-    type: 'POSTER',
-    formats: ['JPG', '1080x1350'],
-    description: 'Ready-to-publish key art for founder referral pages and partner communities.',
-    file: '/tsehay.jpg',
-    thumbnail: '/tsehay.jpg',
-  },
-];
 
 const FounderMarketingLibrary = () => {
   const { logout } = useAuth();
@@ -78,22 +13,31 @@ const FounderMarketingLibrary = () => {
   const [dashboardData, setDashboardData] = useState(null);
   const [coins, setCoins] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
+  const [marketingAssets, setMarketingAssets] = useState([]);
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
+    const fetchData = async () => {
       try {
-        const dashData = await founderAPI.getDashboard();
+        const [dashData, assetsData] = await Promise.all([
+          founderAPI.getDashboard(),
+          founderAPI.getMarketingAssets()
+        ]);
+
         if (dashData.success) {
           setDashboardData(dashData.data);
           setCoins(dashData.data.stats?.coins || 0);
         }
+
+        if (assetsData.success) {
+          setMarketingAssets(assetsData.data);
+        }
       } catch (err) {
-        console.error('Dashboard error:', err);
+        console.error('Data fetch error:', err);
       } finally {
         setLoading(false);
       }
     };
-    fetchDashboardData();
+    fetchData();
   }, []);
 
   const getInitial = (name, email) => {
@@ -101,11 +45,15 @@ const FounderMarketingLibrary = () => {
   };
 
   const user = dashboardData?.user || { name: 'Founder', email: 'founder@hooraflix.com', rank: 'Starter' };
+
   const filteredAssets = marketingAssets.filter((asset) => {
     if (!searchQuery.trim()) return true;
-    const haystack = `${asset.title} ${asset.type} ${asset.description} ${asset.formats.join(' ')}`.toLowerCase();
+    const haystack = `${asset.title} ${asset.type} ${asset.description} ${asset.formats?.join(' ')}`.toLowerCase();
     return haystack.includes(searchQuery.toLowerCase());
   });
+
+  const featuredAssets = marketingAssets.filter(a => a.type === 'DESIGN' || a.type === 'POSTER').slice(0, 3);
+  const regularAssets = marketingAssets.filter(a => !featuredAssets.find(f => f.id === a.id));
 
   return (
     <div className="fd-layout">
@@ -172,15 +120,15 @@ const FounderMarketingLibrary = () => {
           <div className="ml-filter-bar">
             <div className="ml-search-input-wrapper">
               <FiSearch className="ml-search-icon" />
-              <input 
-                type="text" 
-                placeholder="Search campaign assets, formats, or keywords..." 
+              <input
+                type="text"
+                placeholder="Search campaign assets, formats, or keywords..."
                 className="ml-search-input"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            
+
             <div className="ml-dropdowns">
               <select className="ml-select">
                 <option>All Categories</option>
@@ -207,22 +155,22 @@ const FounderMarketingLibrary = () => {
             </div>
 
             <div className="ml-asset-grid ml-featured-grid">
-              {featuredPosterMaterials.map((asset, index) => (
-                <div key={`featured-${index}`} className="ml-asset-card">
+              {featuredAssets.map((asset, index) => (
+                <div key={asset.id || `featured-${index}`} className="ml-asset-card">
                   <div className="ml-asset-img-container">
                     <span className="ml-type-badge ml-type-poster">{asset.type}</span>
-                    <img src={asset.thumbnail} alt={asset.title} className="ml-asset-img" />
+                    <img src={asset.thumbnailUrl || asset.fileUrl} alt={asset.title} className="ml-asset-img" />
                   </div>
                   <div className="ml-asset-content">
                     <h3 className="ml-asset-title">{asset.title}</h3>
                     <p className="ml-asset-desc">{asset.description}</p>
                     <div className="ml-asset-formats">
-                      {asset.formats.map((fmt, i) => (
+                      {asset.formats?.map((fmt, i) => (
                         <span key={i} className="ml-format-tag">{fmt}</span>
                       ))}
                     </div>
-                    <a className="ml-download-btn" href={asset.file} download>
-                      <FiDownload className="ml-btn-icon"/> Download Poster
+                    <a className="ml-download-btn" href={asset.fileUrl} download target="_blank" rel="noreferrer">
+                      <FiDownload className="ml-btn-icon" /> Download Poster
                     </a>
                   </div>
                 </div>
@@ -232,25 +180,25 @@ const FounderMarketingLibrary = () => {
 
           <div className="ml-asset-grid">
             {filteredAssets.map((asset, index) => (
-              <div key={index} className="ml-asset-card">
+              <div key={asset.id || index} className="ml-asset-card">
                 <div className="ml-asset-img-container">
                   <span className={`ml-type-badge ml-type-${asset.type.toLowerCase()}`}>{asset.type}</span>
-                  <img src={asset.thumbnail} alt={asset.title} className="ml-asset-img" />
+                  <img src={asset.thumbnailUrl || asset.fileUrl} alt={asset.title} className="ml-asset-img" />
                 </div>
                 <div className="ml-asset-content">
                   <h3 className="ml-asset-title">{asset.title}</h3>
                   <div className="ml-asset-formats">
-                    {asset.formats.map((fmt, i) => (
+                    {asset.formats?.map((fmt, i) => (
                       <span key={i} className="ml-format-tag">{fmt}</span>
                     ))}
                   </div>
-                  <a className="ml-download-btn" href={asset.file} download>
-                    <FiDownload className="ml-btn-icon"/> Download Asset
+                  <a className="ml-download-btn" href={asset.fileUrl} download target="_blank" rel="noreferrer">
+                    <FiDownload className="ml-btn-icon" /> Download Asset
                   </a>
                 </div>
               </div>
             ))}
-            {filteredAssets.length === 0 && (
+            {filteredAssets.length === 0 && !loading && (
               <div className="ml-empty-state">No assets match your search.</div>
             )}
           </div>
@@ -260,13 +208,13 @@ const FounderMarketingLibrary = () => {
               <div className="ml-bundle-kicker">QUARTERLY LAUNCH KIT</div>
               <h2 className="ml-bundle-title">The "Obsidian Stage" Campaign Collection</h2>
               <p className="ml-bundle-desc">Get the complete set of ultra-high-resolution billboards, 8K video trailers, and deep-dive marketing strategies used by Top-Tier Founders for Q4 promotions.</p>
-              
+
               <div className="ml-bundle-tags">
                 <span className="ml-bundle-tag">✓ Video Assets</span>
                 <span className="ml-bundle-tag">✓ Design Files</span>
                 <span className="ml-bundle-tag">✓ Copy Guides</span>
               </div>
-              
+
               <button className="ml-bundle-btn">
                 UNLOCK FULL BUNDLE (4.2 GB)
               </button>
@@ -284,10 +232,10 @@ const FounderMarketingLibrary = () => {
           <Link to="/founders-dashboard/training" className="fd-mobile-nav-item"><FiUsers /><span>Referrals</span></Link>
           <Link to="/founders-dashboard/materials" className="fd-mobile-nav-item active"><FiDollarSign /><span>Earnings</span></Link>
           <Link to="/founders-dashboard/settings" className="fd-mobile-nav-item"><FiShield /><span>Profile</span></Link>
-           <button type="button" className="fd-mobile-nav-item fd-mobile-logout-btn" onClick={logout}>
-                    <FiLogOut />
-                    <span>Logout</span>
-             </button>
+          <button type="button" className="fd-mobile-nav-item fd-mobile-logout-btn" onClick={logout}>
+            <FiLogOut />
+            <span>Logout</span>
+          </button>
         </nav>
       </main>
     </div>

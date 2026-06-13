@@ -8,7 +8,9 @@ import {
     getStats,
     claimCoin,
     withdrawCoin,
-    getTransactions
+    getTransactions,
+    getMarketingAssets,
+    getTrainingCourses
 } from '../controllers/founder.controller.js';
 import { authMiddleware, isFounder } from '../middleware/auth.middleware.js';
 import { validate } from '../middleware/validation.middleware.js';
@@ -30,5 +32,8 @@ router.get('/referrals', authMiddleware, isFounder, getReferrals);
 router.get('/stats', authMiddleware, isFounder, getStats);
 router.post('/claim-coin', authMiddleware, isFounder, claimCoin);
 router.post('/withdraw-coin', authMiddleware, isFounder, withdrawCoin);
+
+router.get('/marketing-assets', authMiddleware, isFounder, getMarketingAssets);
+router.get('/training-courses', authMiddleware, isFounder, getTrainingCourses);
 
 export default router;

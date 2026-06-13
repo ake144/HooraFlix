@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FiActivity, FiDatabase, FiDollarSign, FiHome, FiKey, FiLayers, FiShield, FiUsers, FiSettings } from 'react-icons/fi';
+import { FiActivity, FiDatabase, FiDollarSign, FiHome, FiKey, FiLayers, FiShield, FiUsers, FiSettings, FiDownload, FiVideo } from 'react-icons/fi';
 
 const AdminSidebar = () => {
   const location = useLocation();
@@ -9,7 +9,11 @@ const AdminSidebar = () => {
     { to: '/admin', label: 'Dashboard', shortLabel: 'Home', icon: <FiHome /> },
     { to: '/admin/users', label: 'Users', shortLabel: 'Users', icon: <FiUsers /> },
     { to: '/admin/founder-codes', label: 'Founder Codes', shortLabel: 'Codes', icon: <FiKey /> },
+    { to: '/admin/marketing', label: 'Marketing Library', shortLabel: 'Assets', icon: <FiDownload /> },
+    { to: '/admin/training', label: 'Training Center', shortLabel: 'Training', icon: <FiVideo /> },
     { to: '/admin/payments', label: 'Payments', shortLabel: 'Pay', icon: <FiDollarSign /> },
+    { to: '/admin/commissions', label: 'Commission Management', shortLabel: 'Comm', icon: <FiLayers /> },
+    { to: '/admin/coins', label: 'Coin Management', shortLabel: 'Coins', icon: <FiDatabase /> },
     { to: '/admin/stats', label: 'Stats', shortLabel: 'Stats', icon: <FiActivity /> },
     { to: '/admin/settings', label: 'Settings', shortLabel: 'Settings', icon: <FiSettings /> },
   ];

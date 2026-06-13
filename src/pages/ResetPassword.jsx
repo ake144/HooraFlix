@@ -55,48 +55,54 @@ const ResetPassword = () => {
 
   return (
     <div className="auth-container">
-      <div className="auth-form-side">
-        <div className="auth-box">
-          <h1 className="auth-title">Reset Password</h1>
+      <div className="back-button-container">
+        <button className="back-button" onClick={() => navigate(-1)}>
+          &larr; Back
+        </button>
+      </div>
+      <div className="auth-content-wrapper">
+        <div className="auth-form-side">
+          <div className="auth-box">
+            <h1 className="auth-title">Reset Password</h1>
+            <p className="auth-subtitle">Enter your new password below.</p>
 
-          <p className="auth-subtitle">Enter your new password below.</p>
+            {error && <div className="auth-alert auth-alert-error">{error}</div>}
+            {message && <div className="auth-alert auth-alert-success">{message}</div>}
 
-          {error && <div className="auth-alert auth-alert-error">{error}</div>}
-          {message && <div className="auth-alert auth-alert-success">{message}</div>}
+            <form className="auth-form" onSubmit={handleSubmit}>
+              <div className="form-group">
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="New password"
+                  className="form-input"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
 
-          <form className="auth-form" onSubmit={handleSubmit}>
-            <div className="form-group">
-              <input
-                type="password"
-                name="password"
-                placeholder="New password"
-                className="form-input"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div className="form-group">
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="Confirm new password"
+                  className="form-input"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+              </div>
+
+              <button type="submit" className="auth-button" disabled={loading}>
+                {loading ? 'Resetting...' : 'Reset Password'}
+              </button>
+            </form>
+
+            <div className="auth-footer">
+              Back to login?
+              <Link to="/login" className="auth-link">Sign in.</Link>
             </div>
-
-            <div className="form-group">
-              <input
-                type="password"
-                name="confirmPassword"
-                placeholder="Confirm new password"
-                className="form-input"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
-            </div>
-
-            <button type="submit" className="auth-button" disabled={loading}>
-              {loading ? 'Resetting...' : 'Reset Password'}
-            </button>
-          </form>
-
-          <div className="auth-footer">
-            Back to login?
-            <Link to="/login" className="auth-link">Sign in.</Link>
           </div>
         </div>
       </div>

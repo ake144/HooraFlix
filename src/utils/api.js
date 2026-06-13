@@ -209,6 +209,8 @@ export const founderAPI = {
     withdrawCoin: () => api.post('/founders/withdraw-coin', {}),
     getEarningsBreakdown: () => api.get('/founders/earnings/breakdown'),
     getTransactions: (page = 1, limit = 10) => api.get(`/founders/transactions?page=${page}&limit=${limit}`),
+    getMarketingAssets: () => api.get('/founders/marketing-assets'),
+    getTrainingCourses: () => api.get('/founders/training-courses'),
 };
 
 // Admin API
@@ -228,6 +230,12 @@ export const adminAPI = {
     getCoinClaims: (date) => api.get(`/admin/coin-claims${date ? `?date=${encodeURIComponent(date)}` : ''}`),
     getDashboardStats: () => api.get('/admin/dashboard-stats'),
     updatePassword: (data) => api.patch('/admin/password', data),
+    getMarketingAssets: () => api.get('/admin/marketing-assets'),
+    createMarketingAsset: (data) => api.post('/admin/marketing-assets', data),
+    deleteMarketingAsset: (id) => api.delete(`/admin/marketing-assets/${id}`),
+    getTrainingCourses: () => api.get('/admin/training-courses'),
+    createTrainingCourse: (data) => api.post('/admin/training-courses', data),
+    deleteTrainingCourse: (id) => api.delete(`/admin/training-courses/${id}`),
 };
 
 // Notification API

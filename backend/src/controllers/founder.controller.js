@@ -1,9 +1,9 @@
 import prisma from '../config/database.js';
 import { calculateCommission, findCommissionRuleForReferral, computeFounderCommissionSummary } from '../utils/commission.helper.js';
 import crypto from 'crypto';
-import { 
-    generateAccessToken, 
-    generateRefreshToken, 
+import {
+    generateAccessToken,
+    generateRefreshToken,
     getRefreshTokenExpiry,
     verifyToken
 } from '../utils/jwt.util.js';
@@ -18,7 +18,7 @@ export const verifyFounderCode = async (req, res, next) => {
         let userId = req.user?.userId;
         const normalizedRank = typeof rank === 'string' && rank.trim()
             ? rank.trim().toUpperCase()
-            : 'STARTER';
+            : 'GOLD';
 
         // Manually parse token if middleware didn't populate req.user
         if (!userId && req.headers.authorization?.startsWith('Bearer ')) {
@@ -90,7 +90,7 @@ export const verifyFounderCode = async (req, res, next) => {
                     }
                 });
                 // Log affiliate/founder join
-                logActivity('AFFILIATE_JOIN', user.email).catch?.(() => {});
+                logActivity('AFFILIATE_JOIN', user.email).catch?.(() => { });
             } catch (error) {
                 if (error.code === 'P2002' && error.meta?.target?.includes('founderCode')) {
                     return res.status(400).json({
@@ -115,10 +115,10 @@ export const verifyFounderCode = async (req, res, next) => {
             // we should deactivate them after use to ensure "no longer available"
             await prisma.founderCode.update({
                 where: { id: founderCode.id },
-                data: { 
+                data: {
                     usedCount: { increment: 1 },
                     // If maxUses is 1, or simply if we want to enforce single usage for founder uniqueness
-                    isActive: founderCode.maxUses === 1 ? false : undefined 
+                    isActive: founderCode.maxUses === 1 ? false : undefined
                 }
             });
 
@@ -218,16 +218,16 @@ export const getFounderDashboard = async (req, res, next) => {
 
         // Calculate next milestone
         const milestones = {
-            STARTER: { next: 'PROMOTER', threshold: 0 },
-            PROMOTER: { next: 'GOLD', threshold: 100 },
-            GOLD: { next: 'SILVER', threshold: 150 },
+            // STARTER: { next: 'PROMOTER', threshold: 0 },
+            // PROMOTER: { next: 'GOLD', threshold: 100 },
+            GOLD: { next: 'BRONZE', threshold: 0 },
             BRONZE: { next: 'SILVER', threshold: 200 },
-            SILVER: { next: 'PLATINUM', threshold: 250 },
-            PLATINUM: { next: null, threshold: null }
+            SILVER: { next: 'PLATINUM', threshold: 500 },
+            PLATINUM: { next: null, threshold: 1000 }
         };
 
         const currentMilestone = milestones[founder.rank];
-        
+
         let commissionTotal = 0;
         for (const ref of founder.referrals) {
             const rule = await findCommissionRuleForReferral({ founder, referral: ref });
@@ -239,7 +239,7 @@ export const getFounderDashboard = async (req, res, next) => {
         const extraSum = await prisma.commissionEarning.aggregate({ _sum: { amount: true }, where: { founderId: founder.id } });
         commissionTotal += Number(extraSum._sum.amount || 0);
 
-    
+
 
         res.json({
             success: true,
@@ -254,7 +254,7 @@ export const getFounderDashboard = async (req, res, next) => {
                     totalReferrals,
                     activeReferrals,
                     pendingReferrals,
-                    earnings:  commissionTotal,
+                    earnings: commissionTotal,
                     coins: founder.coins,
                     lastClaimDate: founder.lastClaimDate,
                     claimStreak: founder.claimStreak,
@@ -466,7 +466,7 @@ export const claimCoin = async (req, res, next) => {
         const userId = req.user.userId;
 
         const founder = await prisma.founder.findUnique({
-            where: { userId } 
+            where: { userId }
         });
 
         if (!founder) {
@@ -478,13 +478,13 @@ export const claimCoin = async (req, res, next) => {
 
         const today = new Date();
         const lastClaim = founder.lastClaimDate ? new Date(founder.lastClaimDate) : null;
-        
+
         let streak = founder.claimStreak;
         let reward = 5;
 
         // Check if claimed today
         if (lastClaim && lastClaim.toDateString() === today.toDateString()) {
-             return res.status(400).json({
+            return res.status(400).json({
                 success: false,
                 message: 'You have already claimed your daily reward today.'
             });
@@ -494,7 +494,7 @@ export const claimCoin = async (req, res, next) => {
         if (lastClaim) {
             const yesterday = new Date(today);
             yesterday.setDate(yesterday.getDate() - 1);
-            
+
             if (lastClaim.toDateString() === yesterday.toDateString()) {
                 streak += 1;
             } else {
@@ -516,34 +516,34 @@ export const claimCoin = async (req, res, next) => {
 
         const updatedFounder = await prisma.founder.update({
             where: { userId },
-            data: { 
+            data: {
                 coins: { increment: reward },
                 lastClaimDate: today,
                 claimStreak: streak
             }
         });
 
-                // Record claim event for admin aggregation
-                try {
-                    await prisma.coinClaim.create({
-                        data: {
-                            founderId: updatedFounder.id,
-                            amount: reward
-                        }
-                    });
-                } catch (e) {
-                    console.error('Failed to record coin claim:', e);
+        // Record claim event for admin aggregation
+        try {
+            await prisma.coinClaim.create({
+                data: {
+                    founderId: updatedFounder.id,
+                    amount: reward
                 }
+            });
+        } catch (e) {
+            console.error('Failed to record coin claim:', e);
+        }
 
-        res.json({ 
-            success: true, 
+        res.json({
+            success: true,
             message: `You claimed ${reward} coins! Streak: ${streak} days.`,
             data: {
                 coins: updatedFounder.coins,
                 streak: updatedFounder.claimStreak,
                 reward,
                 lastClaimDate: updatedFounder.lastClaimDate
-            } 
+            }
         });
     } catch (error) {
         next(error);
@@ -640,6 +640,29 @@ export const getTransactions = async (req, res, next) => {
                 }
             }
         });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// Marketing Assets & Training
+export const getMarketingAssets = async (req, res, next) => {
+    try {
+        const assets = await prisma.marketingAsset.findMany({
+            orderBy: { createdAt: 'desc' }
+        });
+        res.json({ success: true, data: assets });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const getTrainingCourses = async (req, res, next) => {
+    try {
+        const courses = await prisma.trainingCourse.findMany({
+            orderBy: { createdAt: 'desc' }
+        });
+        res.json({ success: true, data: courses });
     } catch (error) {
         next(error);
     }

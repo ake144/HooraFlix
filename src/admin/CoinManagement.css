@@ -1,0 +1,302 @@
+.admin-coins-page {
+    display: grid;
+    gap: 24px;
+}
+
+.admin-coins-hero {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 20px;
+    align-items: stretch;
+}
+
+.admin-coins-hero-copy h2 {
+    margin: 0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(24px, 3vw, 36px);
+    line-height: 1.1;
+}
+
+.admin-coins-hero-copy p {
+    margin: 12px 0 24px;
+    color: #99a7bb;
+    line-height: 1.6;
+}
+
+.admin-coins-hero-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.admin-coins-refresh-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-coins-filter-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.admin-coins-filter-form {
+    display: grid;
+    gap: 12px;
+}
+
+.admin-coins-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.admin-coins-field span {
+    font-size: 12px;
+    color: #9eb0c7;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.admin-coins-input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.admin-coins-input-group input {
+    flex: 1;
+    background: rgba(7, 11, 18, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 10px 14px;
+    color: #f4f7fb;
+    font: inherit;
+}
+
+.admin-coins-filter-result {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-coins-filter-result small {
+    color: #96a4b8;
+}
+
+.admin-coins-filter-result strong {
+    color: #f7c948;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.admin-coins-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.admin-coins-metric-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+}
+
+.admin-coins-metric-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: rgba(241, 195, 61, 0.1);
+    color: #f7c948;
+    font-size: 20px;
+}
+
+.admin-coins-metric-info small {
+    display: block;
+    color: #90a0b7;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.admin-coins-metric-info strong {
+    display: block;
+    margin-top: 4px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+}
+
+.admin-coins-content-grid {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr;
+    gap: 20px;
+}
+
+.admin-coins-table-wrap {
+    overflow: auto;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(6, 10, 16, 0.72);
+}
+
+.admin-coins-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-coins-table th {
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8fa0b5;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.admin-coins-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.admin-coins-user-cell strong {
+    display: block;
+    color: #f4f7fb;
+    font-size: 14px;
+}
+
+.admin-coins-user-cell span {
+    display: block;
+    color: #98a7ba;
+    font-size: 12px;
+}
+
+.admin-coins-amount {
+    font-family: 'Space Grotesk', sans-serif;
+    color: #f7d36b;
+    font-weight: 700;
+}
+
+.admin-coins-date-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #98a7ba;
+    font-size: 13px;
+}
+
+.admin-coins-status-pill {
+    display: inline-flex;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(34, 197, 94, 0.1);
+    color: #77e4b3;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.admin-coins-stats-list {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.admin-coins-stat-item {
+    display: grid;
+    gap: 8px;
+}
+
+.admin-coins-stat-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+}
+
+.admin-coins-stat-label span {
+    color: #96a4b8;
+}
+
+.admin-coins-stat-label strong {
+    color: #f4f7fb;
+}
+
+.admin-coins-stat-bar-wrap {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.admin-coins-stat-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f7c948, #f3b63c);
+    border-radius: 3px;
+}
+
+.admin-coins-promo-box {
+    margin-top: 20px;
+    padding: 16px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(247, 201, 72, 0.1), rgba(167, 139, 250, 0.1));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.admin-coins-promo-box svg {
+    color: #f7c948;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.admin-coins-promo-box h4 {
+    margin: 0 0 4px;
+    font-size: 14px;
+    color: #f4f7fb;
+}
+
+.admin-coins-promo-box p {
+    margin: 0;
+    font-size: 12px;
+    color: #9eb0c7;
+    line-height: 1.4;
+}
+
+.admin-coins-table-empty,
+.admin-coins-empty-stats {
+    padding: 40px;
+    text-align: center;
+    color: #99a7bb;
+}
+
+.admin-coins-empty-stats svg {
+    font-size: 32px;
+    margin-bottom: 12px;
+    opacity: 0.5;
+}
+
+@media (max-width: 1100px) {
+
+    .admin-coins-hero,
+    .admin-coins-content-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-coins-metrics-grid {
+        grid-template-columns: 1fr;
+    }
+}

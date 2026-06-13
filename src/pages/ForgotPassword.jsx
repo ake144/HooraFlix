@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Auth.css';
 
 const ForgotPassword = () => {
+  const navigate = useNavigate();
   const { forgotPassword } = useAuth();
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
@@ -32,36 +33,42 @@ const ForgotPassword = () => {
 
   return (
     <div className="auth-container">
-      <div className="auth-form-side">
-        <div className="auth-box">
-          <h1 className="auth-title">Forgot Password</h1>
+      <div className="back-button-container">
+        <button className="back-button" onClick={() => navigate(-1)}>
+          &larr; Back
+        </button>
+      </div>
+      <div className="auth-content-wrapper">
+        <div className="auth-form-side">
+          <div className="auth-box">
+            <h1 className="auth-title">Forgot Password</h1>
+            <p className="auth-subtitle">Enter your email to receive a password reset link.</p>
 
-          <p className="auth-subtitle">Enter your email to receive a password reset link.</p>
+            {error && <div className="auth-alert auth-alert-error">{error}</div>}
+            {message && <div className="auth-alert auth-alert-success">{message}</div>}
 
-          {error && <div className="auth-alert auth-alert-error">{error}</div>}
-          {message && <div className="auth-alert auth-alert-success">{message}</div>}
+            <form className="auth-form" onSubmit={handleSubmit}>
+              <div className="form-group">
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  className="form-input"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
 
-          <form className="auth-form" onSubmit={handleSubmit}>
-            <div className="form-group">
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                className="form-input"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <button type="submit" className="auth-button" disabled={loading}>
+                {loading ? 'Sending...' : 'Send Reset Link'}
+              </button>
+            </form>
+
+            <div className="auth-footer">
+              Remembered your password?
+              <Link to="/login" className="auth-link">Sign in.</Link>
             </div>
-
-            <button type="submit" className="auth-button" disabled={loading}>
-              {loading ? 'Sending...' : 'Send Reset Link'}
-            </button>
-          </form>
-
-          <div className="auth-footer">
-            Remembered your password?
-            <Link to="/login" className="auth-link">Sign in.</Link>
           </div>
         </div>
       </div>

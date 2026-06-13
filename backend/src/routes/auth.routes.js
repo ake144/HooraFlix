@@ -18,6 +18,7 @@ const router = Router();
 const registerValidation = [
     body('email').isEmail().withMessage('Valid email is required').normalizeEmail(),
     body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters'),
+    body('phone').optional().isMobilePhone().withMessage('Valid phone number is required'),
     body('name').trim().notEmpty().withMessage('Name is required'),
     body('refId').optional().trim()
 ];

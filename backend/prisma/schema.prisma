@@ -49,11 +49,21 @@ enum RuleStatus {
   PAUSED
 }
 
+enum MarketingAssetsType {
+  AUDIO 
+  VIDEO 
+  DESIGN
+  PDF
+  IMAGE
+}
+
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
   password  String
   name      String
+  phone     String?
+  avatarUrl String?
   role      UserRole @default(USER)
   isFounder Boolean  @default(false)
   createdAt DateTime @default(now())
@@ -232,3 +242,45 @@ model CoinClaim {
 
   @@map("CoinClaim")
 }
+
+model ActivityLog {
+  id        String   @id @default(uuid())
+  type      String
+  meta      String?
+  createdAt DateTime @default(now())
+
+  @@map("ActivityLog")
+}
+
+
+model MarketingAsset {
+  id              String              @id @default(uuid())
+  title           String
+  type            MarketingAssetsType
+  icon            String?
+  formats         String[]
+  description     String
+  fileUrl         String
+  thumbnailUrl    String?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  @@map("MarketingAsset")
+}
+
+model TrainingCourse {
+  id              String   @id @default(uuid())
+  title           String
+  duration        String
+  level           String
+  description     String
+  focus           String
+  thumbnailUrl    String
+  videoUrl        String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("TrainingCourse")
+}
+
+

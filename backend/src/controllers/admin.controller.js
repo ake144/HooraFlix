@@ -9,21 +9,21 @@ const generateRandomCode = () => {
 export const createFounderCode = async (req, res, next) => {
   try {
     const { code, maxUses } = req.body;
-    
+
     const finalCode = code || generateRandomCode();
-    
+
     // Check if code already exists
     const existingCode = await prisma.founderCode.findUnique({
       where: { code: finalCode }
     });
-    
+
     if (existingCode) {
       return res.status(400).json({
         success: false,
         message: 'Founder code already exists. Please choose a different one.'
       });
     }
-    
+
     const newCode = await prisma.founderCode.create({
       data: {
         code: finalCode,
@@ -31,7 +31,7 @@ export const createFounderCode = async (req, res, next) => {
         isActive: true,
       }
     });
-    
+
     res.status(201).json({
       success: true,
       message: 'Founder code created successfully',
@@ -47,7 +47,7 @@ export const getFounderCodes = async (req, res, next) => {
     const codes = await prisma.founderCode.findMany({
       orderBy: { createdAt: 'desc' }
     });
-    
+
     res.json({
       success: true,
       data: codes
@@ -187,7 +187,7 @@ export const getCommissionRules = async (req, res, next) => {
     const rules = await prisma.commissionRule.findMany({
       orderBy: { createdAt: 'desc' }
     });
-    
+
     res.json({
       success: true,
       data: rules
@@ -207,7 +207,7 @@ export const createCommissionRule = async (req, res, next) => {
         message: 'Name, scope mode, and reward type are required.',
       });
     }
-    
+
     const newRule = await prisma.commissionRule.create({
       data: {
         name,
@@ -243,7 +243,7 @@ export const toggleCommissionRule = async (req, res, next) => {
         message: 'Rule status is required.',
       });
     }
-    
+
     const updated = await prisma.commissionRule.update({
       where: { id },
       data: { status: status.toUpperCase() }
@@ -280,7 +280,7 @@ export const getPayouts = async (req, res, next) => {
       },
       orderBy: { createdAt: 'desc' }
     });
-    
+
     const formattedPayouts = payouts.map(p => ({
       id: p.id,
       founderEmail: p.founder.user.email,
@@ -371,7 +371,7 @@ export const getCoinClaims = async (req, res, next) => {
     const days = 7;
     const start = new Date();
     start.setDate(start.getDate() - (days - 1));
-    start.setHours(0,0,0,0);
+    start.setHours(0, 0, 0, 0);
 
     const claims = await prisma.coinClaim.findMany({
       where: { createdAt: { gte: start } },
@@ -385,12 +385,12 @@ export const getCoinClaims = async (req, res, next) => {
     for (let i = 0; i < days; i++) {
       const d = new Date();
       d.setDate(d.getDate() - i);
-      const key = d.toISOString().slice(0,10);
+      const key = d.toISOString().slice(0, 10);
       seriesMap[key] = 0;
     }
 
     claims.forEach(c => {
-      const key = c.createdAt.toISOString().slice(0,10);
+      const key = c.createdAt.toISOString().slice(0, 10);
       if (!seriesMap[key]) seriesMap[key] = 0;
       seriesMap[key] += c.amount || 0;
     });
@@ -405,101 +405,185 @@ export const getCoinClaims = async (req, res, next) => {
 
 
 export const getFounderStats = async (req, res, next) => {
-    try {
-         const [totalUsers,pendingUsers, totalAdmin, totalFounders, activeCodes,  totalCodes, payoutRequests] = await Promise.all([
-              prisma.user.count(),
-              prisma.user.count({ where: { referredBy: { status: 'PENDING' } } }),
-              prisma.user.count({ where: { role: 'ADMIN' } }),
-              prisma.user.count({ where: { role: 'FOUNDER' } }),
-              prisma.founderCode.count({ where: { isActive: true } }),
-              prisma.founderCode.count(),
-              prisma.payoutRequest.count()
-            ]);
+  try {
+    const [totalUsers, pendingUsers, totalAdmin, totalFounders, activeCodes, totalCodes, payoutRequests] = await Promise.all([
+      prisma.user.count(),
+      prisma.user.count({ where: { referredBy: { status: 'PENDING' } } }),
+      prisma.user.count({ where: { role: 'ADMIN' } }),
+      prisma.user.count({ where: { role: 'FOUNDER' } }),
+      prisma.founderCode.count({ where: { isActive: true } }),
+      prisma.founderCode.count(),
+      prisma.payoutRequest.count()
+    ]);
 
-        res.json({
-            success: true,
-            data: {
-                totalUsers,
-                pendingUsers,
-                totalAdmin,
-                totalFounders,
-                activeCodes,
-                totalCodes,
-                payoutRequests
-            }
-        });
-    } catch (error) {
-        next(error);
-    }
-}
+    res.json({
+      success: true,
+      data: {
+        totalUsers,
+        pendingUsers,
+        totalAdmin,
+        totalFounders,
+        activeCodes,
+        totalCodes,
+        payoutRequests
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Marketing Assets
+export const getMarketingAssets = async (req, res, next) => {
+  try {
+    const assets = await prisma.marketingAsset.findMany({
+      orderBy: { createdAt: 'desc' }
+    });
+    res.json({ success: true, data: assets });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const createMarketingAsset = async (req, res, next) => {
+  try {
+    const { title, type, icon, formats, description, fileUrl, thumbnailUrl } = req.body;
+    const asset = await prisma.marketingAsset.create({
+      data: {
+        title,
+        type: type.toUpperCase(),
+        icon,
+        formats,
+        description,
+        fileUrl,
+        thumbnailUrl
+      }
+    });
+    res.status(201).json({ success: true, data: asset });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteMarketingAsset = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await prisma.marketingAsset.delete({ where: { id } });
+    res.json({ success: true, message: 'Asset deleted successfully' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Training Courses
+export const getTrainingCourses = async (req, res, next) => {
+  try {
+    const courses = await prisma.trainingCourse.findMany({
+      orderBy: { createdAt: 'desc' }
+    });
+    res.json({ success: true, data: courses });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const createTrainingCourse = async (req, res, next) => {
+  try {
+    const { title, duration, level, description, focus, thumbnailUrl, videoUrl } = req.body;
+    const course = await prisma.trainingCourse.create({
+      data: {
+        title,
+        duration,
+        level,
+        description,
+        focus,
+        thumbnailUrl,
+        videoUrl
+      }
+    });
+    res.status(201).json({ success: true, data: course });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteTrainingCourse = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await prisma.trainingCourse.delete({ where: { id } });
+    res.json({ success: true, message: 'Course deleted successfully' });
+  } catch (error) {
+    next(error);
+  }
+};
 
 /**
  * Update admin password
  */
 export const updatePassword = async (req, res, next) => {
-    try {
-        const { currentPassword, newPassword } = req.body;
-        const adminId = req.user?.userId;
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const adminId = req.user?.userId;
 
-        if (!adminId) {
-            return res.status(401).json({
-                success: false,
-                message: 'Unauthorized: No user ID found'
-            });
-        }
-
-        if (!currentPassword || !newPassword) {
-            return res.status(400).json({
-                success: false,
-                message: 'Current password and new password are required'
-            });
-        }
-
-        if (newPassword.length < 8) {
-            return res.status(400).json({
-                success: false,
-                message: 'New password must be at least 8 characters'
-            });
-        }
-
-        // Find admin user
-        const user = await prisma.user.findUnique({
-            where: { id: adminId }
-        });
-
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: 'Admin user not found'
-            });
-        }
-
-        // Verify current password
-        const { comparePassword } = await import('../utils/password.util.js');
-        const isPasswordValid = await comparePassword(currentPassword, user.password);
-
-        if (!isPasswordValid) {
-            return res.status(401).json({
-                success: false,
-                message: 'Current password is incorrect'
-            });
-        }
-
-        // Hash new password
-        const { hashPassword } = await import('../utils/password.util.js');
-        const hashedPassword = await hashPassword(newPassword);
-
-        // Update password
-        await prisma.user.update({
-            where: { id: adminId },
-            data: { password: hashedPassword }
-        });
-
-        res.json({
-            success: true,
-            message: 'Password updated successfully'
-        });
-    } catch (error) {
-        next(error);
+    if (!adminId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Unauthorized: No user ID found'
+      });
     }
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Current password and new password are required'
+      });
+    }
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({
+        success: false,
+        message: 'New password must be at least 8 characters'
+      });
+    }
+
+    // Find admin user
+    const user = await prisma.user.findUnique({
+      where: { id: adminId }
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'Admin user not found'
+      });
+    }
+
+    // Verify current password
+    const { comparePassword } = await import('../utils/password.util.js');
+    const isPasswordValid = await comparePassword(currentPassword, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        success: false,
+        message: 'Current password is incorrect'
+      });
+    }
+
+    // Hash new password
+    const { hashPassword } = await import('../utils/password.util.js');
+    const hashedPassword = await hashPassword(newPassword);
+
+    // Update password
+    await prisma.user.update({
+      where: { id: adminId },
+      data: { password: hashedPassword }
+    });
+
+    res.json({
+      success: true,
+      message: 'Password updated successfully'
+    });
+  } catch (error) {
+    next(error);
+  }
 }

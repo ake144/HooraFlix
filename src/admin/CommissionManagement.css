@@ -1,0 +1,210 @@
+.admin-commissions-page {
+    display: grid;
+    gap: 22px;
+}
+
+.admin-commissions-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.9fr);
+    gap: 18px;
+    align-items: stretch;
+}
+
+.admin-commissions-hero-copy h2 {
+    margin: 0;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(28px, 3vw, 44px);
+    line-height: 1.02;
+}
+
+.admin-commissions-hero-copy p {
+    margin: 12px 0 24px;
+    color: #99a7bb;
+    line-height: 1.6;
+}
+
+.admin-commissions-hero-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.admin-commissions-hero-metrics article {
+    padding: 16px;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.admin-commissions-hero-metrics span {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: rgba(241, 195, 61, 0.12);
+    color: #f7c948;
+    margin-bottom: 14px;
+}
+
+.admin-commissions-hero-metrics small {
+    display: block;
+    color: #90a0b7;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.admin-commissions-hero-metrics strong {
+    display: block;
+    margin-top: 6px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+}
+
+.admin-commissions-grid {
+    display: grid;
+    gap: 18px;
+}
+
+.admin-commissions-grid-builder {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+}
+
+.admin-commissions-grid-wide {
+    grid-template-columns: 1fr 1fr;
+}
+
+.admin-commissions-builder-form {
+    display: grid;
+    gap: 14px;
+}
+
+.admin-commissions-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.admin-commissions-field {
+    display: grid;
+    gap: 8px;
+}
+
+.admin-commissions-field span {
+    color: #9eb0c7;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.admin-commissions-field input,
+.admin-commissions-field select {
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(7, 11, 18, 0.92);
+    color: #f4f7fb;
+}
+
+.admin-commissions-switch {
+    display: flex;
+    gap: 12px;
+    padding: 14px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.admin-commissions-table-wrap {
+    overflow: auto;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(6, 10, 16, 0.72);
+}
+
+.admin-commissions-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-commissions-table th,
+.admin-commissions-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.admin-commissions-amount {
+    color: #f7d36b;
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.admin-commissions-status-pill {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-pending {
+    background: rgba(247, 211, 107, 0.1);
+    color: #f7d36b;
+}
+
+.status-approved {
+    background: rgba(34, 197, 94, 0.1);
+    color: #77e4b3;
+}
+
+.status-paid {
+    background: rgba(139, 92, 246, 0.1);
+    color: #c4b5fd;
+}
+
+.status-on-hold {
+    background: rgba(239, 68, 68, 0.1);
+    color: #f59f9f;
+}
+
+.admin-commissions-filter-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.admin-commissions-filter-pill {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #9eb0c7;
+    border: none;
+    cursor: pointer;
+}
+
+.admin-commissions-filter-pill.active {
+    background: rgba(247, 211, 107, 0.2);
+    color: #f7d36b;
+}
+
+.admin-commissions-row-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.admin-commissions-row-actions button {
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: #f4f7fb;
+    cursor: pointer;
+}
+
+@media (max-width: 1180px) {
+
+    .admin-commissions-hero,
+    .admin-commissions-grid-builder,
+    .admin-commissions-grid-wide {
+        grid-template-columns: 1fr;
+    }
+}

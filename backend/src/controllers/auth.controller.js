@@ -26,7 +26,7 @@ const hashResetToken = (token) => createHash('sha256').update(token).digest('hex
  */
 export const register = async (req, res, next) => {
     try {
-        const { email, password, name, refId } = req.body;
+        const { email, password, phone, name, refId } = req.body;
 
         // Check if user already exists
         const existingUser = await prisma.user.findUnique({
@@ -49,6 +49,7 @@ export const register = async (req, res, next) => {
                 email,
                 password: hashedPassword,
                 name,
+                phone,
                 role: 'USER'
             }
         });
@@ -117,6 +118,7 @@ export const register = async (req, res, next) => {
                     id: user.id,
                     email: user.email,
                     name: user.name,
+                    phone: user.phone,
                     role: user.role,
                     isFounder: user.isFounder
                 },
@@ -180,6 +182,7 @@ export const login = async (req, res, next) => {
                     id: user.id,
                     email: user.email,
                     name: user.name,
+                    phone: user.phone,
                     role: user.role,
                     isFounder: user.isFounder,
                     founderId: user.founder?.id
@@ -316,6 +319,7 @@ export const getMe = async (req, res, next) => {
                 id: true,
                 email: true,
                 name: true,
+                phone: true,
                 role: true,
                 isFounder: true,
                 createdAt: true,

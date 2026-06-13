@@ -6,14 +6,20 @@ import {
 	getFounderCodes,
 	getPayments,
 	getUsers,
-    getCommissionRules,
+	getCommissionRules,
 	createCommissionRule,
 	toggleCommissionRule,
 	getPayouts,
 	updatePayoutStatus,
 	getCoinClaims,
 	getFounderStats,
-	updatePassword
+	updatePassword,
+	getMarketingAssets,
+	createMarketingAsset,
+	deleteMarketingAsset,
+	getTrainingCourses,
+	createTrainingCourse,
+	deleteTrainingCourse
 } from '../controllers/admin.controller.js';
 import { getRecentActivities } from '../controllers/log.controller.js';
 import { authMiddleware, isAdmin } from '../middleware/auth.middleware.js';
@@ -26,7 +32,7 @@ router.use(isAdmin);
 
 
 router.get('/dashboard-stats', getFounderStats),
-router.post('/founder-codes', createFounderCode);
+	router.post('/founder-codes', createFounderCode);
 router.get('/founder-codes', getFounderCodes);
 router.get('/users', getUsers);
 router.delete('/users/:id', deleteUser);
@@ -40,6 +46,16 @@ router.patch('/payouts/:id/status', updatePayoutStatus);
 router.get('/coin-claims', getCoinClaims);
 router.get('/activity', getRecentActivities);
 router.patch('/password', updatePassword);
+
+// Marketing Assets
+router.get('/marketing-assets', getMarketingAssets);
+router.post('/marketing-assets', createMarketingAsset);
+router.delete('/marketing-assets/:id', deleteMarketingAsset);
+
+// Training Courses
+router.get('/training-courses', getTrainingCourses);
+router.post('/training-courses', createTrainingCourse);
+router.delete('/training-courses/:id', deleteTrainingCourse);
 
 
 export default router;

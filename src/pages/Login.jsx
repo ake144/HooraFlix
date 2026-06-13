@@ -13,7 +13,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-   useEffect(() => {
+  useEffect(() => {
     const redirectMessage = sessionStorage.getItem('authRedirectMessage');
     if (redirectMessage) {
       setError(redirectMessage);
@@ -36,14 +36,14 @@ const Login = () => {
 
       if (result.success) {
         console.log('Logged in user:', result.user);
-        
-     
+
+
         if (result.user.isFounder && result.user.role !== 'ADMIN') {
           navigate('/founders-dashboard');
-        }  
-        else if(result.user.role === 'ADMIN') {
+        }
+        else if (result.user.role === 'ADMIN') {
           navigate('/admin');
-        } 
+        }
         else {
           navigate('/founders');
         }
@@ -59,47 +59,67 @@ const Login = () => {
 
   return (
     <div className="auth-container">
-      <div className="auth-form-side">
-        <div className="auth-box">
-          <h1 className="auth-title">Sign In</h1>
-           {error && <div className="auth-alert auth-alert-error">{error}</div>}
-          <form className="auth-form" onSubmit={handleSubmit}>
-            <div className="form-group">
-              <input
-                type="email"
-                name="email"
-                placeholder="Email or phone number"
-                className="form-input"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
+      <div className="back-button-container">
+        <button className="back-button" onClick={() => navigate(-1)}>
+          &larr; Back
+        </button>
+      </div>
+
+      <div className="auth-content-wrapper">
+        <div className="coming-soon-side">
+          <div className="coming-soon-content">
+            <h1 className="coming-soon-title">Welcome Back to Hooraflix!</h1>
+            {/* <p className="coming-soon-description">
+              Sign in to access your personalized dashboard, manage your account, and explore exclusive content. We're excited to have you back!
+            </p> */}
+          </div>
+        </div>
+
+        <div className="auth-form-side">
+          <div className="auth-box">
+            <h1 className="auth-title">Sign In</h1>
+            <p className="auth-subtitle">Enter your credentials to access your account</p>
+
+            {error && <div className="auth-alert auth-alert-error">{error}</div>}
+
+            <form className="auth-form" onSubmit={handleSubmit}>
+              <div className="form-group">
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email or phone number"
+                  className="form-input"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  className="form-input"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="auth-inline-link-wrap">
+                <Link to="/forgot-password" className="auth-link">Forgot password?</Link>
+              </div>
+
+              <button type="submit" className="auth-button" disabled={loading}>
+                {loading ? 'Signing In...' : 'Sign In'}
+              </button>
+            </form>
+
+            <div className="auth-footer">
+              New to Hooraflix?
+              <Link to="/signup" className="auth-link">Sign up now.</Link>
             </div>
-
-            <div className="form-group">
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                className="form-input"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="auth-inline-link-wrap">
-              <Link to="/forgot-password" className="auth-link">Forgot password?</Link>
-            </div>
-
-            <button type="submit" className="auth-button" disabled={loading}>
-              {loading ? 'Signing In...' : 'Sign In'}
-            </button>
-          </form>
-
-          <div className="auth-footer">
-            New to Hooraflix?
-            <Link to="/signup" className="auth-link">Sign up now.</Link>
           </div>
         </div>
       </div>

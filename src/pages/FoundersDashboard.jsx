@@ -163,9 +163,10 @@ const FoundersDashboard = () => {
   const currentRewardDay = Math.min(Math.max(streak, 0), rewardMilestones.length);
   const currentCoins = Number(stats.coins || coins || 0);
   const rankTiers = [
-    { name: 'STARTER', requiredCoins: 0, theme: 'starter' },
-    { name: 'PROMOTER', requiredCoins: 1000, theme: 'promoter' },
-    { name: 'GOLD', requiredCoins: 2000, theme: 'gold' },
+    { name: 'GOLD', requiredCoins: 0, theme: 'gold' },
+    { name: 'PLATINUM', requiredCoins: 500, theme: 'platinum' },
+    { name:"BRONZE",  requiredCoins: 'SILVER', theme: 200 },
+    { name:"SILVER",  requiredCoins: 1000, theme: 250 }, 
   ];
   const nextRankTier = rankTiers.find((tier) => currentCoins < tier.requiredCoins) || null;
   const coinsNeededForNextRank = nextRankTier ? nextRankTier.requiredCoins - currentCoins : 0;
@@ -297,7 +298,7 @@ const FoundersDashboard = () => {
                     <p className="fd-eyebrow">Milestone Tracker</p>
                     <h2>Founder Roadmap</h2>
                   </div>
-                  <span className="fd-current-tier">Rank: {user.rank || 'Starter'}</span>
+                  <span className="fd-current-tier">Rank: {user.rank || 'GOLD'}</span>
                 </div>
 
                 <div className="fd-roadline">
@@ -346,7 +347,7 @@ const FoundersDashboard = () => {
                             <td>{formatDate(r.joinedAt)}</td>
                             <td>
                               <span className={`fd-status-badge ${r.role === 'Founder' ? 'active' : 'pending'}`}>
-                                {r.role === 'Founder' ? 'Active Founder' : 'Pending'}
+                                {r.role === 'Founder' ? 'Active Founder' : 'INACTIVE'}
                               </span>
                             </td>
                             <td className="fd-reward-cell">+${getReferralReward(r).toFixed(2)}</td>

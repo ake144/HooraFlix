@@ -1,47 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiPlayCircle, FiClock, FiTrendingUp, FiArrowLeft, FiHome,FiUsers, FiDollarSign,  FiVideo, FiDownload, FiSettings, FiLifeBuoy, FiLogOut, FiPlay, FiBell, FiHelpCircle, FiGrid, FiSearch, FiShield, FiPieChart } from 'react-icons/fi';
+import { FiPlayCircle, FiClock, FiTrendingUp, FiArrowLeft, FiHome, FiUsers, FiDollarSign, FiVideo, FiDownload, FiSettings, FiLifeBuoy, FiLogOut, FiPlay, FiBell, FiHelpCircle, FiGrid, FiSearch, FiShield, FiPieChart } from 'react-icons/fi';
 import { useAuth } from '../../context/AuthContext';
 import { founderAPI } from '../../utils/api';
 import '../FoundersDashboard.css';
 import './FounderTools.css';
 import toast from 'react-hot-toast';
 
-const trainingCourses = [
-  {
-    title: 'How to Promote Films',
-    duration: '45 mins',
-    level: 'Beginner',
-    description: 'Learn campaign setup, targeting, and launch timing for independent films.',
-    focus: 'Conversion',
-    thumbnail: 'https://images.unsplash.com/photo-1682130301125-5b63bbf93241?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  },
-  {
-    title: 'TikTok Promotion Strategy',
-    duration: '35 mins',
-    level: 'Intermediate',
-    description: 'Build short-form hooks and posting systems that drive real referral growth.',
-    focus: 'Viral',
-    thumbnail: 'https://images.unsplash.com/photo-1660136007317-b0d7dd3cee08?q=80&w=1035&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-
-  },
-  {
-    title: 'Social Media Marketing',
-    duration: '60 mins',
-    level: 'Beginner',
-    description: 'Design a weekly content calendar across Instagram, TikTok, and YouTube Shorts.',
-    focus: 'ROI',
-    thumbnail: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-  },
-  {
-    title: 'Personal Branding for Founders',
-    duration: '50 mins',
-    level: 'Advanced',
-    description: 'Position your identity, story, and voice to increase trust and conversions.',
-    focus: 'Trust',
-    thumbnail: 'https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-  },
-];
 
 const FounderTrainingCenter = () => {
   const navigate = useNavigate();
@@ -51,22 +16,34 @@ const FounderTrainingCenter = () => {
   const [coins, setCoins] = useState(0);
   const [streak, setStreak] = useState(0);
   const [lastClaimDate, setLastClaimDate] = useState(null);
+  const [trainingCourses, setTrainingCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
+    const fetchData = async () => {
       try {
-        const dashData = await founderAPI.getDashboard();
+        const [dashData, coursesData] = await Promise.all([
+          founderAPI.getDashboard(),
+          founderAPI.getTrainingCourses()
+        ]);
+
         if (dashData.success) {
           setDashboardData(dashData.data);
           setCoins(dashData.data.stats.coins || 0);
           setStreak(dashData.data.stats.claimStreak || 0);
           setLastClaimDate(dashData.data.stats.lastClaimDate);
         }
+
+        if (coursesData.success) {
+          setTrainingCourses(coursesData.data);
+        }
       } catch (err) {
-        console.error('Dashboard error:', err);
+        console.error('Data fetch error:', err);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchDashboardData();
+    fetchData();
   }, []);
 
   const handleClaimCoin = async () => {
@@ -158,7 +135,7 @@ const FounderTrainingCenter = () => {
           <div className="tool-page-topbar">
             <div>
 
-             </div>
+            </div>
             <button
               className="tool-claim-btn"
               onClick={handleClaimCoin}
@@ -196,14 +173,10 @@ const FounderTrainingCenter = () => {
 
           <section className="tool-grid">
             {trainingCourses.map((course) => (
-              <article key={course.title} className="tool-card">
-                {/* <div className="tool-card-image">
-                  <div className="tool-card-badge">{course.level}</div>
-                  <img src={course.thumbnail} alt={course.title} className="tool-card-img" />
-                </div> */}
+              <article key={course.id || course.title} className="tool-card">
                 <div className="ml-asset-img-container">
                   <span className={`ml-type-badge ml-type-${course.level.toLowerCase()}`}>{course.level}</span>
-                  <img src={course.thumbnail} alt={course.title} className="ml-asset-img" />
+                  <img src={course.thumbnailUrl} alt={course.title} className="ml-asset-img" />
                 </div>
 
                 <div className="tool-card-content">
@@ -215,12 +188,15 @@ const FounderTrainingCenter = () => {
                     <span className="focus-tag"><FiTrendingUp /> {course.focus} focused</span>
                   </div>
                   <p>{course.description}</p>
-                  <button className="tool-cta-btn">
+                  <button className="tool-cta-btn" onClick={() => course.videoUrl && window.open(course.videoUrl, '_blank')}>
                     <FiPlayCircle /> Start Lesson
                   </button>
                 </div>
               </article>
             ))}
+            {trainingCourses.length === 0 && !loading && (
+              <div className="ml-empty-state">No training courses available yet.</div>
+            )}
           </section>
 
           <section className="bottom-banner">
@@ -232,7 +208,7 @@ const FounderTrainingCenter = () => {
           </section>
         </div>
 
-         <div className="fd-mobile-dashboard-grid " >
+        <div className="fd-mobile-dashboard-grid " >
           <Link to="/founders-dashboard" className="fd-mobile-dashboard-card">
             <span className="fd-mobile-dashboard-icon gold"><FiPieChart /></span>
             <span className="fd-mobile-dashboard-label">Home</span>
