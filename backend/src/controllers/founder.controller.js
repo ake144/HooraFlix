@@ -218,11 +218,11 @@ export const getFounderDashboard = async (req, res, next) => {
 
         // Calculate next milestone
         const milestones = {
-            // STARTER: { next: 'PROMOTER', threshold: 0 },
-            // PROMOTER: { next: 'GOLD', threshold: 100 },
-            GOLD: { next: 'BRONZE', threshold: 0 },
-            BRONZE: { next: 'SILVER', threshold: 200 },
-            SILVER: { next: 'PLATINUM', threshold: 500 },
+            STARTER: { next: 'PROMOTER', threshold: 0 },
+            PROMOTER: { next: 'GOLD', threshold: 0 },
+            GOLD: { next: 'PLATINUM', threshold: 0 },
+            // BRONZE: { next: 'SILVER', threshold: 200 },
+            // SILVER: { next: 'PLATINUM', threshold: 500 },
             PLATINUM: { next: null, threshold: 1000 }
         };
 
