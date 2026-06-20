@@ -60,10 +60,10 @@
 
 .back-button {
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-color);
+  /* border: 1px solid var(--border-color); */
   color: var(--text-main);
   padding: 0.6rem 1.2rem;
-  border-radius: 99px;
+  /* border-radius: 99px; */
   cursor: pointer;
   display: flex;
   align-items: center;

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Auth.css';
+import { FiX } from 'react-icons/fi';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -61,7 +62,7 @@ const Login = () => {
     <div className="auth-container">
       <div className="back-button-container">
         <button className="back-button" onClick={() => navigate("/")}>
-          &larr; 
+         <FiX  />
         </button>
       </div>
 

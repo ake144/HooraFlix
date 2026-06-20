@@ -200,8 +200,8 @@ const CoinManagement = () => {
                                             <tr key={claim.id || index}>
                                                 <td>
                                                     <div className="admin-coins-user-cell">
-                                                        <strong>{claim.userEmail || 'Unknown User'}</strong>
-                                                        <span>{claim.userName || 'N/A'}</span>
+                                                        <strong>{claim?.founder?.user?.email || 'Unknown User'}</strong>
+                                                        <span>{claim?.founder?.user?.name || 'N/A'}</span>
                                                     </div>
                                                 </td>
                                                 <td>

@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Auth.css';
-
+import {
+   FiX
+} from 'react-icons/fi';
 const Signup = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -65,7 +67,7 @@ const Signup = () => {
     <div className="auth-container">
       <div className="back-button-container">
         <button className="back-button" onClick={() => navigate("/")}>
-          &larr; 
+          <FiX />
         </button>
       </div>
 

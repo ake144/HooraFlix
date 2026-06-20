@@ -1,9 +1,13 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FiActivity, FiDatabase, FiDollarSign, FiHome, FiKey, FiLayers, FiShield, FiUsers, FiSettings, FiDownload, FiVideo, FiX } from 'react-icons/fi';
+import { FiActivity, FiDatabase, FiDollarSign, FiHome, FiKey, FiLayers, FiShield, FiUsers, FiSettings, FiDownload, FiVideo, FiX, FiLogOut, } from 'react-icons/fi';
+import { useAuth } from '../context/AuthContext';
+
 
 const AdminSidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
+  
+  const { user, logout } = useAuth();
 
   const navItems = [
     { to: '/admin', label: 'Dashboard', shortLabel: 'Home', icon: <FiHome /> },
@@ -90,6 +94,11 @@ const AdminSidebar = ({ isOpen, onClose }) => {
             <span>{item.shortLabel}</span>
           </Link>
         ))}
+    
+       <button className="admin-btn admin-logout-btn " onClick={logout}>
+                <FiLogOut />
+                Logout
+         </button>
       </nav>
     </>
   );

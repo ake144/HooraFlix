@@ -40,6 +40,10 @@ const roleOptions = [
 ];
 const rankOptions = [
     { value: 'GOLD', label: 'Gold' },
+    { value:"STARTER", label:"Starter"},
+    { value: 'PROMOTER', label: 'Promoter' },
+    { value:"PLATINUM", label:"Platinum"},
+
 ];
 const levelOptions = ['1', '2', '3', '4', '5'];
 const filterOptions = [
@@ -220,15 +224,18 @@ const CommissionManagement = () => {
 
         try {
             const response = await adminAPI.createCommissionRule({
-                name: cleanedName,
-                scopeMode: formData.scopeMode,
-                role: formData.scopeMode === 'role' ? formData.role : null,
+                name: cleanedName || initialFormData.name,
+                scopeMode: formData.scopeMode || initialFormData.scopeMode,
+                // role: formData.scopeMode === 'role' ? formData.role : null,
                 rank: formData.scopeMode === 'rank' ? formData.rank : null,
-                offer: formData.scopeMode === 'offer' ? formData.offer : null,
-                level: formData.scopeMode === 'unilevel' ? formData.level : null,
-                rewardType: formData.rewardType,
+                // offer: formData.scopeMode === 'offer' ? formData.offer : null,
+                role:initialFormData.role,
+                offer:initialFormData.offer,
+                level:initialFormData.level,
+                // level: formData.scopeMode === 'unilevel' ? formData.level : null,
+                rewardType: formData.rewardType || initialFormData.rewardType,
                 value: cleanedValue,
-                stackable: formData.stackable,
+                stackable: true,
                 note: formData.note.trim() || 'Custom commission created from the admin generator.',
             });
 
@@ -348,19 +355,19 @@ const CommissionManagement = () => {
                                 </div>
                                 <form className="admin-commissions-builder-form" onSubmit={handleAddRule}>
                                     <div className="admin-commissions-form-grid">
-                                        <label className="admin-commissions-field">
+                                        {/* <label className="admin-commissions-field">
                                             <span>Rule Name</span>
                                             <input type="text" name="name" value={formData.name} onChange={updateFormData} placeholder="Founder growth reward" />
-                                        </label>
-                                        <label className="admin-commissions-field">
+                                        </label> */}
+                                        {/* <label className="admin-commissions-field">
                                             <span>Scope</span>
                                             <select name="scopeMode" value={formData.scopeMode} onChange={updateFormData}>
                                                 {scopeOptions.map((option) => (
                                                     <option key={option.value} value={option.value}>{option.label}</option>
                                                 ))}
                                             </select>
-                                        </label>
-                                        {formData.scopeMode === 'role' && (
+                                        </label> */}
+                                        {/* {formData.scopeMode === 'role' && (
                                             <label className="admin-commissions-field">
                                                 <span>Role</span>
                                                 <select name="role" value={formData.role} onChange={updateFormData}>
@@ -370,6 +377,7 @@ const CommissionManagement = () => {
                                                 </select>
                                             </label>
                                         )}
+                                    */}
                                         {formData.scopeMode === 'rank' && (
                                             <label className="admin-commissions-field">
                                                 <span>Rank</span>
@@ -379,10 +387,10 @@ const CommissionManagement = () => {
                                                     ))}
                                                 </select>
                                             </label>
-                                        )}
+                                        )} 
                                         <label className="admin-commissions-field">
                                             <span>Reward Type</span>
-                                            <select name="rewardType" value={formData.rewardType} onChange={updateFormData}>
+                                            <select name="rewardType" defaultValue={"percentage"} value={formData.rewardType} onChange={updateFormData}>
                                                 <option value="percentage">Percentage</option>
                                                 <option value="flat">Flat amount</option>
                                             </select>
@@ -392,13 +400,13 @@ const CommissionManagement = () => {
                                             <input type="number" name="value" value={formData.value} onChange={updateFormData} min="0" />
                                         </label>
                                     </div>
-                                    <label className="admin-commissions-switch">
+                                    {/* <label className="admin-commissions-switch">
                                         <input type="checkbox" name="stackable" checked={formData.stackable} onChange={updateFormData} />
                                         <span>
                                             <strong>Stackable Rule</strong>
                                             <small>Allow this commission to combine with other rewards.</small>
                                         </span>
-                                    </label>
+                                    </label> */}
                                     <div className="admin-commissions-form-actions">
                                         <button type="submit" className="admin-btn admin-commissions-save-btn">
                                             <FiPlus />
