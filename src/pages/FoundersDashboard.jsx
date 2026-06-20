@@ -8,7 +8,7 @@ import { founderAPI } from '../utils/api';
 import NotificationDropdown from '../components/NotificationDropdown';
 import './FoundersDashboard.css';
 import toast from 'react-hot-toast';
-
+import {rankTiers, socialSharePlatforms} from '../utils/constants'
 
 const FoundersDashboard = () => {
   const navigate = useNavigate();
@@ -176,12 +176,7 @@ const FoundersDashboard = () => {
   const rewardMilestones = [5, 10, 15, 20, 25, 30, 50];
   const currentRewardDay = Math.min(Math.max(streak, 0), rewardMilestones.length);
   const currentCoins = Number(stats.coins || coins || 0);
-  const rankTiers = [
-    { name: 'GOLD', requiredCoins: 100, theme: 'gold' },
-    { name: 'PLATINUM', requiredCoins: 200, theme: 'platinum' },
-    { name:"BRONZE",  requiredCoins: 500, theme: 'bronze' },
-    { name:"SILVER",  requiredCoins: 1000, theme: 'silver' }, 
-  ];
+
   const nextRankTier = rankTiers.find((tier) => currentCoins < tier.requiredCoins) || null;
   const coinsNeededForNextRank = nextRankTier ? nextRankTier.requiredCoins - currentCoins : 0;
   const nextRankProgress = nextRankTier
@@ -250,13 +245,7 @@ const FoundersDashboard = () => {
     }
   };
 
-  const socialSharePlatforms = [
-    { key: 'whatsapp', label: 'WhatsApp', icon: <SiWhatsapp /> },
-    { key: 'telegram', label: 'Telegram', icon: <SiTelegram /> },
-    { key: 'facebook', label: 'Facebook', icon: <SiFacebook /> },
-    { key: 'x', label: 'X', icon: <SiX /> },
-    { key: 'linkedin', label: 'LinkedIn', icon: <SiLinkedin /> },
-  ];
+
 
 
   return (

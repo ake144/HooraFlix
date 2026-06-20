@@ -64,8 +64,8 @@ const Signup = () => {
   return (
     <div className="auth-container">
       <div className="back-button-container">
-        <button className="back-button" onClick={() => navigate(-1)}>
-          &larr; Back
+        <button className="back-button" onClick={() => navigate("/")}>
+          &larr; 
         </button>
       </div>
 

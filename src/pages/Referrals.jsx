@@ -364,7 +364,7 @@ const Referrals = () => {
                         </>
                       ) : (
                         <span className={`fd-status-badge pending`}>
-                          PENDING
+                          INACTIVE
                         </span>
                       )}
                     </div>
