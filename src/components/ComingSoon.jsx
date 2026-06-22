@@ -4,7 +4,7 @@ import './ComingSoon.css'
 const ComingSoon = () => {
   // FIXED UNIVERSAL RELEASE TIME — all users count down to this same moment
   // Change this ISO string to your actual app release date/time
-  const RELEASE_TIME = '2026-06-20T12:00:00Z'
+  const RELEASE_TIME = '2026-07-20T12:00:00Z'
   
   const targetDate = useMemo(() => {
     return new Date(RELEASE_TIME)
