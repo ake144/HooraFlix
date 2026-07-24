@@ -16,32 +16,75 @@ const FeatureSection = ({ featuredContent = [] }) => {
   })
 
   useEffect(() => {
-    // Set target date (example: 60 days from now)
-    const targetDate = new Date()
-    targetDate.setDate(targetDate.getDate() + 60)
+    const targetDate = new Date("2026-09-24T23:59:59");
 
-    const calculateTimeLeft = () => {
-      const now = new Date().getTime()
-      const difference = targetDate.getTime() - now
+     const calculateTimeLeft = () => {
+        const now = Date.now();
+        const difference = targetDate.getTime() - now;
 
-      if (difference > 0) {
-        const weeks = Math.floor(difference / (1000 * 60 * 60 * 24 * 7))
-        const days = Math.floor((difference % (1000 * 60 * 60 * 24 * 7)) / (1000 * 60 * 60 * 24))
-        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
-        const seconds = Math.floor((difference % (1000 * 60)) / 1000)
+    if (difference > 0) {
+      const weeks = Math.floor(difference / (1000 * 60 * 60 * 24 * 7));
+      const days = Math.floor(
+        (difference % (1000 * 60 * 60 * 24 * 7)) /
+          (1000 * 60 * 60 * 24)
+      );
+      const hours = Math.floor(
+        (difference % (1000 * 60 * 60 * 24)) /
+          (1000 * 60 * 60)
+      );
+      const minutes = Math.floor(
+        (difference % (1000 * 60 * 60)) /
+          (1000 * 60)
+      );
+      const seconds = Math.floor(
+        (difference % (1000 * 60)) / 1000
+      );
 
-        setTimeLeft({ weeks, days, hours, minutes, seconds })
-      } else {
-        setTimeLeft({ weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0 })
-      }
+      setTimeLeft({ weeks, days, hours, minutes, seconds });
+    } else {
+      setTimeLeft({
+        weeks: 0,
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+      });
     }
+  };
 
-    calculateTimeLeft()
-    const timer = setInterval(calculateTimeLeft, 1000)
+  calculateTimeLeft();
+  const timer = setInterval(calculateTimeLeft, 1000);
 
-    return () => clearInterval(timer)
-  }, [])
+  return () => clearInterval(timer);
+}, []);
+
+  // useEffect(() => {
+  //   // Set target date (example: 60 days from now)
+  //   const targetDate = new Date()
+  //   targetDate.setDate(targetDate.getDate() + 60)
+
+  //   const calculateTimeLeft = () => {
+  //     const now = new Date().getTime()
+  //     const difference = targetDate.getTime() - now
+
+  //     if (difference > 0) {
+  //       const weeks = Math.floor(difference / (1000 * 60 * 60 * 24 * 7))
+  //       const days = Math.floor((difference % (1000 * 60 * 60 * 24 * 7)) / (1000 * 60 * 60 * 24))
+  //       const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+  //       const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
+  //       const seconds = Math.floor((difference % (1000 * 60)) / 1000)
+
+  //       setTimeLeft({ weeks, days, hours, minutes, seconds })
+  //     } else {
+  //       setTimeLeft({ weeks: 0, days: 0, hours: 0, minutes: 0, seconds: 0 })
+  //     }
+  //   }
+
+  //   calculateTimeLeft()
+  //   const timer = setInterval(calculateTimeLeft, 1000)
+
+  //   return () => clearInterval(timer)
+  // }, [])
 
   const formatTime = (value) => {
     return value.toString().padStart(2, '0')
