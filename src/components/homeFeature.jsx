@@ -16,9 +16,9 @@ const FeatureSection = ({ featuredContent = [] }) => {
   })
 
   useEffect(() => {
-    // Set target date (example: 30 days from now)
+    // Set target date (example: 60 days from now)
     const targetDate = new Date()
-    targetDate.setDate(targetDate.getDate() + 30)
+    targetDate.setDate(targetDate.getDate() + 60)
 
     const calculateTimeLeft = () => {
       const now = new Date().getTime()
