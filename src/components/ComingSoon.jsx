@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import './ComingSoon.css'
 
-const RELEASE_TIME = '2026-11-20T12:00:00Z'
+const RELEASE_TIME = '2026-10-25T12:00:00Z'
 
 const ComingSoon = () => {
   const calculateRemaining = () => {
