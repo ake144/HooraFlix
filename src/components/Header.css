@@ -43,7 +43,8 @@
 }
 
 .logo-text {
-  text-shadow: 0px 0px 10px rgba(139, 92, 246, 0.5);
+  color: #ed0715;
+  text-shadow: 0 0 10px rgba(237, 7, 21, 0.32);
   /* Logo Icon replacement placeholder if needed */
 }
 
@@ -137,11 +138,11 @@
 }
 
 .icon-button:hover {
-  color: #8b5cf6;
+  color: #ed0715;
 }
 
 .subscribe-btn {
-    background-color: #8b5cf6;
+    background-color: #ed0715;
     color: white;
     padding: 8px 20px;
     border-radius: 6px;
@@ -154,7 +155,7 @@
 }
 
 .subscribe-btn:hover {
-    background-color: #7c3aed;
+    background-color: #ff2734;
 }
 
 .profile-menu-container {
@@ -230,10 +231,6 @@
   }
 }
 
-  .nav-links {
-    display: none;
-  }
-  
   .logo {
     font-size: 20px;
   }

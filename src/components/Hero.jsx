@@ -111,8 +111,8 @@ const Hero = ({ movies, onPlayClick }) => {
                 {isMuted ? <FiVolumeX /> : <FiVolume2 />}
             </button>
         )}
-      
-      <div className="hero-pagination">
+        
+      <div className="hero-pagination">  
           {currentIndex + 1} <span className="pagination-line"></span> {movies.length}
       </div>
     </div>

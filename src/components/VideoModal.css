@@ -1,180 +1,97 @@
 .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0,0,0,0.8);
-  z-index: 2000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: grid;
+    place-items: center;
+    padding: 28px;
+    background: rgba(0, 0, 0, .86);
+    animation: fadeIn .2s ease
 }
 
 .modal-content {
-  position: relative;
-  width: 90%;
-  max-width: 900px;
-  max-height: 90vh;
-  background-color: #181818;
-  border-radius: 8px;
-  overflow: hidden;
-  animation: slideUp 0.3s ease;
+    position: relative;
+    width: min(96vw, 1440px);
+    overflow: hidden;
+    border: 1px solid #333;
+    border-radius: 9px;
+    background: #161616;
+    box-shadow: 0 26px 70px rgba(0, 0, 0, .7)
 }
 
-@keyframes slideUp {
-  from {
-    transform: translateY(50px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+.player-video {
+    display: block;
+    width: 100%;
+    min-height: min(52vw, 540px);
+    max-height: calc(88vh - 76px);
+    object-fit: contain;
+    background: #000
 }
 
 .modal-close {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: rgba(0,0,0,0.6);
-  border: none;
-  color: #fff;
-  font-size: 24px;
-  cursor: pointer;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s ease;
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 39px;
+    height: 39px;
+    padding: 0;
+    color: #fff;
+    background: rgba(0, 0, 0, .72);
+    border: 1px solid rgba(255, 255, 255, .5);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 21px
 }
 
 .modal-close:hover {
-  background-color: rgba(0,0,0,0.8);
+    background: #e50914;
+    border-color: #e50914
 }
 
-.modal-hero {
-  min-height: 400px;
-  background-size: cover;
-  background-position: center center;
-  display: flex;
-  align-items: flex-end;
-  padding: 60px;
+.player-details {
+    padding: 16px 22px 20px
 }
 
-.modal-hero-content {
-  max-width: 600px;
+.player-details h2 {
+    margin: 0 0 4px;
+    font-size: 1.25rem
 }
 
-.modal-title {
-  font-size: 48px;
-  font-weight: 900;
-  margin-bottom: 15px;
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+.player-details p {
+    margin: 0;
+    color: #aaa;
+    font-size: .88rem
 }
 
-.modal-meta {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 20px;
-  font-size: 14px;
-  align-items: center;
-  color: #d2d2d2;
+@keyframes fadeIn {
+    from {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
 }
 
-.rating-badge {
-  border: 1px solid #d2d2d2;
-  padding: 2px 8px;
-  border-radius: 2px;
+@media(max-width:600px) {
+    .modal-overlay {
+        padding: 0
+    }
+
+    .modal-content {
+        width: 100%;
+        border-radius: 0
+    }
+
+    .player-video {
+        min-height: 0;
+        max-height: calc(100vh - 76px)
+    }
+
+    .player-details {
+        padding: 14px 18px
+    }
 }
-
-.modal-description {
-  font-size: 16px;
-  line-height: 1.6;
-  margin-bottom: 25px;
-  color: #ffffff;
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
-}
-
-.modal-actions {
-  display: flex;
-  gap: 10px;
-}
-
-.modal-button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 24px;
-  font-size: 14px;
-  font-weight: 600;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.modal-button.play {
-  background-color: #ffffff;
-  color: #000000;
-}
-
-.modal-button.play:hover {
-  background-color: rgba(255,255,255,0.75);
-}
-
-.modal-button.icon {
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  border-radius: 50%;
-  background-color: rgba(42,42,42,0.6);
-  color: #fff;
-  border: 2px solid rgba(255,255,255,0.5);
-  justify-content: center;
-}
-
-.modal-button.icon:hover {
-  background-color: rgba(42,42,42,0.8);
-  border-color: #fff;
-}
-
-@media (max-width: 768px) {
-  .modal-content {
-    width: 95%;
-  }
-  
-  .modal-hero {
-    min-height: 300px;
-    padding: 40px 20px;
-  }
-  
-  .modal-title {
-    font-size: 32px;
-  }
-  
-  .modal-description {
-    font-size: 14px;
-  }
-  
-  .modal-actions {
-    flex-wrap: wrap;
-  }
-}
-
-
