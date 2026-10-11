@@ -1,69 +1,71 @@
-.modal-overlay {
+.video-modal-overlay {
     position: fixed;
     inset: 0;
     z-index: 2000;
     display: grid;
     place-items: center;
-    padding: 28px;
-    background: rgba(0, 0, 0, .86);
+    padding: 24px 28px;
+    background: rgba(0, 0, 0, .96);
     animation: fadeIn .2s ease
 }
 
-.modal-content {
+.video-modal-content {
     position: relative;
-    width: min(96vw, 1440px);
+    width: min(78vw, 1320px);
     overflow: hidden;
-    border: 1px solid #333;
-    border-radius: 9px;
-    background: #161616;
+    border: 1px solid #303030;
+    border-radius: 14px;
+    background: #050505;
     box-shadow: 0 26px 70px rgba(0, 0, 0, .7)
 }
 
 .player-video {
     display: block;
     width: 100%;
-    min-height: min(52vw, 540px);
-    max-height: calc(88vh - 76px);
+    aspect-ratio: 16 / 9;
+    max-height: calc(100vh - 180px);
     object-fit: contain;
     background: #000
 }
 
-.modal-close {
-    position: absolute;
-    top: 14px;
-    right: 14px;
+.video-modal-close {
+    position: fixed;
+    top: 26px;
+    right: 32px;
     z-index: 2;
     display: grid;
     place-items: center;
-    width: 39px;
-    height: 39px;
+    width: 44px;
+    height: 44px;
     padding: 0;
     color: #fff;
-    background: rgba(0, 0, 0, .72);
-    border: 1px solid rgba(255, 255, 255, .5);
+    background: #202020;
+    border: 0;
     border-radius: 50%;
     cursor: pointer;
     font-size: 21px
 }
 
-.modal-close:hover {
+.video-modal-close:hover {
     background: #e50914;
     border-color: #e50914
 }
 
 .player-details {
-    padding: 16px 22px 20px
+    min-height: 88px;
+    padding: 22px 26px 20px
 }
 
 .player-details h2 {
-    margin: 0 0 4px;
-    font-size: 1.25rem
+    margin: 0 0 12px;
+    font-size: 1.15rem
 }
 
-.player-details p {
-    margin: 0;
+.player-meta {
+    display: flex;
+    gap: 26px;
     color: #aaa;
-    font-size: .88rem
+    font-size: .82rem
 }
 
 @keyframes fadeIn {
@@ -77,21 +79,33 @@
 }
 
 @media(max-width:600px) {
-    .modal-overlay {
-        padding: 0
+    .video-modal-overlay {
+        padding: 68px 12px 84px
     }
 
-    .modal-content {
+    .video-modal-content {
         width: 100%;
-        border-radius: 0
+        border-radius: 10px
     }
 
     .player-video {
-        min-height: 0;
-        max-height: calc(100vh - 76px)
+        max-height: calc(100vh - 230px)
     }
 
     .player-details {
-        padding: 14px 18px
+        min-height: auto;
+        padding: 20px 18px
+    }
+
+    .player-meta {
+        flex-wrap: wrap;
+        gap: 8px 18px
+    }
+
+    .video-modal-close {
+        top: 14px;
+        right: 14px;
+        width: 40px;
+        height: 40px
     }
 }

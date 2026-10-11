@@ -9,7 +9,7 @@ import {
   FiTag,
   FiTv,
 } from "react-icons/fi";
-import Header from "../components/Header";
+import LandingHeader from "../components/LandingHeader";
 import Footer from "../components/Footer";
 import VideoModal from "../components/VideoModal";
 import "./Home.css";
@@ -50,7 +50,7 @@ function Home() {
 
   return (
     <div className="home-page">
-      <Header />
+      <LandingHeader />
       <main>
         <section className="home-hero" aria-label="Featured title">
           <video

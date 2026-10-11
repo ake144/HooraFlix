@@ -18,23 +18,15 @@ const VideoModal = ({ video, onClose }) => {
   if (!video) return null;
   return (
     <div
-      className="modal-overlay"
-      onMouseDown={onClose}
+      className="video-modal-overlay"
+      onMouseDown={(event) => event.target === event.currentTarget && onClose()}
       role="dialog"
       aria-modal="true"
       aria-label={`${video.title} player`}
     >
       <section
-        className="modal-content player-content"
-        onMouseDown={(e) => e.stopPropagation()}
+        className="video-modal-content"
       >
-        <button
-          className="modal-close"
-          onClick={onClose}
-          aria-label="Close player"
-        >
-          <FiX />
-        </button>
         <video
           ref={playerRef}
           className="player-video"
@@ -48,9 +40,19 @@ const VideoModal = ({ video, onClose }) => {
         </video>
         <div className="player-details">
           <h2>{video.title}</h2>
-          <p>{video.genre || "Official trailer"}</p>
+          <div className="player-meta">
+            {video.credit && <span>{video.credit}</span>}
+            <span>{video.genre || "Official trailer"}</span>
+          </div>
         </div>
       </section>
+      <button
+        className="video-modal-close"
+        onClick={onClose}
+        aria-label="Close player"
+      >
+        <FiX />
+      </button>
     </div>
   );
 };

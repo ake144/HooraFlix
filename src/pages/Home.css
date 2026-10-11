@@ -36,7 +36,7 @@
 .hero-content {
     position: relative;
     z-index: 1;
-    margin: 108px 7% 54px;
+    margin: 108px max(5%, calc((100% - 1300px) / 2)) 54px;
     max-width: 510px;
     animation: heroIn .45s ease-out
 }
@@ -179,7 +179,7 @@
 .hero-arrows {
     position: absolute;
     z-index: 2;
-    right: 12%;
+    right: max(5%, calc((100% - 1300px) / 2));
     bottom: 23%;
     display: flex;
     gap: 9px
@@ -203,8 +203,8 @@
 }
 
 .home-browse {
-    max-width: 1280px;
-    padding: 42px 5% 78px;
+    max-width: 1320px;
+    padding: 28px 5% 78px;
     margin: 0 auto
 }
 
@@ -212,7 +212,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    margin-bottom: 68px
+    margin-bottom: 62px
 }
 
 .category-card {
@@ -411,7 +411,7 @@
 
 @media(max-width:720px) {
     .home-hero {
-        min-height: 750px;
+        min-height: calc(100svh - 70px);
         align-items: end
     }
 
@@ -420,11 +420,18 @@
     }
 
     .hero-content {
-        margin: 116px 6% 36px
+        width: auto;
+        margin: 350px 13px 23px;
+        max-width: none
+    }
+
+    .hero-content h1 {
+        font-size: clamp(2.35rem, 10.5vw, 3.25rem);
+        margin-bottom: 15px
     }
 
     .hero-description {
-        font-size: .96rem
+        display: none
     }
 
     .hero-arrows {
@@ -451,14 +458,11 @@
     }
 
     .home-browse {
-        padding-top: 30px
+        padding: 48px 14px 96px
     }
 
     .category-list {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        padding-bottom: 8px;
-        margin-bottom: 43px
+        display: none
     }
 
     .category-card {
@@ -480,8 +484,8 @@
     }
 
     .poster-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 14px
+        grid-template-columns: 1fr;
+        gap: 22px
     }
 
     .poster-copy {
@@ -490,5 +494,9 @@
 
     .poster-copy p {
         font-size: .68rem
+    }
+
+    .home-page .footer {
+        padding-bottom: 86px
     }
 }
