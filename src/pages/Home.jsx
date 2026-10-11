@@ -117,7 +117,10 @@ function Home() {
           </div>
           <div className="poster-grid" id="all-upcoming">
             {movies.map((movie) => (
-              <article className="poster-card" key={movie.id}>
+              <article
+                className={`poster-card ${movie.video ? "has-trailer" : ""}`}
+                key={movie.id}
+              >
                 <div className="poster-image">
                   <img src={movie.image} alt={`${movie.title} poster`} />
                   <span>Coming soon</span>
@@ -130,6 +133,7 @@ function Home() {
                       <FiPlay />
                     </button>
                   )}
+                  {movie.video && <span className="poster-quick-add">+</span>}
                 </div>
                 <div className="poster-copy">
                   <h3>{movie.title}</h3>

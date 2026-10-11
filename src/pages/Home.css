@@ -289,11 +289,30 @@
     box-shadow: 0 15px 28px rgba(0, 0, 0, .36)
 }
 
+.poster-card.has-trailer:hover {
+    border-color: var(--home-red);
+    box-shadow: 0 14px 30px rgba(237, 7, 21, .16)
+}
+
 .poster-image {
     aspect-ratio: .71;
     position: relative;
     overflow: hidden;
     background: #252525
+}
+
+.poster-image::after {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    content: '';
+    opacity: 0;
+    background: rgba(0, 0, 0, .55);
+    transition: opacity .2s ease
+}
+
+.poster-card.has-trailer:hover .poster-image::after {
+    opacity: 1
 }
 
 .poster-image img {
@@ -309,6 +328,7 @@
 
 .poster-image span {
     position: absolute;
+    z-index: 3;
     top: 12px;
     left: 12px;
     padding: 6px 10px;
@@ -322,19 +342,59 @@
 .poster-play {
     opacity: 0;
     position: absolute;
-    inset: 0;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
     display: grid;
     place-items: center;
+    width: 58px;
+    height: 58px;
     color: #fff;
-    background: rgba(0, 0, 0, .35);
+    background: var(--home-red);
     border: 0;
+    border-radius: 50%;
     font-size: 2.4rem;
     cursor: pointer;
-    transition: opacity .2s
+    transform: translate(-50%, -50%) scale(.85);
+    transition: opacity .2s ease, transform .2s ease, background .2s ease
 }
 
 .poster-card:hover .poster-play,
 .poster-play:focus {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1)
+}
+
+.poster-play:hover {
+    background: #ff2a36
+}
+
+.poster-play svg {
+    width: 22px;
+    height: 22px;
+    margin-left: 3px
+}
+
+.poster-quick-add {
+    position: absolute;
+    z-index: 3;
+    top: 10px;
+    right: 10px;
+    display: grid;
+    width: 31px;
+    height: 31px;
+    place-items: center;
+    opacity: 0;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, .6);
+    border-radius: 50%;
+    background: rgba(0, 0, 0, .5);
+    font-size: 1.35rem;
+    font-weight: 300;
+    transition: opacity .2s ease
+}
+
+.poster-card.has-trailer:hover .poster-quick-add {
     opacity: 1
 }
 
@@ -371,18 +431,37 @@
 .trailer-link {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 5px;
-    margin: 14px 0 0;
-    padding: 0;
+    width: 100%;
+    min-height: 43px;
+    margin: 16px 0 2px;
+    padding: 0 14px;
     color: #fff;
-    background: none;
+    background: var(--home-red);
     border: 0;
+    border-radius: 4px;
+    box-shadow: 0 8px 18px rgba(237, 7, 21, .18);
+    font-size: .88rem;
     font-weight: 700;
-    cursor: pointer
+    cursor: pointer;
+    transition: background .2s ease, transform .2s ease, box-shadow .2s ease
 }
 
 .trailer-link:hover {
-    color: var(--home-red)
+    color: #fff;
+    background: #ff2935;
+    box-shadow: 0 10px 22px rgba(237, 7, 21, .32);
+    transform: translateY(-1px)
+}
+
+.trailer-link:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px
+}
+
+.trailer-link svg {
+    font-size: 1rem
 }
 
 .home-toast {
