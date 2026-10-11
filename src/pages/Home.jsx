@@ -118,7 +118,7 @@ function Home() {
           <div className="poster-grid" id="all-upcoming">
             {movies.map((movie) => (
               <article
-                className={`poster-card ${movie.video ? "has-trailer" : ""}`}
+                className={`poster-card has-trailer `}
                 key={movie.id}
               >
                 <div className="poster-image">
