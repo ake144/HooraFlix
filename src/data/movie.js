@@ -47,6 +47,18 @@ export const heroes = [
     image: "/frames/h76.jpg",
     video: "/hero-loop.mp4",
   },
+   {
+    id: "light",
+    eyebrow: "Action, adventure",
+    title:"በኔ ዘመን",
+    rating: "8.6",
+    year: "2026",
+    duration: "1 hr 42 mins",
+    description:
+      "They have until dawn to reach the crest. Everything after that is somebody else’s war.",
+    image: "/frames/h76.jpg",
+    video: "/hero-loop.mp4",
+  },
 ];
 
 export const movies = [
@@ -96,6 +108,7 @@ export const movies = [
     "Producer: Misganaw Wedaj",
     "Drama · Romance",
     "/posters/sostegnaw-sew.jpg",
+    "/trailers/sostegnawo.mp4",
   ],
   [
     "hiwot",
